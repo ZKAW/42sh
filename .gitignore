@@ -1,0 +1,13 @@
+*.txt
+vgcore.*
+*.sh
+*.o
+mysh
+a.out
+error
+.vscode
+*.log
+libmy.a
+tester
+tests
+sandbox.c
