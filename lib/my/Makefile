@@ -46,6 +46,7 @@ SRC	=	my_putchar.c \
 		my_revstr.c	\
 		my_strncat.c	\
 		count_digits.c \
+		merge_array.c \
 		array_remove.c \
 		my_str_to_word_array.c \
 		is_alpha.c \

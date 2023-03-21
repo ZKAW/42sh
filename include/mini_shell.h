@@ -8,6 +8,13 @@
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
 
+        typedef enum input {
+            NONE,
+            PIPE,
+            FILE_PATH,
+            STD,
+        } input_type;
+
         typedef struct shell {
             char* root;
             char** envp;
@@ -22,9 +29,12 @@
             char* output;
             char* input;
             char* full_output;
+            input_type input_type;
             int is_piped;
             int append;
+            int fd[2];
             struct command* next;
+            struct command* prev;
         } cmd_t;
 
         void segfault(int code);

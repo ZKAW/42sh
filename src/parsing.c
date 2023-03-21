@@ -7,12 +7,13 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>
 #include "../include/my.h"
 #include "../include/mini_shell.h"
 
 char* clean_str(char* line);
-cmd_t* reverse_cmd(cmd_t* head);
+void reverse_cmd(cmd_t** head);
 
 void parse_output(cmd_t* command)
 {
@@ -34,15 +35,21 @@ void parse_output(cmd_t* command)
 
 void parse_input(cmd_t* command)
 {
-    int file;
+    int file = 1, in = 1;
     for (int i = 0; command->argv[i] != NULL; i++) {
         file = my_strcmp("<", command->argv[i]);
-        if (!file) {
+        in = my_strcmp("<<", command->argv[i]);
+        if (!file || !in) {
             command->input = command->argv[i + 1];
             command->argv = array_remove(i, command->argv);
             command->argv = array_remove(i, command->argv);
-            break;
         }
+        if (!in)
+            command->input_type = STD;
+        if (!file)
+            command->input_type = FILE_PATH;
+        if (!file || !in)
+            break;
     }
 }
 
@@ -55,13 +62,18 @@ cmd_t* parse_command(char* input, cmd_t* next, char* original)
     command->append = O_TRUNC;
     command->output = NULL;
     command->input = NULL;
+    command->input_type = next && next->is_piped ? PIPE : NONE;
     parse_output(command);
     parse_input(command);
-    if (original[my_strlen(input)] == '|')
-            command->is_piped = 1;
-    else
+    if (original[my_strlen(input)] == '|') {
+        command->is_piped = 1;
+        pipe(command->fd);
+    } else
         command->is_piped = 0;
     command->next = next;
+    command->prev = NULL;
+    if (command->next)
+        command->next->prev = command;
     return command;
 }
 
@@ -77,6 +89,6 @@ cmd_t* get_command(char * str)
         command = parse_command(command_position, command, original);
         command_position = strtok(NULL, delimiters);
     }
-    command = reverse_cmd(command);
+    reverse_cmd(&command);
     return command;
 }

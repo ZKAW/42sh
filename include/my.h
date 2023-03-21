@@ -23,6 +23,7 @@
         int my_putstr(char const *str);
         char *my_strlowcase(char *str);
         int my_strlen(char const *str);
+        char* merge_array(char** array);
         char *my_strcapitalize(char *str);
         long my_getnbr(char const *str);
         int my_str_isalpha(char const *str);
