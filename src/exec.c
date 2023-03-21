@@ -19,8 +19,8 @@
 #include "../include/mini_shell.h"
 
 int kill(pid_t pid, int sig);
-void set_output(cmd_t* cmd);
-void set_input(cmd_t* cmd);
+void set_output(cmd_t* cmd, shell_t* shell);
+void set_input(cmd_t* cmd, shell_t* shell);
 
 void handle_child_error(char** argv)
 {
@@ -63,12 +63,22 @@ char* get_full_path(char* input, shell_t* shell)
 void run_command(cmd_t* cmd, shell_t* shell)
 {
     pid_t sub;
-    int fd;
+    if (cmd->is_piped || cmd->input_type == STD) {
+        pipe(shell->fd);
+    }
     if ((sub = fork()) == 0) {
-        set_output(cmd);
-        set_input(cmd);
+        set_output(cmd, shell);
+        set_input(cmd, shell);
         teach_child(cmd->path, cmd->argv, shell);
     } else {
+        if (cmd->is_piped)
+            close(shell->fd[1]);
+        if (cmd->input_type == PIPE)
+            close(shell->fd[0]);
+        if (cmd->input_type == STD) {
+            close(shell->fd[0]);
+            close(shell->fd[1]);
+        }
         waitpid(sub, &shell->state, 0);
         handle_error(shell);
     }

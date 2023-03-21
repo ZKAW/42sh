@@ -15,19 +15,19 @@
 
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 
-void set_output(cmd_t* cmd)
+void set_output(cmd_t* cmd, shell_t* shell)
 {
     int fd;
     if (!cmd->output && !cmd->is_piped)
     return;
-    if (cmd->output)
+    if (cmd->output) {
         fd = open(cmd->output, O_RDWR | cmd->append | O_CREAT, 0644);
-    else if (cmd->is_piped) {
-        close(cmd->fd[0]);
-        fd = cmd->fd[1];
+        dup2(fd, 1);
+    } else if (cmd->is_piped) {
+        close(shell->fd[0]);
+        dup2(shell->fd[1], 1);
+        close(shell->fd[1]);
     }
-    dup2(fd, 1);
-    close(fd);
 }
 
 void get_input(cmd_t* cmd)
@@ -48,23 +48,23 @@ void get_input(cmd_t* cmd)
     cmd->input = merge_array(array);
 }
 
-void set_input(cmd_t* cmd)
+void set_input(cmd_t* cmd, shell_t* shell)
 {
     int fd;
     if (cmd->input_type == NONE)
         return;
     if (cmd->input_type == STD) {
         get_input(cmd);
-        pipe(cmd->fd);
-        write(cmd->fd[1], cmd->input, my_strlen(cmd->input));
-        close(cmd->fd[1]);
-        fd = cmd->fd[0];
+        write(shell->fd[1], cmd->input, my_strlen(cmd->input));
+        close(shell->fd[1]);
+        dup2(shell->fd[0], 0);
+        close(shell->fd[0]);
     }
     if (cmd->input_type == FILE_PATH)
         fd = open(cmd->input, O_RDONLY);
     if (cmd->input_type == PIPE) {
-        fd = cmd->prev->fd[0];
+        close(shell->fd[1]);
+        dup2(shell->fd[0], 0);
+        close(shell->fd[0]);
     }
-    dup2(fd, 0);
-    close(fd);
 }

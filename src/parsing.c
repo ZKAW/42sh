@@ -67,7 +67,6 @@ cmd_t* parse_command(char* input, cmd_t* next, char* original)
     parse_input(command);
     if (original[my_strlen(input)] == '|') {
         command->is_piped = 1;
-        pipe(command->fd);
     } else
         command->is_piped = 0;
     command->next = next;

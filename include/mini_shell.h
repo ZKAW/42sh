@@ -21,6 +21,7 @@
             char* last_path;
             int state;
             char** paths;
+            int fd[2];
         } shell_t;
 
         typedef struct command {
@@ -32,7 +33,6 @@
             input_type input_type;
             int is_piped;
             int append;
-            int fd[2];
             struct command* next;
             struct command* prev;
         } cmd_t;
