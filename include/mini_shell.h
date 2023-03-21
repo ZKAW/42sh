@@ -22,6 +22,7 @@
             char* std_output;
             char* full_output;
             int is_piped;
+            int append;
             struct command* next;
         } cmd_t;
 

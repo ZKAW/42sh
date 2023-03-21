@@ -14,6 +14,7 @@
 #include <errno.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <fcntl.h>
 #include <string.h>
 #include "../include/my.h"
 #include "../include/mini_shell.h"
@@ -61,7 +62,10 @@ void dump_cmd(cmd_t* cmd)
         dump_args(cmd->argv);
         my_printf("pipe to next: %s\n", cmd->is_piped ? "yes" : "no");
         my_printf("redirect: %s\n", cmd->std_output ? cmd->std_output : "no");
-        my_printf("\n");
+        if (cmd->std_output) {
+            my_printf("%s\n", cmd->append == O_APPEND ?
+            "apend to file" : "overwrite text");
+        }
         cmd = cmd->next;
     }
 }

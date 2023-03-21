@@ -64,8 +64,7 @@ void run_command(cmd_t* cmd, shell_t* shell)
     int fd;
     if ((sub = fork()) == 0) {
         if (cmd->std_output != NULL) {
-            fd = open(cmd->std_output,
-            O_RDWR | O_CREAT, S_IRUSR | S_IWUSR, O_APPEND);
+            fd = open(cmd->std_output, O_RDWR | cmd->append | O_CREAT, 0644);
             dup2(fd, 1);
             close(fd);
         }
