@@ -29,13 +29,13 @@ char separator, long position)
     int i;
     for (i = 0; str[i] != separator && str[i] != '\0'; i++);
     table[position] = malloc(sizeof(char) * (i + 1));
-    if (str[i - 1] != separator && str[i] == separator) {
+    if (( i > 0 && str[i - 1] != separator) && str[i] == separator) {
         my_strncpy(table[position], str, i);
         if (my_strlen(table[position]))
             position++;
     }
     if (str[i] == '\0') {
-        if (str[i - 1] != separator)
+        if (i > 0 && str[i - 1] != separator)
             my_strncpy(table[position++], str, i);
         table[position] = 0;
         return table;

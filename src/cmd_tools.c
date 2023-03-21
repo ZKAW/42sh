@@ -19,18 +19,15 @@ char* clean_str(char* line)
     return tmp;
 }
 
-void reverse_cmd(cmd_t** head)
+list_t* reverse_cmd(list_t* head)
 {
-    cmd_t* current = *head;
-    cmd_t* temp = NULL;
-
+    list_t *current = head, *prev = NULL, *next = NULL, *new_head = NULL;
     while (current != NULL) {
-        temp = current->prev;
-        current->prev = current->next;
-        current->next = temp;
-        current = current->prev;
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
     }
-    if (temp != NULL) {
-        *head = temp->prev;
-    }
+    head = prev;
+    return head;
 }

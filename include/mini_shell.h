@@ -37,6 +37,11 @@
             struct command* prev;
         } cmd_t;
 
+        typedef struct command_array {
+            cmd_t* cmd;
+            struct command_array* next;
+        } list_t;
+
         void segfault(int code);
         void floatpoint(int code);
         shell_t* create_shell(char** envp);

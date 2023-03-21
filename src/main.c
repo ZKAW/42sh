@@ -20,7 +20,7 @@
 #include "../include/mini_shell.h"
 
 void print_env(char** cmd, shell_t* shell);
-cmd_t* get_command(char * str);
+list_t* get_command(char * str);
 
 void print_path(void)
 {
@@ -44,17 +44,6 @@ void exec_cmd(cmd_t* cmd, shell_t* shell)
         execute(cmd, shell);
 }
 
-void dump_args(char** argv)
-{
-    if (!argv[1])
-        my_printf("no args");
-    else
-        my_printf("args: ");
-    for (int i = 1; argv[i]; i++)
-        my_printf("%s ", argv[i]);
-    my_putchar('\n');
-}
-
 void dump_cmd(cmd_t* cmd)
 {
     while (cmd) {
@@ -73,20 +62,31 @@ void dump_cmd(cmd_t* cmd)
     }
 }
 
+void pipe_work(cmd_t* head, shell_t* shell)
+{
+    while (head) {
+        exec_cmd(head, shell);
+        head = head->next;
+    }
+}
+
 int main(int ac, char** av, char** envp)
 {
     size_t len = 0;
     ssize_t size = 0;
     char* line = "";
     int state = 0;
+    cmd_t *head;
+    list_t* list;
     shell_t* shell = create_shell(envp);
     while (1) {
         print_path();
         size = getline(&line, &len, stdin);
-        cmd_t* cmd = get_command(line);
-        while (cmd) {
-            exec_cmd(cmd, shell);
-            cmd = cmd->next;
+        list = get_command(line);
+        while (list) {
+            head = list->cmd;
+            pipe_work(head, shell);
+            list = list->next;
         }
     }
     return shell->state;

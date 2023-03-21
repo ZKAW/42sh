@@ -60,8 +60,10 @@ void set_input(cmd_t* cmd, shell_t* shell)
         dup2(shell->fd[0], 0);
         close(shell->fd[0]);
     }
-    if (cmd->input_type == FILE_PATH)
+    if (cmd->input_type == FILE_PATH) {
         fd = open(cmd->input, O_RDONLY);
+        dup2(fd, 0);
+    }
     if (cmd->input_type == PIPE) {
         close(shell->fd[1]);
         dup2(shell->fd[0], 0);
