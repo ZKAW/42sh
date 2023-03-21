@@ -19,7 +19,8 @@
         typedef struct command {
             char* path;
             char** argv;
-            char* std_output;
+            char* output;
+            char* input;
             char* full_output;
             int is_piped;
             int append;

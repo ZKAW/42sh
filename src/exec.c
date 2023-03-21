@@ -19,6 +19,8 @@
 #include "../include/mini_shell.h"
 
 int kill(pid_t pid, int sig);
+void set_output(cmd_t* cmd);
+void set_input(cmd_t* cmd);
 
 void handle_child_error(char** argv)
 {
@@ -63,11 +65,8 @@ void run_command(cmd_t* cmd, shell_t* shell)
     pid_t sub;
     int fd;
     if ((sub = fork()) == 0) {
-        if (cmd->std_output != NULL) {
-            fd = open(cmd->std_output, O_RDWR | cmd->append | O_CREAT, 0644);
-            dup2(fd, 1);
-            close(fd);
-        }
+        set_output(cmd);
+        set_input(cmd);
         teach_child(cmd->path, cmd->argv, shell);
     } else {
         waitpid(sub, &shell->state, 0);
@@ -79,7 +78,6 @@ void execute(cmd_t* cmd, shell_t* shell)
 {
     int state;
     ssize_t ret;
-    char buffer[30000];
     if (!is_include('/', cmd->argv[0]) && !is_include('\\', cmd->argv[0]))
         cmd->path = get_full_path(cmd->argv[0], shell);
     else

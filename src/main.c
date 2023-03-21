@@ -61,10 +61,13 @@ void dump_cmd(cmd_t* cmd)
         my_printf("path: %s\n", cmd->path);
         dump_args(cmd->argv);
         my_printf("pipe to next: %s\n", cmd->is_piped ? "yes" : "no");
-        my_printf("redirect: %s\n", cmd->std_output ? cmd->std_output : "no");
-        if (cmd->std_output) {
+        my_printf("redirect: %s\n", cmd->output ? cmd->output : "no");
+        if (cmd->output) {
             my_printf("%s\n", cmd->append == O_APPEND ?
             "apend to file" : "overwrite text");
+        }
+        if (cmd->input) {
+            my_printf("take %s as input\n", cmd->input);
         }
         cmd = cmd->next;
     }

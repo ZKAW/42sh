@@ -11,37 +11,17 @@
 #include "../include/my.h"
 #include "../include/mini_shell.h"
 
-char* clean_str(char* line)
-{
-    char* tmp = malloc(sizeof(char) * (my_strlen(line) + 1));
-    if (line[my_strlen(line) - 1] == '\n')
-        my_strncpy(tmp, line, my_strlen(line) - 1);
-    else
-        my_strcpy(tmp, line);
-    return tmp;
-}
+char* clean_str(char* line);
+cmd_t* reverse_cmd(cmd_t* head);
 
-cmd_t* reverse_cmd(cmd_t* head)
-{
-    cmd_t *current = head, *prev = NULL, *next = NULL, *new_head = NULL;
-    while (current != NULL) {
-        next = current->next;
-        current->next = prev;
-        prev = current;
-        current = next;
-    }
-    head = prev;
-    return head;
-}
-
-void parse_redirection(cmd_t* command)
+void parse_output(cmd_t* command)
 {
     int append, overwrite;
     for (int i = 0; command->argv[i] != NULL; i++) {
         overwrite = my_strcmp(">", command->argv[i]);
         append = my_strcmp(">>", command->argv[i]);
         if (!overwrite || !append) {
-            command->std_output = command->argv[i + 1];
+            command->output = command->argv[i + 1];
             command->argv = array_remove(i, command->argv);
             command->argv = array_remove(i, command->argv);
         }
@@ -52,6 +32,20 @@ void parse_redirection(cmd_t* command)
     }
 }
 
+void parse_input(cmd_t* command)
+{
+    int file;
+    for (int i = 0; command->argv[i] != NULL; i++) {
+        file = my_strcmp("<", command->argv[i]);
+        if (!file) {
+            command->input = command->argv[i + 1];
+            command->argv = array_remove(i, command->argv);
+            command->argv = array_remove(i, command->argv);
+            break;
+        }
+    }
+}
+
 cmd_t* parse_command(char* input, cmd_t* next, char* original)
 {
     char* token;
@@ -59,7 +53,10 @@ cmd_t* parse_command(char* input, cmd_t* next, char* original)
     command->argv = string_split(input, ' ');
     command->path = command->argv[0];
     command->append = O_TRUNC;
-    parse_redirection(command);
+    command->output = NULL;
+    command->input = NULL;
+    parse_output(command);
+    parse_input(command);
     if (original[my_strlen(input)] == '|')
             command->is_piped = 1;
     else

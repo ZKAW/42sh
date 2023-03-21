@@ -16,7 +16,9 @@ SRC		=	src/main.c \
 			src/exec.c \
 			src/env.c \
 			src/parsing.c \
-			src/cd.c
+			src/cd.c \
+			src/cmd_tools.c \
+			src/redirection.c
 
 all:
 	make -C lib/my
