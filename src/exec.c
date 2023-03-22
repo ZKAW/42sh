@@ -63,14 +63,15 @@ char* get_full_path(char* input, shell_t* shell)
 void run_command(cmd_t* cmd, shell_t* shell)
 {
     pid_t sub;
-    if (cmd->is_piped || cmd->input_type == STD)
+    if (cmd->output_type == PIPE || cmd->input_type == STD)
         pipe(shell->fd);
-    if ((sub = fork()) == 0) {
+    sub = fork();
+    if (sub == 0) {
         set_output(cmd, shell);
         set_input(cmd, shell);
         teach_child(cmd->path, cmd->argv, shell);
     } else {
-        if (cmd->is_piped)
+        if (cmd->output_type == PIPE)
             close(shell->fd[1]);
         if (cmd->input_type == PIPE || cmd->input_type == FILE_PATH)
             close(shell->fd[0]);

@@ -31,3 +31,19 @@ list_t* reverse_cmd(list_t* head)
     head = prev;
     return head;
 }
+
+void reverse_head(cmd_t** head)
+{
+    cmd_t* current = *head;
+    cmd_t* temp = NULL;
+
+    while (current != NULL) {
+        temp = current->prev;
+        current->prev = current->next;
+        current->next = temp;
+        current = current->prev;
+    }
+    if (temp != NULL) {
+        *head = temp->prev;
+    }
+}

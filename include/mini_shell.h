@@ -13,7 +13,7 @@
             PIPE,
             FILE_PATH,
             STD,
-        } input_type;
+        } fd_type;
 
         typedef struct shell {
             char* root;
@@ -30,8 +30,8 @@
             char* output;
             char* input;
             char* full_output;
-            input_type input_type;
-            int is_piped;
+            fd_type input_type;
+            fd_type output_type;
             int append;
             struct command* next;
             struct command* prev;

@@ -20,9 +20,13 @@ SRC		=	src/main.c \
 			src/cmd_tools.c \
 			src/redirection.c
 
+debug:
+	make -C lib/my
+	gcc -o $(NAME) $(CFLAGS) $(SRC) $(LIB)
+
 all:
 	make -C lib/my
-	gcc $(CFLAGS) -o $(NAME) $(SRC) $(LIB)
+	gcc -o $(NAME) $(SRC) $(LIB)
 
 clean:
 	make -C lib/my clean

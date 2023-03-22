@@ -22,6 +22,7 @@ void parse_output(cmd_t* command)
         overwrite = my_strcmp(">", command->argv[i]);
         append = my_strcmp(">>", command->argv[i]);
         if (!overwrite || !append) {
+            command->output_type = FILE_PATH;
             command->output = command->argv[i + 1];
             command->argv = array_remove(i, command->argv);
             command->argv = array_remove(i, command->argv);
@@ -51,6 +52,8 @@ void parse_input(cmd_t* command)
         if (!file || !in)
             break;
     }
+    if (command->next && command->next->output_type == PIPE)
+        command->input_type = PIPE;
 }
 
 cmd_t* parse_command(char* input, cmd_t* next)
@@ -63,13 +66,13 @@ cmd_t* parse_command(char* input, cmd_t* next)
     command->output = NULL;
     command->input = NULL;
     command->input_type = NONE;
-    command->is_piped = 0;
-    parse_output(command);
-    parse_input(command);
+    command->output_type = NONE;
     command->next = next;
     command->prev = NULL;
     if (command->next)
         command->next->prev = command;
+    parse_output(command);
+    parse_input(command);
     return command;
 }
 
@@ -81,7 +84,7 @@ list_t* split_pipes(char* input, list_t* next)
     char** parts = string_split(input, '|');
     for (i = 0; parts[i + 1]; i++) {
         command = parse_command(parts[i], command);
-        command->is_piped = 1;
+        command->output_type = PIPE;
     }
     command = parse_command(parts[i], command);
     node->cmd = command;

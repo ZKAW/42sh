@@ -21,6 +21,7 @@
 
 void print_env(char** cmd, shell_t* shell);
 list_t* get_command(char * str);
+void reverse_head(cmd_t** head);
 
 void print_path(void)
 {
@@ -44,30 +45,36 @@ void exec_cmd(cmd_t* cmd, shell_t* shell)
         execute(cmd, shell);
 }
 
-void dump_cmd(cmd_t* cmd)
+void handle_command(list_t* list, shell_t* shell)
 {
-    while (cmd) {
-        my_printf("path: %s\n", cmd->path);
-        dump_args(cmd->argv);
-        my_printf("pipe to next: %s\n", cmd->is_piped ? "yes" : "no");
-        my_printf("redirect: %s\n", cmd->output ? cmd->output : "no");
-        if (cmd->output) {
-            my_printf("%s\n", cmd->append == O_APPEND ?
-            "apend to file" : "overwrite text");
+    cmd_t* head;
+    while (list) {
+        head = list->cmd;
+        reverse_head(&head);
+        while (head) {
+            exec_cmd(head, shell);
+            head = head->next;
         }
-        if (cmd->input) {
-            my_printf("take %s as input\n", cmd->input);
-        }
-        cmd = cmd->next;
+        list = list->next;
     }
 }
 
-void pipe_work(cmd_t* head, shell_t* shell)
+int verify_pipe(shell_t* shell)
 {
-    while (head) {
-        exec_cmd(head, shell);
-        head = head->next;
+    ssize_t size = 0;
+    size_t len = 0;
+    char* line = "";
+    if (isatty(0))
+        return 0;
+    while (size != EOF) {
+        size = getline(&line, &len, stdin);
+        if (size == 1)
+            continue;
+        if (size == EOF)
+            return 1;
+        handle_command(get_command(line), shell);
     }
+    return 1;
 }
 
 int main(int ac, char** av, char** envp)
@@ -76,18 +83,19 @@ int main(int ac, char** av, char** envp)
     ssize_t size = 0;
     char* line = "";
     int state = 0;
-    cmd_t *head;
-    list_t* list;
     shell_t* shell = create_shell(envp);
+    if (verify_pipe(shell))
+        return shell->state;
     while (1) {
         print_path();
         size = getline(&line, &len, stdin);
-        list = get_command(line);
-        while (list) {
-            head = list->cmd;
-            pipe_work(head, shell);
-            list = list->next;
-        }
+        if (size == -1)
+            my_printf("exit\n");
+        if (size == 1)
+            continue;
+        if (!my_strcmp(line, "exit\n") || (size == EOF))
+            break;
+        handle_command(get_command(line), shell);
     }
     return shell->state;
 }

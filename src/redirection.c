@@ -18,12 +18,12 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 void set_output(cmd_t* cmd, shell_t* shell)
 {
     int fd;
-    if (!cmd->output && !cmd->is_piped)
+    if (cmd->output_type == NONE)
     return;
-    if (cmd->output) {
+    if (cmd->output_type == FILE_PATH) {
         fd = open(cmd->output, O_RDWR | cmd->append | O_CREAT, 0644);
         dup2(fd, 1);
-    } else if (cmd->is_piped) {
+    } else if (cmd->output_type == PIPE) {
         close(shell->fd[0]);
         dup2(shell->fd[1], 1);
         close(shell->fd[1]);
