@@ -19,6 +19,22 @@ char* clean_str(char* line)
     return tmp;
 }
 
+char* get_full_path(char* input, shell_t* shell)
+{
+    char** paths = shell->paths;
+    char* test_path;
+    int input_s = my_strlen(input);
+    for (int i = 0; paths[i]; i++) {
+        test_path = malloc(sizeof(char) * (my_strlen(paths[i]) + input_s + 1));
+        my_strcpy(test_path, paths[i]);
+        my_strcat(test_path, input);
+        if (is_existing(test_path))
+            return test_path;
+        free(test_path);
+    }
+    return NULL;
+}
+
 list_t* reverse_cmd(list_t* head)
 {
     list_t *current = head, *prev = NULL, *next = NULL, *new_head = NULL;

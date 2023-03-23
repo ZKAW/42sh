@@ -50,11 +50,7 @@ void handle_command(list_t* list, shell_t* shell)
     cmd_t* head;
     while (list) {
         head = list->cmd;
-        reverse_head(&head);
-        while (head) {
-            exec_cmd(head, shell);
-            head = head->next;
-        }
+        exec_cmd(head, shell);
         list = list->next;
     }
 }

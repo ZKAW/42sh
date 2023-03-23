@@ -14,19 +14,14 @@
 #include "../include/mini_shell.h"
 
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
+void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2]);
 
-void set_output(cmd_t* cmd, shell_t* shell)
+void set_output(cmd_t* cmd, int fd[2],shell_t* shell)
 {
-    int fd;
-    if (cmd->output_type == NONE)
-    return;
+    int output_fd;
     if (cmd->output_type == FILE_PATH) {
-        fd = open(cmd->output, O_RDWR | cmd->append | O_CREAT, 0644);
-        dup2(fd, 1);
-    } else if (cmd->output_type == PIPE) {
-        close(shell->fd[0]);
-        dup2(shell->fd[1], 1);
-        close(shell->fd[1]);
+        output_fd = open(cmd->output, O_RDWR | cmd->append | O_CREAT, 0644);
+        dup2(output_fd, 1);
     }
 }
 
@@ -48,25 +43,22 @@ void get_input(cmd_t* cmd)
     cmd->input = merge_array(array);
 }
 
-void set_input(cmd_t* cmd, shell_t* shell)
+void set_input(cmd_t* cmd, shell_t* shell, int fd[2])
 {
-    int fd;
-    if (cmd->input_type == NONE)
-        return;
+    int file_fd;
+    pipe(fd);
     if (cmd->input_type == STD) {
         get_input(cmd);
-        write(shell->fd[1], cmd->input, my_strlen(cmd->input));
-        close(shell->fd[1]);
-        dup2(shell->fd[0], 0);
-        close(shell->fd[0]);
+        write(fd[1], cmd->input, my_strlen(cmd->input));
+        close(fd[1]);
+        dup2(fd[0], 0);
+        close(fd[0]);
     }
     if (cmd->input_type == FILE_PATH) {
-        fd = open(cmd->input, O_RDONLY);
-        dup2(fd, 0);
+        file_fd = open(cmd->input, O_RDONLY);
+        dup2(file_fd, 0);
     }
     if (cmd->input_type == PIPE) {
-        close(shell->fd[1]);
-        dup2(shell->fd[0], 0);
-        close(shell->fd[0]);
+        prepare_pipe(cmd, shell, fd);
     }
 }
