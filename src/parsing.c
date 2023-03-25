@@ -60,7 +60,7 @@ cmd_t* parse_command(char* input, cmd_t* next)
 {
     char* token;
     cmd_t* command = malloc(sizeof(cmd_t));
-    command->argv = string_split(input, ' ');
+    command->argv = string_split(input, " \t");
     command->path = command->argv[0];
     command->append = O_TRUNC;
     command->output = NULL;
@@ -81,7 +81,7 @@ list_t* split_pipes(char* input, list_t* next)
     int i = 0;
     cmd_t* command = NULL;
     list_t* node = malloc(sizeof(list_t));
-    char** parts = string_split(input, '|');
+    char** parts = string_split(input, "|");
     for (i = 0; parts[i + 1]; i++) {
         command = parse_command(parts[i], command);
         command->output_type = PIPE;

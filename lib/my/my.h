@@ -38,7 +38,7 @@
         int my_find_prime_sup(int nb);
         int my_showstr(char const *str);
         void print_array(char** array);
-        char** string_split(char const * str, char separator);
+        char** string_split(char const * str, char* separator);
         int my_arraylen(char** array);
         int free_int_arr(int** array, int height);
         int free_arr(char** array);

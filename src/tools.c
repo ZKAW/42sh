@@ -18,7 +18,7 @@ char** get_env_paths(char** envp)
     int i;
     char** paths;
     for (i = 0; my_strncmp(envp[i], "PATH", 4); i++);
-    paths = string_split(&envp[i][5], ':');
+    paths = string_split(&envp[i][5], ":");
     for (i = 0; paths[i] != NULL; i++)
         paths[i] = str_append(paths[i], "/");
     return paths;

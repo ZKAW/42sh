@@ -38,7 +38,7 @@ void change_directory(char** cmd, shell_t* shell)
     dir = my_arraylen(cmd) == 2 ? cmd[1] : "$HOME";
     if (dir[0] == '$') {
         var = find_envp(dir, shell);
-        var_env = string_split(var, '=');
+        var_env = string_split(var, "=");
         dir = var_env[1];
     }
     if (!my_strcmp(dir, "-"))
