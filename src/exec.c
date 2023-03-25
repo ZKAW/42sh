@@ -60,7 +60,6 @@ void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2])
         close(fd[1]);
         dup2(fd[0], 0);
         close(fd[0]);
-        //waitpid(new_sub, &shell->state, 0);
     }
 }
 
