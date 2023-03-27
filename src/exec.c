@@ -28,7 +28,7 @@ void handle_child_error(char** argv, shell_t* shell)
 {
     if (errno == 8) {
         write(2, argv[0], my_strlen(argv[0]));
-        write(2, ": Exec format error. Binary file not executable.\n", 49);
+        write(2, ": Exec format error. Wrong Architecture.\n", 49);
     }
     if (errno == 13) {
         write(2, argv[0], my_strlen(argv[0]));

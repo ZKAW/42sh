@@ -16,7 +16,7 @@ int check_env_name(char* name)
         || (name[i] >= '0' && name[i] <= '9'))
             continue;
         else {
-            write(2, "setenv: Variable name must", 26);
+            write(2, "setenv: Variable name must ", 27);
             write(2, "contain alphanumeric characters.\n", 33);
             return 1;
         }
