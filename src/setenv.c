@@ -53,7 +53,7 @@ void my_setenv(char** cmd, shell_t* shell)
         envp = array_remove(i, envp);
     size = my_strlen(cmd[1]) + 1;
     size += my_arraylen(cmd) == 3 ? my_strlen(cmd[2]) : 0;
-    new_env = malloc(sizeof(char) * size + 1);
+    new_env = malloc(sizeof(char) * (size + 1));
     my_strcpy(new_env, cmd[1]);
     my_strcat(new_env, "=");
     if (my_arraylen(cmd) == 3)

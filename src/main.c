@@ -85,12 +85,12 @@ int main(int ac, char** av, char** envp)
     while (1) {
         print_path();
         size = getline(&line, &len, stdin);
-        if (size == -1)
-            my_printf("exit\n");
         if (size == 1)
             continue;
-        if (!my_strcmp(line, "exit\n") || (size == EOF))
+        if (my_strstr(line, "exit") || (size == EOF)) {
+            my_printf("exit\n");
             break;
+        }
         handle_command(get_command(line), shell);
     }
     return shell->state;
