@@ -75,6 +75,7 @@ void run_command(cmd_t* cmd, shell_t* shell, int received_fd[2])
         write(2, cmd->path, my_strlen(cmd->path));
         write (2, ": Command not found.\n", 21);
         shell->state = 1;
+        return;
     }
     if (cmd->input_type != NONE)
         set_input(cmd, shell, fd);
