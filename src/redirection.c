@@ -16,7 +16,7 @@
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2]);
 
-void set_output(cmd_t* cmd, int fd[2],shell_t* shell)
+void set_output(cmd_t* cmd, int fd[2], shell_t* shell)
 {
     int output_fd;
     if (cmd->output_type == FILE_PATH) {

@@ -18,7 +18,8 @@ SRC		=	src/main.c \
 			src/parsing.c \
 			src/cd.c \
 			src/cmd_tools.c \
-			src/redirection.c
+			src/redirection.c \
+			src/setenv.c
 
 debug:
 	make -C lib/my

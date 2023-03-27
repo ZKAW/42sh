@@ -5,6 +5,10 @@
 ** mini-shell.h
 */
 
+#include <unistd.h>
+#include <stdlib.h>
+#include "my.h"
+
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
 

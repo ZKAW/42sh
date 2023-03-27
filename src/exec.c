@@ -24,7 +24,7 @@ void set_output(cmd_t* cmd, shell_t* shell, int fd[2]);
 void set_input(cmd_t* cmd, shell_t* shell, int fd[2]);
 void run_command(cmd_t* cmd, shell_t* shell, int received_fd[2]);
 
-void handle_child_error(char** argv)
+void handle_child_error(char** argv, shell_t* shell)
 {
     if (errno == 8) {
         write(2, argv[0], my_strlen(argv[0]));
@@ -34,15 +34,14 @@ void handle_child_error(char** argv)
         write(2, argv[0], my_strlen(argv[0]));
         write(2, ": Permission denied.\n", 21);
     }
+    handle_error(shell);
 }
 
 void teach_child(char* path, char** cmd, shell_t* shell)
 {
-    int state;
-    state = execve(path, cmd, shell->envp);
+    int state = execve(path, cmd, shell->envp);
     if (state == -1) {
-        handle_child_error(cmd);
-        exit(1);
+        handle_child_error(cmd, shell);
     }
 }
 
