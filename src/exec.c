@@ -48,9 +48,6 @@ void teach_child(char* path, char** cmd, shell_t* shell)
 void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2])
 {
     pid_t new_sub;
-    if (pipe(fd) == -1) {
-        exit(1);
-    }
     new_sub = fork();
     if (new_sub == 0) {
         close(fd[0]);

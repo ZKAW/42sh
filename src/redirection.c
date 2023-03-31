@@ -46,7 +46,10 @@ void get_input(cmd_t* cmd)
 void set_input(cmd_t* cmd, shell_t* shell, int fd[2])
 {
     int file_fd;
-    pipe(fd);
+    if (pipe(fd) == -1) {
+        perror(NULL);
+        exit(1);
+    }
     if (cmd->input_type == STD) {
         get_input(cmd);
         write(fd[1], cmd->input, my_strlen(cmd->input));
