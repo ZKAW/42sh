@@ -34,7 +34,7 @@ void handle_child_error(char** argv, shell_t* shell)
         write(2, argv[0], my_strlen(argv[0]));
         write(2, ": Permission denied.\n", 21);
     }
-    handle_error(shell);
+    exit(1);
 }
 
 void teach_child(char* path, char** cmd, shell_t* shell)
@@ -93,6 +93,8 @@ void execute(cmd_t* cmd, shell_t* shell)
     sub = fork();
     if (sub == 0)
         run_command(cmd, shell, fd);
-    else
+    else {
         waitpid(sub, &shell->state, 0);
+        handle_error(shell);
+    }
 }
