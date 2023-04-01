@@ -28,6 +28,16 @@ void throw_error(char* const strerror, shell_t* shell, int ernum)
     shell->state = ernum;
 }
 
+void handle_cd_error(char* dir, shell_t* shell)
+{
+    char* error = strerror(errno);
+    write(2, dir, my_strlen(dir));
+    write(2, ": ", 2);
+    write(2, error, my_strlen(error));
+    write(2, ".\n", 2);
+    shell->state = 1;
+}
+
 void change_directory(char** cmd, shell_t* shell)
 {
     char actual_path[500], **var_env, **envp = shell->envp, *dir, *var;
@@ -45,8 +55,7 @@ void change_directory(char** cmd, shell_t* shell)
         dir = shell->last_path;
     getcwd(actual_path, 500);
     if (chdir(dir) < 0) {
-        my_printf("%s: %s.\n", dir, strerror(errno));
-        shell->state = 1;
+        handle_cd_error(dir, shell);
         return;
     }
     my_strcpy(shell->last_path, actual_path);
