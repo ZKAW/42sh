@@ -22,6 +22,9 @@
 void print_env(char** cmd, shell_t* shell);
 list_t* get_command(char * str);
 void reverse_head(cmd_t** head);
+void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2]);
+int is_builtin(char* path);
+void execute(cmd_t* cmd, shell_t* shell);
 
 void print_path(void)
 {
@@ -30,27 +33,14 @@ void print_path(void)
     my_printf("%s $> ", path);
 }
 
-void exec_cmd(cmd_t* cmd, shell_t* shell)
-{
-    int i;
-    char** argv = cmd->argv;
-    char* cmd_names[5] = {"cd", "env", "setenv", "unsetenv", NULL};
-    void (*cmd_funcs[5]) (char** cmd, shell_t* shell) = {
-        change_directory, print_env, my_setenv, my_unsetenv
-    };
-    for (i = 0; i < 4 && my_strcmp(cmd_names[i], argv[0]); i++);
-    if (i < 4)
-        (cmd_funcs[i])(argv, shell);
-    else
-        execute(cmd, shell);
-}
-
 void handle_command(list_t* list, shell_t* shell)
 {
     cmd_t* head;
     while (list) {
         head = list->cmd;
-        exec_cmd(head, shell);
+        if (is_builtin(head->path))
+            run_builtin(head, shell);
+        execute(head, shell);
         list = list->next;
     }
 }

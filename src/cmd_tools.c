@@ -5,6 +5,7 @@
 ** cmd_tools.c
 */
 
+#include <sys/stat.h>
 #include <stdlib.h>
 #include "../include/my.h"
 #include "../include/mini_shell.h"
@@ -21,6 +22,7 @@ char* clean_str(char* line)
 
 char* get_full_path(char* input, shell_t* shell)
 {
+    struct stat info;
     char** paths = shell->paths;
     char* test_path;
     int input_s = my_strlen(input);
@@ -28,7 +30,7 @@ char* get_full_path(char* input, shell_t* shell)
         test_path = malloc(sizeof(char) * (my_strlen(paths[i]) + input_s + 1));
         my_strcpy(test_path, paths[i]);
         my_strcat(test_path, input);
-        if (is_existing(test_path))
+        if (stat(test_path, &info) != -1)
             return test_path;
         free(test_path);
     }

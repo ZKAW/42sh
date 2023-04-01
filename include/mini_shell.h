@@ -50,8 +50,9 @@
         shell_t* create_shell(char** envp);
         void execute(cmd_t* cmd, shell_t* shell);
         void change_directory(char** cmd, shell_t* shell);
-        int is_existing(char* path);
+        int not_existing(char* path, shell_t* shell);
         void handle_error(shell_t* shell);
+        void run_builtin(cmd_t* cmd, shell_t* shell);
         void my_setenv(char** cmd, shell_t* shell);
         char** get_env_paths(char** envp);
         void my_unsetenv(char** cmd, shell_t* shell);

@@ -13,6 +13,8 @@
 #include "../include/my.h"
 #include "../include/mini_shell.h"
 
+int is_builtin(char* path);
+
 char** get_env_paths(char** envp)
 {
     int i;
@@ -46,11 +48,11 @@ shell_t* create_shell(char** envp)
     return shell;
 }
 
-int is_existing(char* path)
+int not_existing(char* path, shell_t* shell)
 {
-    struct stat info;
-    if (stat(path, &info) == -1)
-        return 0;
+    write(2, path, my_strlen(path));
+    write (2, ": Command not found.\n", 21);
+    shell->state = 1;
     return 1;
 }
 

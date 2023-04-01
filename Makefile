@@ -19,7 +19,8 @@ SRC		=	src/main.c \
 			src/cd.c \
 			src/cmd_tools.c \
 			src/redirection.c \
-			src/setenv.c
+			src/setenv.c \
+			src/builtin.c
 
 debug:
 	make -C lib/my

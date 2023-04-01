@@ -7,6 +7,8 @@
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
 #include "../include/mini_shell.h"
 #include "../include/my.h"
 
