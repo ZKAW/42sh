@@ -89,9 +89,10 @@ void execute(cmd_t* cmd, shell_t* shell)
 {
     pid_t sub;
     sub = fork();
-    if (sub == 0)
+    if (sub == 0) {
+        shell->sub = getpid();
         run_command(cmd, shell);
-    else {
+    } else {
         waitpid(sub, &shell->state, 0);
         handle_error(shell);
     }

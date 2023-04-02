@@ -25,6 +25,7 @@
             char* last_path;
             int state;
             char** paths;
+            pid_t sub;
         } shell_t;
 
         typedef struct command {

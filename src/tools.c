@@ -68,6 +68,6 @@ void handle_error(shell_t* shell)
             write(2, " (core dumped)", 14);
         write(2, "\n", 1);
     }
-    if (shell->state == 256)
+    if (shell->state == 256 || shell->state == 15)
         shell->state = 1;
 }

@@ -8,6 +8,7 @@
 
 #include <fcntl.h>
 #include <stdio.h>
+#include <signal.h>
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
@@ -17,6 +18,7 @@
 
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2]);
+int kill(pid_t pid, int sig);
 
 void set_output(cmd_t* cmd, int fd[2], shell_t* shell)
 {
@@ -45,13 +47,25 @@ void get_input(cmd_t* cmd)
     cmd->input = merge_array(array);
 }
 
-void set_input(cmd_t* cmd, shell_t* shell, int fd[2])
+void guarantee_pipe(int fd[2], shell_t* shell)
 {
-    int file_fd;
     if (pipe(fd) == -1) {
-        perror(NULL);
+        kill(shell->sub, SIGTERM);
         exit(1);
     }
+}
+
+int set_input(cmd_t* cmd, shell_t* shell, int fd[2])
+{
+    int file_fd;
+    if (cmd->input_type == NONE)
+        return 0;
+    if (cmd->input_type == FILE_PATH) {
+        file_fd = open(cmd->input, O_RDONLY);
+        dup2(file_fd, 0);
+        return 0;
+    }
+    guarantee_pipe(fd, shell);
     if (cmd->input_type == STD) {
         get_input(cmd);
         write(fd[1], cmd->input, my_strlen(cmd->input));
@@ -59,11 +73,8 @@ void set_input(cmd_t* cmd, shell_t* shell, int fd[2])
         dup2(fd[0], 0);
         close(fd[0]);
     }
-    if (cmd->input_type == FILE_PATH) {
-        file_fd = open(cmd->input, O_RDONLY);
-        dup2(file_fd, 0);
-    }
     if (cmd->input_type == PIPE) {
         prepare_pipe(cmd, shell, fd);
     }
+    return 0;
 }
