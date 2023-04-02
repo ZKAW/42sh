@@ -23,7 +23,7 @@ char* clean_str(char* line)
 char* get_full_path(char* input, shell_t* shell)
 {
     struct stat info;
-    char** paths = shell->paths;
+    char** paths = get_env_paths(shell->envp);
     char* test_path;
     int input_s = my_strlen(input);
     for (int i = 0; paths[i]; i++) {

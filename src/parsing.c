@@ -82,6 +82,9 @@ list_t* split_pipes(char* input, list_t* next)
     cmd_t* command = NULL;
     list_t* node = malloc(sizeof(list_t));
     char** parts = string_split(input, "|");
+    if ((my_arraylen(parts) == 1 && is_include('|', input))
+    || parts[0] == NULL)
+        return NULL;
     for (i = 0; parts[i + 1]; i++) {
         command = parse_command(parts[i], command);
         command->output_type = PIPE;
@@ -104,6 +107,8 @@ list_t* get_command(char * str)
     command_position = strtok(str, delimiters);
     while (command_position) {
         command_array = split_pipes(command_position, command_array);
+        if (command_array == NULL)
+            return NULL;
         command_position = strtok(NULL, delimiters);
     }
     command_array = reverse_cmd(command_array);

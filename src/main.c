@@ -36,10 +36,16 @@ void print_path(void)
 void handle_command(list_t* list, shell_t* shell)
 {
     cmd_t* head;
+    if (list == NULL) {
+        my_printf("Invalid null command.\n");
+        shell->state = 1;
+    }
     while (list) {
         head = list->cmd;
         if (is_builtin(head->path))
             run_builtin(head, shell);
+        if (is_builtin(head->path) && !head->next)
+            return;
         execute(head, shell);
         list = list->next;
     }
