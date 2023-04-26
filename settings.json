@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "*.org": "latex",
+        "string.h": "c",
+        "my.h": "c",
+        "mini_shell.h": "c",
+        "time.h": "c"
+    },
+    "editor.rulers": [80]
+}

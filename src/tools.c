@@ -14,6 +14,8 @@
 #include "../include/mini_shell.h"
 
 int is_builtin(char* path);
+void enable_raw_mode(struct termios* raw);
+void disable_raw_mode(struct termios* raw);
 
 char** get_env_paths(char** envp)
 {
@@ -44,7 +46,9 @@ shell_t* create_shell(char** envp)
     shell->envp = envp_cpy(envp);
     shell->last_path = malloc(sizeof (char) * 500);
     shell->state = 0;
+    shell->is_navigating = 0;
     shell->paths = get_env_paths(envp);
+    shell->history = NULL;
     return shell;
 }
 

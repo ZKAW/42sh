@@ -1,0 +1,18 @@
+- commande1 && commande2
+    la commande d'après ne s'éxecute que si la commande précédente a réussi
+    (exit code = 0)
+    on créer 2 processus et le 2eme processus fait un waitpid du premier:
+    - si le premier processus a réussi, on fait execve 
+    - si le premier processus échoue, on exit
+
+
+- commande1 || commande2
+    la commande d'après ne s'éxecute que si la commande précédente a échoué
+    (exit code != 0)
+    on créer 2 processus et le 2eme processus fait un waitpid du premier
+    - si le premier processus échoue, on fait execve 
+    - si le premier processus a réussi, on exit
+
+- exit [code]:
+    on split a commande et on exit(my_getnbr(code))
+

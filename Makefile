@@ -20,7 +20,14 @@ SRC		=	src/main.c \
 			src/cmd_tools.c \
 			src/redirection.c \
 			src/setenv.c \
-			src/builtin.c
+			src/builtin.c \
+			src/history.c \
+			src/capture/arrows.c \
+			src/capture/getline.c \
+			src/capture/rawmode.c \
+			src/capture/string.c \
+			src/capture/commands.c
+
 
 debug:
 	make -C lib/my
@@ -28,7 +35,7 @@ debug:
 
 all:
 	make -C lib/my
-	gcc -o $(NAME) $(SRC) $(LIB)
+	gcc -o $(NAME) $(SRC) $(INPUT) $(LIB)
 
 clean:
 	make -C lib/my clean

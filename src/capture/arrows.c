@@ -1,0 +1,86 @@
+/*
+** EPITECH PROJECT, 2022
+** mini-shell2
+** File description:
+** arrows.c
+*/
+
+#include <stdio.h>
+#include <unistd.h>
+#include <stdio.h>
+#include "../../include/my.h"
+#include "../../include/string.h"
+#include "../../include/mini_shell.h"
+
+void print_path(void);
+
+void left_arrow(shell_t* shell)
+{
+    string_t* string = shell->history;
+    if (!string->before)
+        return;
+    string->after = string->before;
+    string->before = string->before->prev;
+    dprintf(1, "%s", "\x1b[D");
+}
+
+void right_arrow(shell_t* shell)
+{
+    string_t* string = shell->history;
+    if (!string->after)
+        return;
+    if (string->after->next)
+        string->after = string->after->next;
+    else
+        string->after = NULL;
+    if (string->before)
+        string->before = string->before->next;
+    else
+        string->before = string->first;
+    dprintf(1, "%s", "\x1b[C");
+}
+
+void up_arrow(shell_t* shell)
+{
+    string_t* string = shell->history;
+    if (!string->next)
+        return;
+    shell->is_navigating = 1;
+    shell->history = string->next;
+    dprintf(1, "\x1b[2K\r");
+    print_path();
+    print_string(shell->history);
+}
+
+void down_arrow(shell_t* shell)
+{
+    string_t* string = shell->history;
+    if (!string->prev)
+        return;
+    shell->is_navigating = 1;
+    shell->history = string->prev;
+    dprintf(1, "\x1b[2K\r");
+    print_path();
+    print_string(shell->history);
+}
+
+int handle_arrows(shell_t* shell)
+{
+    char arrow[3];
+    char arrows[4] = {'A', 'B', 'C', 'D'};
+    void (*arrows_func[4])(shell_t*) = {up_arrow, down_arrow, right_arrow,
+        left_arrow};
+    if (read(STDIN_FILENO, &arrow[0], 1) == -1)
+        return 0;
+    if (read(STDIN_FILENO, &arrow[1], 1) == -1)
+        return 0;
+    if (arrow[0] != '[')
+        return 1;
+    for (int i = 0; i < 4; i++) {
+        if (arrow[1] == arrows[i]) {
+            arrows_func[i](shell);
+            return 1;
+        }
+    }
+    return 1;
+}

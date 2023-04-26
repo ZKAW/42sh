@@ -71,18 +71,15 @@ int verify_pipe(shell_t* shell)
 
 int main(int ac, char** av, char** envp)
 {
-    size_t len = 0;
     ssize_t size = 0;
-    char* line = "";
+    char* line;
     int state = 0;
     shell_t* shell = create_shell(envp);
     if (verify_pipe(shell))
         return shell->state;
     while (1) {
         print_path();
-        size = getline(&line, &len, stdin);
-        if (size == 1)
-            continue;
+        line = my_getline(shell);
         if (my_strstr(line, "exit") || (size == EOF)) {
             my_printf("exit\n");
             break;

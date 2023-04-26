@@ -7,7 +7,10 @@
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <termios.h>
 #include "my.h"
+#include "string.h"
 
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
@@ -26,6 +29,9 @@
             int state;
             char** paths;
             pid_t sub;
+            int is_navigating;
+            struct termios term;
+            string_t* history;
         } shell_t;
 
         typedef struct command {
@@ -58,4 +64,5 @@
         char** get_env_paths(char** envp);
         void my_unsetenv(char** cmd, shell_t* shell);
         void throw_error(char* const strerror, shell_t* shell, int ernum);
+        char* my_getline(shell_t* shell);
 #endif
