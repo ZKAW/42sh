@@ -5,13 +5,7 @@
 ** tools.c
 */
 
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include "../include/my.h"
-#include "../include/mini_shell.h"
+#include "mysh.h"
 
 int is_builtin(char* path);
 
@@ -19,8 +13,8 @@ char** get_env_paths(char** envp)
 {
     int i;
     char** paths;
-    for (i = 0; my_strncmp(envp[i], "PATH", 4); i++);
-    paths = string_split(&envp[i][5], ":");
+    for (i = 0; strncmp(envp[i], "PATH", 4); i++);
+    paths = tokenize_string(&envp[i][5], ":");
     for (i = 0; paths[i] != NULL; i++)
         paths[i] = str_append(paths[i], "/");
     return paths;
@@ -29,9 +23,9 @@ char** get_env_paths(char** envp)
 char** envp_cpy(char** envp)
 {
     int i;
-    char** copy = malloc(sizeof(char*) * (my_arraylen(envp) + 1));
+    char** copy = malloc(sizeof(char*) * (tablen(envp) + 1));
     for (i = 0; envp[i]; i++)
-        copy[i] = my_strdup(envp[i]);
+        copy[i] = strdup(envp[i]);
     copy[i] = NULL;
     return copy;
 }
@@ -50,15 +44,14 @@ shell_t* create_shell(char** envp)
 
 int not_existing(char* path, shell_t* shell)
 {
-    write(2, path, my_strlen(path));
-    write (2, ": Command not found.\n", 21);
+    write(2, path, strlen(path));
+    write(2, ": Command not found.\n", 21);
     shell->state = 1;
     return 1;
 }
 
 void handle_error(shell_t* shell)
 {
-    int state;
     if (WIFSIGNALED(shell->state)) {
         if (WTERMSIG(shell->state) == SIGSEGV)
             write(2, "Segmentation fault", 18);

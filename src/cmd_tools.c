@@ -5,31 +5,18 @@
 ** cmd_tools.c
 */
 
-#include <sys/stat.h>
-#include <stdlib.h>
-#include "../include/my.h"
-#include "../include/mini_shell.h"
-
-char* clean_str(char* line)
-{
-    char* tmp = malloc(sizeof(char) * (my_strlen(line) + 1));
-    if (line[my_strlen(line) - 1] == '\n')
-        my_strncpy(tmp, line, my_strlen(line) - 1);
-    else
-        my_strcpy(tmp, line);
-    return tmp;
-}
+#include "mysh.h"
 
 char* get_full_path(char* input, shell_t* shell)
 {
     struct stat info;
     char** paths = get_env_paths(shell->envp);
     char* test_path;
-    int input_s = my_strlen(input);
+    int input_s = strlen(input);
     for (int i = 0; paths[i]; i++) {
-        test_path = malloc(sizeof(char) * (my_strlen(paths[i]) + input_s + 1));
-        my_strcpy(test_path, paths[i]);
-        my_strcat(test_path, input);
+        test_path = malloc(sizeof(char) * (strlen(paths[i]) + input_s + 1));
+        strcpy(test_path, paths[i]);
+        strcat(test_path, input);
         if (stat(test_path, &info) != -1)
             return test_path;
         free(test_path);
@@ -39,7 +26,8 @@ char* get_full_path(char* input, shell_t* shell)
 
 list_t* reverse_cmd(list_t* head)
 {
-    list_t *current = head, *prev = NULL, *next = NULL, *new_head = NULL;
+    list_t *current = head, *prev = NULL, *next = NULL;
+
     while (current != NULL) {
         next = current->next;
         current->next = prev;

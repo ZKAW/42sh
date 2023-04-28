@@ -1,43 +1,50 @@
 ##
-## EPITECH PROJECT, 2022
-## bsmy_hunter
+## EPITECH PROJECT, 2023
+## 42sh
 ## File description:
 ## Makefile
 ##
 
-NAME	=	mysh
+NAME = mysh
+CC	= gcc
+SRC_DIR = src
+SRC = $(wildcard $(SRC_DIR)/*.c $(SRC_DIR)/*/*.c $(SRC_DIR)/*/*/*.c)
 
-LIB = -L lib -l my
+OBJ	= $(SRC:.c=.o)
+CFLAGS = -Wall -Wextra -I ./include -L ./lib/my -lmy
 
-CFLAGS = -no-pie -g
-
-SRC		=	src/main.c \
-			src/tools.c \
-			src/exec.c \
-			src/env.c \
-			src/parsing.c \
-			src/cd.c \
-			src/cmd_tools.c \
-			src/redirection.c \
-			src/setenv.c \
-			src/builtin.c
+all: $(OBJ) $(NAME)
+$(NAME):
+	make -C lib/my/
+	$(CC) -o $(NAME) $(OBJ) $(CFLAGS)
 
 debug:
-	make -C lib/my
-	gcc -o $(NAME) $(CFLAGS) $(SRC) $(LIB)
+	make -C lib/my/
+	$(CC) -o $(NAME) $(SRC) $(CFLAGS) -g
 
-all:
-	make -C lib/my
-	gcc -o $(NAME) $(SRC) $(LIB)
+debug_run:
+	make debug
+	clear
+	valgrind ./$(NAME)
+
+tests_run:
+	make re
+	clear
+	./tests/tester.sh
 
 clean:
-	make -C lib/my clean
+	rm -f $(OBJ)
+	make clean -C lib/my/
 
-fclean:
-	make -C lib/my fclean
-	rm -f vgcore.*
+fclean: clean
 	rm -f $(NAME)
+	make fclean -C lib/my/
 
-re:
+re: fclean all
+
+cstyle:
 	make fclean
-	make all
+	cstyle
+
+.PHONY:
+	all clean fclean re cstyle debug debug_run tests_run

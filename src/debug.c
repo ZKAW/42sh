@@ -5,35 +5,33 @@
 ** debug.c
 */
 
-#include <fcntl.h>
-#include "../include/my.h"
-#include "../include/mini_shell.h"
+#include "mysh.h"
 
 void dump_args(char** argv)
 {
     if (!argv[1])
-        my_printf("no args");
+        printf("no args");
     else
-        my_printf("args: ");
+        printf("args: ");
     for (int i = 1; argv[i]; i++)
-        my_printf("%s ", argv[i]);
-    my_putchar('\n');
+        printf("%s ", argv[i]);
+    printf("\n");
 }
 
 void dump_cmd(cmd_t* cmd)
 {
     while (cmd) {
-        my_printf("path: %s\n", cmd->path);
+        printf("path: %s\n", cmd->path);
         dump_args(cmd->argv);
-        my_printf("pipe to next: %s\n",
+        printf("pipe to next: %s\n",
             cmd->output_type == PIPE ? "yes" : "no");
-        my_printf("redirect: %s\n", cmd->output ? cmd->output : "no");
+        printf("redirect: %s\n", cmd->output ? cmd->output : "no");
         if (cmd->output) {
-            my_printf("%s\n", cmd->append == O_APPEND ?
+            printf("%s\n", cmd->append == O_APPEND ?
             "apend to file" : "overwrite text");
         }
         if (cmd->input) {
-            my_printf("take %s as input\n", cmd->input);
+            printf("take %s as input\n", cmd->input);
         }
         cmd = cmd->next;
     }
