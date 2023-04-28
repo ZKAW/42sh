@@ -17,6 +17,7 @@
 #include <string.h>
 
 #include "lib.h"
+#include "builtin.h"
 #include "struct/command.h"
 #include "struct/shell.h"
 #include "macro/utils.h"
