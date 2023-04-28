@@ -15,6 +15,19 @@ int not_existing(char* path, shell_t* shell)
     return 1;
 }
 
+void handle_child_error(char** argv)
+{
+    if (errno == 8) {
+        write(2, argv[0], strlen(argv[0]));
+        write(2, ": Exec format error. Wrong Architecture.\n", 41);
+    }
+    if (errno == 13) {
+        write(2, argv[0], strlen(argv[0]));
+        write(2, ": Permission denied.\n", 21);
+    }
+    exit(1);
+}
+
 void handle_error(shell_t* shell)
 {
     if (WIFSIGNALED(shell->state)) {

@@ -7,11 +7,11 @@
 
 #include "mysh.h"
 
-void print_path(void)
+void sigint_handler(int sig)
 {
-    char path[500];
-    getcwd(path, 500);
-    printf("%s $> ", path);
+    (void)sig;
+    write(1, "\n", 1);
+    my_putstr(get_prompt_prefix(), 1);
 }
 
 void handle_command(list_t* list, shell_t* shell)
@@ -57,11 +57,13 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
     ssize_t size = 0;
     char* line = "";
     shell_t* shell = init_shell(envp);
+    call_env(shell->envp);
+    signal(SIGINT, sigint_handler);
 
     if (verify_pipe(shell))
         return shell->state;
     while (1) {
-        print_path();
+        my_putstr(get_prompt_prefix(), 1);
         size = getline(&line, &len, stdin);
         if (size == 1) continue;
         if (size == EOF) break;

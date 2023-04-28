@@ -31,11 +31,6 @@ int not_existing(char* path, shell_t* shell);
 void handle_error(shell_t* shell);
 void run_builtin(cmd_t* cmd, shell_t* shell);
 char** get_env_paths(char** envp);
-void builtin_cd(char** cmd, shell_t* shell);
-void builtin_setenv(char** cmd, shell_t* shell);
-void builtin_unsetenv(char** cmd, shell_t* shell);
-void builtin_env(char** cmd, shell_t* shell);
-void builtin_exit(char** cmd, shell_t* shell);
 int is_builtin(char* path);
 char* get_full_path(char* input, shell_t* shell);
 int set_input(cmd_t* cmd, shell_t* shell, int fd[2]);
@@ -49,5 +44,9 @@ void parse_input(cmd_t* command);
 void set_output(cmd_t* cmd);
 list_t* reverse_cmd(list_t* head);
 char** envp_cpy(char** envp);
+void handle_child_error(char** argv);
+char **call_env(char **env);
+char *get_prompt_prefix(void);
+char *get_env_var(char **env, char *key);
 
 #endif

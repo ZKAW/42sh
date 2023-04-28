@@ -7,15 +7,16 @@
 
 #include "mysh.h"
 
-char** get_env_paths(char** envp)
+void builtin_env(char** cmd UNUSED, shell_t* shell)
 {
-    int i;
-    char** paths;
-    for (i = 0; strncmp(envp[i], "PATH", 4); i++);
-    paths = tokenize_string(&envp[i][5], ":");
-    for (i = 0; paths[i] != NULL; i++)
-        paths[i] = str_append(paths[i], "/");
-    return paths;
+    print_array(shell->envp);
+}
+
+char **call_env(char **env)
+{
+    static char **saved_env = NULL;
+    if (saved_env == NULL) saved_env = env;
+    return (saved_env);
 }
 
 char** envp_cpy(char** envp)
@@ -28,7 +29,29 @@ char** envp_cpy(char** envp)
     return copy;
 }
 
-void builtin_env(char** cmd UNUSED, shell_t* shell)
+char** get_env_paths(char** envp)
 {
-    print_array(shell->envp);
+    int i;
+    char** paths;
+    for (i = 0; strncmp(envp[i], "PATH", 4); i++);
+    paths = tokenize_string(&envp[i][5], ":");
+    for (i = 0; paths[i] != NULL; i++)
+        paths[i] = str_append(paths[i], "/");
+    return paths;
+}
+
+char *get_env_var(char **env, char *key)
+{
+    char *value = NULL;
+
+    for (int i = 0; env[i] != NULL; i++) {
+        if (strncmp(env[i], key, strlen(key)) == 0) {
+            value = strdup(env[i] + strlen(key));
+            break;
+        }
+    }
+    if (value != NULL && value[0] == '=') value++;
+    if (value != NULL) value[strlen(value)] = '\0';
+
+    return value;
 }
