@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, 2022
-** mini-shell2
+** EPITECH PROJECT, 2023
+** 42sh
 ** File description:
-** cmd_tools.c
+** tools
 */
 
 #include "mysh.h"

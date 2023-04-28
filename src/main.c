@@ -56,7 +56,7 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
     size_t len = 0;
     ssize_t size = 0;
     char* line = "";
-    shell_t* shell = create_shell(envp);
+    shell_t* shell = init_shell(envp);
 
     if (verify_pipe(shell))
         return shell->state;

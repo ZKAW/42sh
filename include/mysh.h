@@ -24,7 +24,7 @@
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
 
-shell_t* create_shell(char** envp);
+shell_t* init_shell(char** envp);
 void execute(cmd_t* cmd, shell_t* shell);
 int not_existing(char* path, shell_t* shell);
 void handle_error(shell_t* shell);
@@ -47,5 +47,6 @@ void parse_output(cmd_t* command);
 void parse_input(cmd_t* command);
 void set_output(cmd_t* cmd);
 list_t* reverse_cmd(list_t* head);
+char** envp_cpy(char** envp);
 
 #endif
