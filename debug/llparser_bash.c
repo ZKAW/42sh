@@ -60,7 +60,17 @@ void parse_command(char *cmd_str, Command *cmd) {
         cmd_str = skip_whitespace(cmd_str);
         if (*cmd_str == '\0')
             break;
-        if (*cmd_str == '>') {
+        // >> redirection
+        if (*cmd_str == '>' && *(cmd_str + 1) == '>') {
+            cmd_str = skip_whitespace(cmd_str + 2);
+            if (*cmd_str == '\0')
+                error("Missing output file name after >>");
+            char out_file[256];
+            cmd_str = copy_until(out_file, cmd_str, " \t\n");
+            cmd->out_fd = open(out_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+            if (cmd->out_fd == -1)
+                error("Could not open output file");
+        } else if (*cmd_str == '>') {
             // Output redirection
             cmd_str = skip_whitespace(cmd_str + 1);
             if (*cmd_str == '\0')
