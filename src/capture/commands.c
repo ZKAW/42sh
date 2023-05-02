@@ -12,43 +12,24 @@
 #include "../../include/string.h"
 #include "../../include/mini_shell.h"
 
+
 int handle_arrows(shell_t* shell);
 
 void delete_chars(string_t* string)
 {
-    char_t* after = string->after, *character = string->after;
-    int i = 0 , j = 0, k = 0;
-    while (after) {
-        after = after->next;
-        i++;
-    }
-    j = i,
-    k = i;
-    while (i-- >= 0)
-        dprintf(1, "\x1b[C");
-    while (j-- >= 0)
-        dprintf(1, "\b \b");
-    while (character) {
-        dprintf(1, "%c", character->c);
-        character = character->next;
-    }
-    while (k-- > 0)
-        dprintf(1, "\033[1D");
+    string->position--;
+    string->len--;
+    dprintf(1, "\b \b");
+    for (int i = string->position; i < string->len; i++)
+        string->str[i] = string->str[i + 1];
+    string->str[string->len] = '\0';
+
 }
 
 int handle_backspace(char c, string_t* string)
 {
-    char_t* before = string->before, *character;
-    int i = 0;
     if (c == '\x7f') {
-        if (string->before) {
-            dprintf(1, "\b \b");
-            string->after = string->before->next;
-            string->before = string->before->prev;
-            if (string->before)
-                string->before->next = string->after;
-            else
-                string->first = string->after;
+        if (string->position != 0 && string->len != 0) {
             delete_chars(string);
         }
         return 1;

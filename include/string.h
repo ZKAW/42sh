@@ -19,17 +19,21 @@
         } char_t;
 
         typedef struct string_s {
-            char_t* first;
-            char_t* last;
-            char_t* before;
-            char_t* after;
+            char str[5000];
             char hour[6];
-            struct string_s* next;
+            int position;
+            int len;
             struct string_s* prev;
+            struct string_s* next;
         } string_t;
 
+            #define UP "\x1B[A"
+            #define DOWN "\x1B[B"
+            #define LEFT "\x1B[C"
+            #define RIGHT "\x1B[D"
+
         string_t* create_string(shell_t* shell);
-        char_t* append_string(char c, string_t* string);
+        void append_string(char c, string_t* string);
         void print_string(string_t* string);
         char* merge_string(string_t* string);
         void show_string_info(string_t* string);

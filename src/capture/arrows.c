@@ -17,26 +17,18 @@ void print_path(void);
 void left_arrow(shell_t* shell)
 {
     string_t* string = shell->history;
-    if (!string->before)
+    if (string->position == 0)
         return;
-    string->after = string->before;
-    string->before = string->before->prev;
+    string->position--;
     dprintf(1, "%s", "\x1b[D");
 }
 
 void right_arrow(shell_t* shell)
 {
     string_t* string = shell->history;
-    if (!string->after)
+    if (string->position == string->len)
         return;
-    if (string->after->next)
-        string->after = string->after->next;
-    else
-        string->after = NULL;
-    if (string->before)
-        string->before = string->before->next;
-    else
-        string->before = string->first;
+    string->position++;
     dprintf(1, "%s", "\x1b[C");
 }
 

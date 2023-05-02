@@ -26,7 +26,6 @@ void handle_regular_char(shell_t* shell, char c)
     string_t* string = shell->history;
     append_string(c, string);
     dprintf(1, "%c", c);
-    character = string->after;
     while (character) {
         dprintf(1, "%c", character->c);
         character = character->next;
@@ -38,46 +37,23 @@ void handle_regular_char(shell_t* shell, char c)
     }
 }
 
-char* copy_string_at_end_of_history(shell_t* shell)
-{
-    string_t* to_copy = shell->history;
-    string_t* last = shell->history;
-    char_t* character = to_copy->first;
-    string_t* string = create_string(shell);
-    dprintf(1, "on entre\n");
-    while (character) {
-        append_string(character->c, string);
-        character = character->next;
-    }
-    while (last->next)
-        last = last->next;
-    last->next = string;
-    string->prev = last;
-    dprintf(1, "on sort\n");
-}
-
 char* end_of_line(shell_t* shell)
 {
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    shell->history->after = NULL;
-    shell->history->before = shell->history->last;
     dprintf(1, "%c", '\n');
-    if (my_strlen(shell->history->hour))
-        copy_string_at_end_of_history(shell);
     sprintf(shell->history->hour, "%d:%d", tm.tm_hour, tm.tm_min);
-    dprintf(1, "ah gros\n");
     disable_raw_mode(&shell->term);
     return merge_string(shell->history);
 }
 
 char* my_getline(shell_t* shell)
 {
-    string_t* string = create_string(shell);
-    char_t* character = NULL;
     char c;
     int valread = 0;
+    shell->history = create_string(shell);
     enable_raw_mode(&shell->term);
+    dprintf(1, " %d  %d\n", sizeof(char_t), sizeof(char*));
     for (;;) {
         valread = read(0, &c, 1);
         if (valread < 0)
