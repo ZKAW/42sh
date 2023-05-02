@@ -32,8 +32,7 @@ list_t* split_pipes(char* input, list_t* next)
     cmd_t* command = NULL;
     list_t* node = malloc(sizeof(list_t));
     char** parts = tokenize_string(input, "|");
-    if ((tablen(parts) == 1 && CHAR_IN_STR('|', input))
-    || parts[0] == NULL)
+    if ((tablen(parts) == 1 && CHAR_IN_STR('|', input)) || parts[0] == NULL)
         return NULL;
     for (i = 0; parts[i + 1]; i++) {
         command = parse_command(parts[i], command);
