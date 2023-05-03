@@ -14,43 +14,43 @@ char *copy_until(char *dst, char *src, char *delim);
 char* parse_file_name(char** cmd_str);
 void error(char *msg);
 
+char* parse_double_redirect(char* cmd_str, cmd_t* cmd);
+char* parse_single_redirect(char* cmd_str, cmd_t* cmd);
+char* parse_input_redirect(char* cmd_str, cmd_t* cmd);
+char* parse_default_token(char* cmd_str, cmd_t* cmd);
+
+char* parse_token(char* cmd_str, cmd_t* cmd, int* is_token)
+{
+    char* tokens[100] = {">", ">>", "<", NULL};
+    char* (*parsers[3])(char*, cmd_t*) = {
+        parse_single_redirect, parse_double_redirect, parse_input_redirect
+    };
+    *is_token = 0;
+    for (int i = 0; tokens[i]; i++) {
+        if (strncmp(cmd_str, tokens[i], strlen(tokens[i])) == 0) {
+            *is_token = 1;
+            cmd_str = skip_whitespace(cmd_str + strlen(tokens[i]));
+            cmd_str = parsers[i](cmd_str, cmd);
+            break;
+        }
+    }
+    return cmd_str;
+}
+
 void parse_command(char *cmd_str, cmd_t *cmd)
 {
     *cmd = (cmd_t){0};
-    int argc = 0;
-    while (*cmd_str && argc < MAX_ARGS) {
+    int is_token;
+    while (*cmd_str && cmd->argc < MAX_ARGS) {
         cmd_str = skip_whitespace(cmd_str);
         if (*cmd_str == '\0')
             break;
-        if (*cmd_str == '>' && *(cmd_str + 1) == '>') {
-            cmd_str = skip_whitespace(cmd_str + 2);
-            if (*cmd_str == '\0')
-                error("Missing name for redirect.");
-            cmd->output = parse_file_name(&cmd_str);
-            cmd->append = O_APPEND;
-            cmd->output_type = FILE_PATH;
-        } else if (*cmd_str == '>') {
-            cmd_str = skip_whitespace(cmd_str + 1);
-            if (*cmd_str == '\0')
-                error("Missing name for redirect.");
-            cmd->output = parse_file_name(&cmd_str);
-            cmd->append = O_TRUNC;
-            cmd->output_type = FILE_PATH;
-        } else if (*cmd_str == '<') {
-            cmd_str = skip_whitespace(cmd_str + 1);
-            if (*cmd_str == '\0')
-                error("Missing name for redirect.");
-            cmd->input = parse_file_name(&cmd_str);
-            cmd->input_type = FILE_PATH;    
-        } else {
-            char arg[256];
-            cmd_str = copy_until(arg, cmd_str, "><| \t\n");
-            cmd->argv[argc] = strdup(arg);
-            argc++;
-        }
+        cmd_str = parse_token(cmd_str, cmd, &is_token);
+        if (!is_token)
+            cmd_str = parse_default_token(cmd_str, cmd);
     }
-    if (argc == 0)
+    if (cmd->argc == 0)
         error("Empty command");
-    cmd->argv[argc] = NULL;
+    cmd->argv[cmd->argc] = NULL;
     cmd->path = cmd->argv[0];
 }

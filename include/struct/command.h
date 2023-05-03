@@ -8,7 +8,7 @@
 #ifndef COMMAND_H_
     #define COMMAND_H_
 
-#define MAX_ARGS 256
+        #define MAX_ARGS 256
 
 typedef enum {
     NONE,
@@ -18,6 +18,7 @@ typedef enum {
 } fd_type;
 
 typedef struct command {
+    int argc;
     char* path;
     char* argv[256];
     char* output;

@@ -39,10 +39,3 @@ char *copy_until(char *dst, char *src, char *delim)
     *dst = '\0';
     return src;
 }
-
-char* parse_file_name(char** cmd_str)
-{
-    char out_file[256];
-    *cmd_str = copy_until(out_file, *cmd_str, " \t\n");
-    return strdup(out_file);
-}
