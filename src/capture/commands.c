@@ -19,19 +19,23 @@ void delete_chars(string_t* string)
 {
     string->position--;
     string->len--;
-    dprintf(1, "\b \b");
+    for (int i = string->position; i < string->len; i++)
+        dprintf(1, LEFT);
+    for (int i = string->position; i <= string->len; i++)
+        dprintf(1, "\b \b");
+    for (int i = string->position; i < string->len; i++)
+        dprintf(1, "%c", string->str[i + 1]);
+    for (int i = string->position; i < string->len; i++)
+        dprintf(1, RIGHT);
     for (int i = string->position; i < string->len; i++)
         string->str[i] = string->str[i + 1];
-    string->str[string->len] = '\0';
-
 }
 
 int handle_backspace(char c, string_t* string)
 {
     if (c == '\x7f') {
-        if (string->position != 0 && string->len != 0) {
+        if (string->position != 0 && string->len != 0)
             delete_chars(string);
-        }
         return 1;
     }
     return 0;

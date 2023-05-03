@@ -12,6 +12,11 @@
 #include "../../include/string.h"
 #include "../../include/mini_shell.h"
 
+#include <stdio.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+
 string_t* create_string(shell_t* shell)
 {
     string_t* string = malloc(sizeof(string_t));
@@ -28,9 +33,14 @@ string_t* create_string(shell_t* shell)
 
 void append_string(char c, string_t* string)
 {
-    string->str[string->position++] = c;
-    string->str[string->position] = '\0';
+    char cpy[4096] = {0};
+    int diff = string->len - string->position;
+    strncpy(cpy, string->str, string->position);
+    strncat(cpy, &c, 1);
+    strncat(cpy, string->str + string->position, diff);
     string->len++;
+    string->position++;
+    strncpy(string->str, cpy, string->len);
 }
 
 void copy_string_at_end_of_history(shell_t* shell)
@@ -51,6 +61,6 @@ char* merge_string(string_t* string)
     int i = 0;
     char* str = NULL;
     str = malloc(sizeof(char) * (string->len + 1));
-    my_strncat(str, string->str, string->len);
+    my_strncpy(str, string->str, string->len);
     return str;
 }

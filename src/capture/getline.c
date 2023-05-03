@@ -23,12 +23,13 @@ void handle_regular_char(shell_t* shell, char c)
 {
     int i = 0;
     char_t* character;
+    char* str;
     string_t* string = shell->history;
     append_string(c, string);
+    str = string->str + string->position;
     dprintf(1, "%c", c);
-    while (character) {
-        dprintf(1, "%c", character->c);
-        character = character->next;
+    while (str[i]) {
+        dprintf(1, "%c", str[i]);
         i++;
     }
     while (i > 0) {
@@ -53,7 +54,6 @@ char* my_getline(shell_t* shell)
     int valread = 0;
     shell->history = create_string(shell);
     enable_raw_mode(&shell->term);
-    dprintf(1, " %d  %d\n", sizeof(char_t), sizeof(char*));
     for (;;) {
         valread = read(0, &c, 1);
         if (valread < 0)

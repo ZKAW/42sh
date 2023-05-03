@@ -32,13 +32,22 @@ void right_arrow(shell_t* shell)
     dprintf(1, "%s", "\x1b[C");
 }
 
+void copy_string(string_t* dest, string_t* src)
+{
+    dest->len = src->len;
+    dest->position = src->position;
+    for (int i = 0; i < src->len; i++)
+        dest->str[i] = src->str[i];
+    dest->hour[0] = '\0';
+}
+
 void up_arrow(shell_t* shell)
 {
     string_t* string = shell->history;
     if (!string->next)
         return;
     shell->is_navigating = 1;
-    shell->history = string->next;
+    copy_string(string, string->next);
     dprintf(1, "\x1b[2K\r");
     print_path();
     print_string(shell->history);

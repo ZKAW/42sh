@@ -18,8 +18,15 @@
             struct char_s* prev;
         } char_t;
 
+        typedef struct history {
+            string_t* head;
+            string_t* tail;
+            int len;
+            int position;
+        } history_t;
+
         typedef struct string_s {
-            char str[5000];
+            char str[4096];
             char hour[6];
             int position;
             int len;

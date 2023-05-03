@@ -15,11 +15,9 @@
 void show_history(char** cmd, shell_t* shell)
 {
     int i = 1;
-    dprintf(1, "ici\n");
     string_t* string = shell->history;
     while (string->next)
         string = string->next;
-    dprintf(1, "la\n");
     while (string) {
         dprintf(1, "\t%d %s\t", i, string->hour);
         print_string(string);

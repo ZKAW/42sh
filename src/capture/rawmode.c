@@ -14,10 +14,11 @@
 
 void enable_raw_mode(struct termios* raw)
 {
+    int flags;
     tcgetattr(STDIN_FILENO, raw);
     raw->c_lflag &= ~(ECHO | ICANON);
     tcsetattr(STDIN_FILENO, TCSAFLUSH, raw);
-    int flags = fcntl(STDIN_FILENO, F_GETFL, 0);
+    flags = fcntl(STDIN_FILENO, F_GETFL, 0);
     fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
 }
 
