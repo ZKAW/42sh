@@ -48,5 +48,7 @@ void handle_child_error(char** argv);
 char **call_env(char **env);
 char *get_prompt_prefix(void);
 char *get_env_var(char **env, char *key);
+char *copy_until(char *dst, char *src, char *delim);
+void error(char *msg);
 
 #endif

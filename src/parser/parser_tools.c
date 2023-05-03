@@ -5,7 +5,7 @@
 ** parser_tokens.c
 */
 
-#include "../../include/mysh.h"
+#include "mysh.h"
 
 void error(char *msg)
 {

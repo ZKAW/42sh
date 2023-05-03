@@ -5,7 +5,7 @@
 ** ll_parser.c
 */
 
-#include "../../include/mysh.h"
+#include "mysh.h"
 
 int is_char_whitespace(char c);
 char *skip_whitespace(char *str);

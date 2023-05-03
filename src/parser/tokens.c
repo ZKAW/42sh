@@ -5,7 +5,7 @@
 ** tokens.c
 */
 
-#include "../../include/mysh.h"
+#include "mysh.h"
 
 char* parse_file_name(char** cmd_str)
 {
