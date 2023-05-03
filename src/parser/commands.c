@@ -7,41 +7,77 @@
 
 #include "mysh.h"
 
-cmd_t* parse_command(char* input, cmd_t* next)
+int is_char_whitespace(char c);
+char *skip_whitespace(char *str);
+char *skip_non_whitespace(char *str);
+char *copy_until(char *dst, char *src, char *delim);
+char* parse_file_name(char** cmd_str);
+
+void set_pipe_attributes(cmd_t* cmd)
 {
-    cmd_t* command = malloc(sizeof(cmd_t));
-    command->argv = tokenize_string(input, " \t");
-    command->path = command->argv[0];
-    command->append = O_TRUNC;
-    command->output = NULL;
-    command->input = NULL;
-    command->input_type = NONE;
-    command->output_type = NONE;
-    command->next = next;
-    command->prev = NULL;
-    if (command->next)
-        command->next->prev = command;
-    parse_output(command);
-    parse_input(command);
-    return command;
+    cmd_t *tmp = cmd;
+    cmd = cmd->next;
+    while (cmd) {
+        cmd->output_type = PIPE;
+        cmd = cmd->next;
+    }
+    while (tmp->next) {
+        tmp->input_type = PIPE;
+        tmp = tmp->next;
+    }
 }
 
-list_t* split_pipes(char* input, list_t* next)
+void dump_args(char** args)
 {
-    int i = 0;
-    cmd_t* command = NULL;
-    list_t* node = malloc(sizeof(list_t));
-    char** parts = tokenize_string(input, "|");
-    if ((tablen(parts) == 1 && CHAR_IN_STR('|', input)) || parts[0] == NULL)
-        return NULL;
-    for (i = 0; parts[i + 1]; i++) {
-        command = parse_command(parts[i], command);
-        command->output_type = PIPE;
+    printf("args: ");
+    while (*args) {
+        printf("%s ", *args);
+        args++;
     }
-    command = parse_command(parts[i], command);
-    node->cmd = command;
-    node->next = next;
-    return node;
+    printf("\n");
+}
+
+void dump_cmd(cmd_t* cmd)
+{
+    while (cmd) {
+        printf("path: %s\n", cmd->path);
+        dump_args(cmd->argv);
+        printf("pipe to next: %s\n", cmd->output_type == PIPE ? "yes" : "no");
+        printf("pipe from prev: %s\n", cmd->input_type == PIPE ? "yes" : "no");
+        printf("redirect: %s\n", cmd->output ? cmd->output : "no");
+        if (cmd->output) {
+            printf("%s\n", cmd->append == O_APPEND ?
+            "append to file" : "overwrite text");
+        }
+        if (cmd->input) {
+            printf("take %s as input\n", cmd->input);
+        }
+        my_putchar('\n');
+        cmd = cmd->next;
+    }
+}
+
+list_t* split_pipes(char *pipeline_str, list_t* arr_next)
+{
+    char cmd_str[1024];
+    list_t* command_array = malloc(sizeof(list_t));
+    command_array->next = arr_next;
+    cmd_t* cmd, *next = NULL;
+    while (*pipeline_str) {
+        pipeline_str = skip_whitespace(pipeline_str);
+        if (*pipeline_str == '\0')
+            break;
+        pipeline_str = copy_until(cmd_str, pipeline_str, "|");
+        cmd = malloc(sizeof(cmd_t));
+        parse_command(cmd_str, cmd);
+        cmd->next = next;
+        next = cmd;
+        if (*pipeline_str == '|')
+            pipeline_str++;
+    }
+    set_pipe_attributes(cmd);
+    command_array->cmd = cmd;
+    return command_array;
 }
 
 list_t* get_command(char * str)
@@ -49,7 +85,6 @@ list_t* get_command(char * str)
     list_t* command_array = NULL;
     char delimiters[] = ";";
     char *command_position = strtok(str, delimiters);
-
     str = clean_str(str);
     while (command_position) {
         command_array = split_pipes(command_position, command_array);

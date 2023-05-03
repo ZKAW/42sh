@@ -8,6 +8,8 @@
 #ifndef COMMAND_H_
     #define COMMAND_H_
 
+#define MAX_ARGS 256
+
 typedef enum {
     NONE,
     PIPE,
@@ -17,7 +19,7 @@ typedef enum {
 
 typedef struct command {
     char* path;
-    char** argv;
+    char* argv[256];
     char* output;
     char* input;
     char* full_output;
