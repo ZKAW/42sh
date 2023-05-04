@@ -51,8 +51,7 @@ char* end_of_line(shell_t* shell)
     if (history->head)
         history->head->prev = shell->string;
     history->head = shell->string;
-    print_string(history->head);
-    history->current = history->head;
+    history->current = NULL;
     return merge_string(shell->string);
 }
 

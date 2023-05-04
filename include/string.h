@@ -39,6 +39,7 @@
             #define DOWN "\x1B[B"
             #define LEFT "\x1B[C"
             #define RIGHT "\x1B[D"
+            #define DEL_CHAR "\b \b"
 
         string_t* create_string(shell_t* shell);
         void append_string(char c, string_t* string);

@@ -37,6 +37,9 @@ void up_arrow(shell_t* shell)
 {
     string_t* string = shell->string;
     history_t* history = &shell->history;
+    if ((!history->current && !history->head)
+    || history->current && !history->current->next)
+        return;
     history->current = history->current ?
     history->current->next : history->head;
     copy_string(string, history->current);
@@ -49,11 +52,10 @@ void down_arrow(shell_t* shell)
 {
     string_t* string = shell->string;
     history_t* history = &shell->history;
-    if (!history->current->prev)
+    if (!history->current || !history->current->prev)
         return;
     history->current = history->current->prev;
     copy_string(string, history->current);
-    shell->history.position++;
     dprintf(1, "\x1b[2K\r");
     print_path();
     print_string(shell->string);
