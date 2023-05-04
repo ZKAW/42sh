@@ -24,11 +24,11 @@ void handle_regular_char(shell_t* shell, char c)
     int i = 0;
     char_t* character;
     char* str;
-    string_t* string = shell->history;
+    string_t* string = shell->string;
     append_string(c, string);
     str = string->str + string->position;
     dprintf(1, "%c", c);
-    while (str[i]) {
+    while (i < string->len - string->position) {
         dprintf(1, "%c", str[i]);
         i++;
     }
@@ -40,19 +40,27 @@ void handle_regular_char(shell_t* shell, char c)
 
 char* end_of_line(shell_t* shell)
 {
+    history_t* history = &shell->history;
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     dprintf(1, "%c", '\n');
-    sprintf(shell->history->hour, "%d:%d", tm.tm_hour, tm.tm_min);
+    sprintf(shell->string->hour, "%d:%d", tm.tm_hour, tm.tm_min);
     disable_raw_mode(&shell->term);
-    return merge_string(shell->history);
+    history->position = 0;
+    shell->string->next = history->head;
+    if (history->head)
+        history->head->prev = shell->string;
+    history->head = shell->string;
+    print_string(history->head);
+    history->current = history->head;
+    return merge_string(shell->string);
 }
 
 char* my_getline(shell_t* shell)
 {
     char c;
     int valread = 0;
-    shell->history = create_string(shell);
+    shell->string = create_string(shell);
     enable_raw_mode(&shell->term);
     for (;;) {
         valread = read(0, &c, 1);

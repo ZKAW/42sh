@@ -48,7 +48,11 @@ shell_t* create_shell(char** envp)
     shell->state = 0;
     shell->is_navigating = 0;
     shell->paths = get_env_paths(envp);
-    shell->history = NULL;
+    shell->history.head = NULL;
+    shell->history.tail = NULL;
+    shell->history.current = NULL;
+    shell->history.position = 0;
+    shell->history.len = 0;
     return shell;
 }
 

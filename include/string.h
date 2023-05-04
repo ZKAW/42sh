@@ -18,13 +18,6 @@
             struct char_s* prev;
         } char_t;
 
-        typedef struct history {
-            string_t* head;
-            string_t* tail;
-            int len;
-            int position;
-        } history_t;
-
         typedef struct string_s {
             char str[4096];
             char hour[6];
@@ -33,6 +26,14 @@
             struct string_s* prev;
             struct string_s* next;
         } string_t;
+
+        typedef struct history {
+            string_t* head;
+            string_t* tail;
+            string_t* current;
+            int len;
+            int position;
+        } history_t;
 
             #define UP "\x1B[A"
             #define DOWN "\x1B[B"

@@ -15,7 +15,7 @@
 void show_history(char** cmd, shell_t* shell)
 {
     int i = 1;
-    string_t* string = shell->history;
+    string_t* string = shell->history.head;
     while (string->next)
         string = string->next;
     while (string) {

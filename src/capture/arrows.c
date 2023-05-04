@@ -13,10 +13,11 @@
 #include "../../include/mini_shell.h"
 
 void print_path(void);
+void copy_string(string_t* dest, string_t* src);
 
 void left_arrow(shell_t* shell)
 {
-    string_t* string = shell->history;
+    string_t* string = shell->string;
     if (string->position == 0)
         return;
     string->position--;
@@ -25,44 +26,37 @@ void left_arrow(shell_t* shell)
 
 void right_arrow(shell_t* shell)
 {
-    string_t* string = shell->history;
+    string_t* string = shell->string;
     if (string->position == string->len)
         return;
     string->position++;
     dprintf(1, "%s", "\x1b[C");
 }
 
-void copy_string(string_t* dest, string_t* src)
-{
-    dest->len = src->len;
-    dest->position = src->position;
-    for (int i = 0; i < src->len; i++)
-        dest->str[i] = src->str[i];
-    dest->hour[0] = '\0';
-}
-
 void up_arrow(shell_t* shell)
 {
-    string_t* string = shell->history;
-    if (!string->next)
-        return;
-    shell->is_navigating = 1;
-    copy_string(string, string->next);
+    string_t* string = shell->string;
+    history_t* history = &shell->history;
+    history->current = history->current ?
+    history->current->next : history->head;
+    copy_string(string, history->current);
     dprintf(1, "\x1b[2K\r");
     print_path();
-    print_string(shell->history);
+    print_string(shell->string);
 }
 
 void down_arrow(shell_t* shell)
 {
-    string_t* string = shell->history;
-    if (!string->prev)
+    string_t* string = shell->string;
+    history_t* history = &shell->history;
+    if (!history->current->prev)
         return;
-    shell->is_navigating = 1;
-    shell->history = string->prev;
+    history->current = history->current->prev;
+    copy_string(string, history->current);
+    shell->history.position++;
     dprintf(1, "\x1b[2K\r");
     print_path();
-    print_string(shell->history);
+    print_string(shell->string);
 }
 
 int handle_arrows(shell_t* shell)

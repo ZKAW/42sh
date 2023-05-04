@@ -43,7 +43,7 @@ int handle_backspace(char c, string_t* string)
 
 int handle_commands(char c, shell_t* shell)
 {
-    string_t* string = shell->history;
+    string_t* string = shell->string;
     if (handle_backspace(c, string))
         return 1;
     if (c == '\033') {

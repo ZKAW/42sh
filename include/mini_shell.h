@@ -31,7 +31,8 @@
             pid_t sub;
             int is_navigating;
             struct termios term;
-            string_t* history;
+            string_t* string;
+            history_t history;
         } shell_t;
 
         typedef struct command {
