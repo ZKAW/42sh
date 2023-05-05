@@ -8,6 +8,10 @@
 #include "mysh.h"
 #include "parsing.h"
 
+list_t* append_list(list_t* array);
+cmd_t* append_command(list_t* array);
+void close_cmd(cmd_t* cmd);
+
 char *skip_whitespace(char *str);
 
 char* parse_default_token(char* cmd_str, list_t** command_array)
@@ -36,18 +40,9 @@ char* parse_token(char* cmd_str, list_t** array)
     return cmd_str;
 }
 
-list_t* append_list(list_t* array)
-{
-    list_t* new_list = malloc(sizeof(list_t));
-    *new_list = (list_t){0};
-    if (array)
-        array->prev = new_list;
-    new_list->next = array;
-    return new_list;
-}
-
 list_t* parse_command(char *cmd_str)
 {
+    
     list_t* command_array = append_list(NULL);
     append_command(command_array);
     while (*cmd_str && command_array->cmd->argc < MAX_ARGS) {
