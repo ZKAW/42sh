@@ -10,7 +10,17 @@
 
 char *skip_whitespace(char *str);
 
-char* parse_token(char* cmd_str, list_t* array)
+char* parse_default_token(char* cmd_str, list_t** command_array)
+{
+    char arg[256];
+    cmd_t* cmd = (*command_array)->cmd;
+    cmd_str = copy_until(arg, cmd_str, ";><| \t\n");
+    cmd->argv[cmd->argc] = strdup(arg);
+    cmd->argc++;
+    return cmd_str;
+}
+
+char* parse_token(char* cmd_str, list_t** array)
 {
     int is_token = 0;
     for (int i = 0; tokens[i]; i++) {
@@ -25,26 +35,6 @@ char* parse_token(char* cmd_str, list_t* array)
         cmd_str = parse_default_token(cmd_str, array);
     return cmd_str;
 }
-
-void close_cmd(cmd_t* cmd) {
-    cmd->argv[cmd->argc] = NULL;
-    cmd->path = cmd->argv[0];
-}
-
-cmd_t* append_command(list_t* array)
-{
-    cmd_t* new_cmd = malloc(sizeof(cmd_t));
-    if (array->cmd) {
-        close_cmd(array->cmd);
-        array->cmd->prev = new_cmd;
-    }
-    *new_cmd = (cmd_t){0};
-    new_cmd->next = array->cmd;
-    array->cmd = new_cmd;
-    return new_cmd;
-}
-
-void dump_cmd(cmd_t* cmd);
 
 list_t* append_list(list_t* array)
 {
@@ -64,14 +54,7 @@ list_t* parse_command(char *cmd_str)
         cmd_str = skip_whitespace(cmd_str);
         if (*cmd_str == '\0')
             break;
-        if (*cmd_str == ';') {
-            cmd_str += 2;
-            close_cmd(command_array->cmd);
-            dump_cmd(command_array->cmd);
-            command_array = append_list(command_array);
-            append_command(command_array);
-        }
-        cmd_str = parse_token(cmd_str, command_array);
+        cmd_str = parse_token(cmd_str, &command_array);
     }
     if (command_array->cmd->argc == 0)
         error("Empty command");

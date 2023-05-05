@@ -16,7 +16,7 @@ char* store_output(int fd)
     while ((nread = read(fd, buf, 4096)) > 0) {
         memcpy(content + size, buf, nread);
         size += nread;
-            content = realloc(content, size + 4096);
+        content = realloc(content, size + 4096);
     }
     content[size] = '\0';
     return content;
