@@ -14,16 +14,18 @@ char *copy_until(char *dst, char *src, char *delim);
 char* parse_file_name(char** cmd_str);
 void error(char *msg);
 
-char* parse_double_redirect(char* cmd_str, cmd_t* cmd);
-char* parse_single_redirect(char* cmd_str, cmd_t* cmd);
-char* parse_input_redirect(char* cmd_str, cmd_t* cmd);
+char* parse_double_output(char* cmd_str, cmd_t* cmd);
+char* parse_single_output(char* cmd_str, cmd_t* cmd);
+char* parse_double_input(char* cmd_str, cmd_t* cmd);
+char* parse_single_input(char* cmd_str, cmd_t* cmd);
 char* parse_default_token(char* cmd_str, cmd_t* cmd);
 
 char* parse_token(char* cmd_str, cmd_t* cmd, int* is_token)
 {
-    char* tokens[100] = {">>",">", "<", NULL};
-    char* (*parsers[3])(char*, cmd_t*) = {
-        parse_double_redirect, parse_single_redirect, parse_input_redirect
+    char* tokens[5] = {">>",">", "<<", "<", NULL};
+    char* (*parsers[5])(char*, cmd_t*) = {
+        parse_double_output, parse_single_output, parse_double_input,
+        parse_single_input, NULL
     };
     *is_token = 0;
     for (int i = 0; tokens[i]; i++) {

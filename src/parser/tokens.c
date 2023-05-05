@@ -7,6 +7,11 @@
 
 #include "mysh.h"
 
+char* parse_double_output(char* cmd_str, cmd_t* cmd);
+char* parse_single_output(char* cmd_str, cmd_t* cmd);
+char* parse_double_input(char* cmd_str, cmd_t* cmd);
+char* parse_single_input(char* cmd_str, cmd_t* cmd);
+
 char* parse_file_name(char** cmd_str)
 {
     char out_file[256];
@@ -14,7 +19,7 @@ char* parse_file_name(char** cmd_str)
     return strdup(out_file);
 }
 
-char* parse_double_redirect(char* cmd_str, cmd_t* cmd)
+char* parse_double_output(char* cmd_str, cmd_t* cmd)
 {
     if (*cmd_str == '\0')
         error("Missing name for redirect.");
@@ -24,7 +29,7 @@ char* parse_double_redirect(char* cmd_str, cmd_t* cmd)
     return cmd_str;
 }
 
-char* parse_single_redirect(char* cmd_str, cmd_t* cmd)
+char* parse_single_output(char* cmd_str, cmd_t* cmd)
 {
     if (*cmd_str == '\0')
         error("Missing name for redirect.");
@@ -34,12 +39,21 @@ char* parse_single_redirect(char* cmd_str, cmd_t* cmd)
     return cmd_str;
 }
 
-char* parse_input_redirect(char* cmd_str, cmd_t* cmd)
+char* parse_single_input(char* cmd_str, cmd_t* cmd)
 {
     if (*cmd_str == '\0')
         error("Missing name for redirect.");
     cmd->input = parse_file_name(&cmd_str);
     cmd->input_type = FILE_PATH;
+    return cmd_str;
+}
+
+char* parse_double_input(char* cmd_str, cmd_t* cmd)
+{
+    if (*cmd_str == '\0')
+        error("Missing name for redirect.");
+    cmd->input = parse_file_name(&cmd_str);
+    cmd->input_type = STD;
     return cmd_str;
 }
 
