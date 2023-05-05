@@ -21,9 +21,9 @@ char* parse_default_token(char* cmd_str, cmd_t* cmd);
 
 char* parse_token(char* cmd_str, cmd_t* cmd, int* is_token)
 {
-    char* tokens[100] = {">", ">>", "<", NULL};
+    char* tokens[100] = {">>",">", "<", NULL};
     char* (*parsers[3])(char*, cmd_t*) = {
-        parse_single_redirect, parse_double_redirect, parse_input_redirect
+        parse_double_redirect, parse_single_redirect, parse_input_redirect
     };
     *is_token = 0;
     for (int i = 0; tokens[i]; i++) {
