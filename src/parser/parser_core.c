@@ -26,12 +26,16 @@ char* parse_token(char* cmd_str, list_t* array)
     return cmd_str;
 }
 
+void close_cmd(cmd_t* cmd) {
+    cmd->argv[cmd->argc] = NULL;
+    cmd->path = cmd->argv[0];
+}
+
 cmd_t* append_command(list_t* array)
 {
     cmd_t* new_cmd = malloc(sizeof(cmd_t));
     if (array->cmd) {
-        array->cmd->argv[array->cmd->argc] = NULL;
-        array->cmd->path = array->cmd->argv[0];
+        close_cmd(array->cmd);
         array->cmd->prev = new_cmd;
     }
     *new_cmd = (cmd_t){0};
@@ -40,17 +44,37 @@ cmd_t* append_command(list_t* array)
     return new_cmd;
 }
 
-void parse_command(char *cmd_str, list_t *command_array)
+void dump_cmd(cmd_t* cmd);
+
+list_t* append_list(list_t* array)
 {
+    list_t* new_list = malloc(sizeof(list_t));
+    *new_list = (list_t){0};
+    if (array)
+        array->prev = new_list;
+    new_list->next = array;
+    return new_list;
+}
+
+list_t* parse_command(char *cmd_str)
+{
+    list_t* command_array = append_list(NULL);
     append_command(command_array);
     while (*cmd_str && command_array->cmd->argc < MAX_ARGS) {
         cmd_str = skip_whitespace(cmd_str);
         if (*cmd_str == '\0')
             break;
+        if (*cmd_str == ';') {
+            cmd_str += 2;
+            close_cmd(command_array->cmd);
+            dump_cmd(command_array->cmd);
+            command_array = append_list(command_array);
+            append_command(command_array);
+        }
         cmd_str = parse_token(cmd_str, command_array);
     }
     if (command_array->cmd->argc == 0)
         error("Empty command");
-    command_array->cmd->argv[command_array->cmd->argc] = NULL;
-    command_array->cmd->path = command_array->cmd->argv[0];
+    close_cmd(command_array->cmd);
+    return command_array;
 }

@@ -34,6 +34,7 @@ typedef struct command {
 typedef struct command_array {
     cmd_t* cmd;
     struct command_array* next;
+    struct command_array* prev;
 } list_t;
 
 #endif /* !COMMAND_H_ */

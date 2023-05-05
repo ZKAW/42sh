@@ -45,20 +45,7 @@ void dump_cmd(cmd_t* cmd)
 
 list_t* get_command(char * str)
 {
-    list_t* command_array = NULL, *next = NULL;
-    char delimiters[] = ";";
-    char *command_position = strtok(str, delimiters);
-    str = clean_str(str);
-    while (command_position) {
-        command_array = malloc(sizeof(list_t));
-        command_array->cmd = NULL;
-        parse_command(command_position, command_array);
-        command_array->next = next;
-        next = command_array;
-        if (command_array == NULL)
-            return NULL;
-        command_position = strtok(NULL, delimiters);
-    }
+    list_t* command_array = parse_command(str);
     command_array = reverse_cmd(command_array);
     return command_array;
 }
