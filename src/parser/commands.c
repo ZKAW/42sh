@@ -13,20 +13,6 @@ char *skip_non_whitespace(char *str);
 char *copy_until(char *dst, char *src, char *delim);
 char* parse_file_name(char** cmd_str);
 
-void set_pipe_attributes(cmd_t* cmd)
-{
-    cmd_t *tmp = cmd;
-    cmd = cmd->next;
-    while (cmd) {
-        cmd->output_type = PIPE;
-        cmd = cmd->next;
-    }
-    while (tmp->next) {
-        tmp->input_type = PIPE;
-        tmp = tmp->next;
-    }
-}
-
 void dump_args(char** args)
 {
     printf("args: ");
@@ -57,37 +43,18 @@ void dump_cmd(cmd_t* cmd)
     }
 }
 
-list_t* split_pipes(char *pipeline_str, list_t* arr_next)
-{
-    char cmd_str[1024];
-    list_t* command_array = malloc(sizeof(list_t));
-    command_array->next = arr_next;
-    cmd_t* cmd, *next = NULL;
-    while (*pipeline_str) {
-        pipeline_str = skip_whitespace(pipeline_str);
-        if (*pipeline_str == '\0')
-            break;
-        pipeline_str = copy_until(cmd_str, pipeline_str, "|");
-        cmd = malloc(sizeof(cmd_t));
-        parse_command(cmd_str, cmd);
-        cmd->next = next;
-        next = cmd;
-        if (*pipeline_str == '|')
-            pipeline_str++;
-    }
-    set_pipe_attributes(cmd);
-    command_array->cmd = cmd;
-    return command_array;
-}
-
 list_t* get_command(char * str)
 {
-    list_t* command_array = NULL;
+    list_t* command_array = NULL, *next = NULL;
     char delimiters[] = ";";
     char *command_position = strtok(str, delimiters);
     str = clean_str(str);
     while (command_position) {
-        command_array = split_pipes(command_position, command_array);
+        command_array = malloc(sizeof(list_t));
+        command_array->cmd = NULL;
+        parse_command(command_position, command_array);
+        command_array->next = next;
+        next = command_array;
         if (command_array == NULL)
             return NULL;
         command_position = strtok(NULL, delimiters);
