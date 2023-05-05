@@ -7,11 +7,6 @@
 
 #include "mysh.h"
 
-char* parse_double_output(char* cmd_str, cmd_t* cmd);
-char* parse_single_output(char* cmd_str, cmd_t* cmd);
-char* parse_double_input(char* cmd_str, cmd_t* cmd);
-char* parse_single_input(char* cmd_str, cmd_t* cmd);
-
 char* parse_file_name(char** cmd_str)
 {
     char out_file[256];
