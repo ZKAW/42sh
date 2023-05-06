@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <termios.h>
-#include "my.h"
 #include "string.h"
 
 #ifndef _MINI_SHELL_H_

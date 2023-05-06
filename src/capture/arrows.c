@@ -8,9 +8,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdio.h>
-#include "../../include/my.h"
-#include "../../include/string.h"
-#include "../../include/mini_shell.h"
+#include "string.h"
+#include "mini_shell.h"
 
 void print_path(void);
 void copy_string(string_t* dest, string_t* src);
