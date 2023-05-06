@@ -22,8 +22,7 @@ void builtin_unsetenv(char** cmd, shell_t* shell)
 {
     char **envp = shell->envp;
     if (tablen(cmd) < 2) {
-        write(2, "unsetenv: Too few arguments.\n", 29);
-        shell->state = 1;
+        throw_error("unsetenv: Too few arguments.\n", shell, 1);
         return;
     }
     for (int i = 1; cmd[i]; i++) {

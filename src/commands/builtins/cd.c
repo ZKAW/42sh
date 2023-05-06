@@ -17,12 +17,6 @@ char* find_envp(char* var, shell_t* shell)
     return NULL;
 }
 
-static void throw_error(char* const strerror, shell_t* shell, int ernum)
-{
-    write(2, strerror, strlen(strerror));
-    shell->state = ernum;
-}
-
 void handle_cd_error(char* dir, shell_t* shell)
 {
     char* error = strerror(errno);

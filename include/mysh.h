@@ -52,5 +52,6 @@ char *get_prompt_prefix(void);
 char *get_env_var(char **env, char *key);
 char *copy_until(char *dst, char *src, char *delim);
 void error(char *msg);
+void throw_error(char* const strerror, shell_t* shell, int ernum);
 
 #endif
