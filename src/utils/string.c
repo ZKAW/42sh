@@ -1,17 +1,9 @@
 /*
-** EPITECH PROJECT, 2022
+** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** parser_tokens.c
+** string
 */
-
-#include "mysh.h"
-
-void error(char *msg)
-{
-    fprintf(stderr, "Error: %s\n", msg);
-    exit(1);
-}
 
 int is_char_whitespace(char c)
 {
@@ -30,12 +22,4 @@ char *skip_non_whitespace(char *str)
     while (*str && !is_char_whitespace(*str))
         str++;
     return str;
-}
-
-char *copy_until(char *dst, char *src, char *delim)
-{
-    while (*src && !strchr(delim, *src))
-        *(dst++) = *(src++);
-    *dst = '\0';
-    return src;
 }

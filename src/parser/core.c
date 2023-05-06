@@ -42,7 +42,6 @@ char* parse_token(char* cmd_str, list_t** array)
 
 list_t* parse_command(char *cmd_str)
 {
-    
     list_t* command_array = append_list(NULL);
     append_command(command_array);
     while (*cmd_str && command_array->cmd->argc < MAX_ARGS) {
@@ -51,8 +50,10 @@ list_t* parse_command(char *cmd_str)
             break;
         cmd_str = parse_token(cmd_str, &command_array);
     }
-    if (command_array->cmd->argc == 0)
-        error("Empty command");
+    if (command_array->cmd->argc == 0) {
+        dprintf(2, "Invalid null command.\n");
+        exit(1);
+    }
     close_cmd(command_array->cmd);
     return command_array;
 }

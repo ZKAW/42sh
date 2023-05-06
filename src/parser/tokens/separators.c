@@ -54,4 +54,3 @@ char* parse_semicolon(char* cmd_str, list_t** command_array)
     append_command(*command_array);
     return cmd_str;
 }
-
