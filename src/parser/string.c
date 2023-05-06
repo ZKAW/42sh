@@ -24,3 +24,11 @@ char **tokenize_string(char *input, char *sep)
 
     return (parsed);
 }
+
+char *copy_until(char *dst, char *src, char *delim)
+{
+    while (*src && !strchr(delim, *src))
+        *(dst++) = *(src++);
+    *dst = '\0';
+    return src;
+}

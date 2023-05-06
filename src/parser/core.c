@@ -52,8 +52,10 @@ list_t* parse_command(char *cmd_str, shell_t* shell)
             break;
         cmd_str = parse_token(cmd_str, &command_array, shell);
     }
-    if (command_array->cmd->argc == 0)
-        error("Empty command");
+    if (command_array->cmd->argc == 0) {
+        dprintf(2, "Invalid null command.\n");
+        exit(1);
+    }
     close_cmd(command_array->cmd);
     command_array = reverse_cmd(command_array);
     return command_array;

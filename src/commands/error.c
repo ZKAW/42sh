@@ -9,6 +9,8 @@
 
 int not_existing(char* path, shell_t* shell)
 {
+    if (access(path, F_OK) == 0)
+        return 0;
     write(2, path, strlen(path));
     write(2, ": Command not found.\n", 21);
     shell->state = 1;
