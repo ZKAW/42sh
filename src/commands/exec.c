@@ -14,11 +14,31 @@ void teach_child(char* path, char** cmd, shell_t* shell)
     }
 }
 
+char *get_local_var(cmd_t* cmd, char *key)
+{
+
+}
+
+int assign_variables(cmd_t* cmd)
+{
+    // iterate through cmd->argv
+    // if cmd->argv[i] starts with $, replace it with the value of the variable
+    // also check if the value of the variable corresponds to a get_env_var value
+    // if value != NULL, variable is found inside env variable, else it doesn't exist
+    // if variable doesn't exist, print error message
+    // if variable exists, replace cmd->argv[i] with the value of the variable
+    // if variable doesn't exist, return 1
+    // else return 0
+    return 0;
+}
+
 void run_command(cmd_t* cmd, shell_t* shell)
 {
     int fd[2];
     char* path = cmd->argv[0];
     char *full_path = get_full_path(cmd->argv[0], shell);
+    if(assign_variables(cmd_t* cmd) == 1)
+        return;
 
     if (full_path)
         path = full_path;

@@ -16,6 +16,12 @@ void builtin_setenv(char** cmd, shell_t* shell);
 void builtin_unsetenv(char** cmd, shell_t* shell);
 void builtin_exit(char** cmd, shell_t* shell);
 
+typedef struct var {
+    char* key;
+    char* value;
+    struct special_var* next;
+} var_t;
+
 struct builtin_cmd {
     const char *name;
     void (*func)(char** cmd, shell_t* shell);
