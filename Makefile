@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-NAME = mysh
+NAME	=	42sh
 CC	= gcc
 SRC_DIR = src
 SRC = $(wildcard $(SRC_DIR)/*.c $(SRC_DIR)/*/*.c $(SRC_DIR)/*/*/*.c)
