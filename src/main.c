@@ -7,12 +7,7 @@
 
 #include "mysh.h"
 
-void sigint_handler(int sig)
-{
-    (void)sig;
-    write(1, "\n", 1);
-    my_putstr(get_prompt_prefix(), 1);
-}
+ssize_t my_getline(char **bufferptr, shell_t* shell);
 
 void handle_command(list_t* list, shell_t* shell)
 {
@@ -57,18 +52,15 @@ int verify_pipe(shell_t* shell)
 
 int main(int ac UNUSED, char** av UNUSED, char** envp)
 {
-    size_t len = 0;
     ssize_t size = 0;
     char* line = "";
     shell_t* shell = init_shell(envp);
     call_env(shell->envp);
-    signal(SIGINT, sigint_handler);
-
     if (verify_pipe(shell))
         return shell->state;
     while (1) {
         my_putstr(get_prompt_prefix(), 1);
-        size = getline(&line, &len, stdin);
+        size = my_getline(&line, shell);
         if (size == 1) continue;
         if (size == EOF) break;
         handle_command(parse_command(line, shell), shell);

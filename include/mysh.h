@@ -25,6 +25,8 @@
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
 
+    #define _XOPEN_SOURCE 700
+
 shell_t* init_shell(char** envp);
 void execute(cmd_t* cmd, shell_t* shell);
 int not_existing(char* path, shell_t* shell);
