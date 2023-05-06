@@ -17,6 +17,11 @@ typedef enum {
     STD,
 } fd_type;
 
+typedef enum CONDITION {
+    AND = 1,
+    OR,
+} condition_t;
+
 typedef struct command {
     int argc;
     char* path;
@@ -33,6 +38,7 @@ typedef struct command {
 
 typedef struct command_array {
     cmd_t* cmd;
+    condition_t condition;
     struct command_array* next;
     struct command_array* prev;
 } list_t;
