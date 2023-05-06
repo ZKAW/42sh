@@ -12,6 +12,7 @@ alias_t* add_alias(char **buffer, alias_t *alias)
 {
     int i = 3;
     for (; buffer[i] != NULL; i++) {
+        //don't forget malloc before pushing
         buffer[2] = strcat(buffer[2], " ");
         buffer[2] = strcat(buffer[2], buffer[i]);
     }
