@@ -8,11 +8,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdio.h>
-#include "../include/my.h"
-#include "../include/string.h"
-#include "../include/mini_shell.h"
+#include "mysh.h"
 
-void show_history(char** cmd, shell_t* shell)
+void show_history(char** cmd UNUSED, shell_t* shell)
 {
     int i = 1;
     string_t* string = shell->history.head;

@@ -12,12 +12,6 @@
 
         typedef struct shell shell_t;
 
-        typedef struct char_s {
-            char c;
-            struct char_s* next;
-            struct char_s* prev;
-        } char_t;
-
         typedef struct string_s {
             char str[4096];
             char hour[6];
@@ -41,7 +35,7 @@
             #define RIGHT "\x1B[D"
             #define DEL_CHAR "\b \b"
 
-        string_t* create_string(shell_t* shell);
+        string_t* create_string(void);
         void append_string(char c, string_t* string);
         void print_string(string_t* string);
         char* merge_string(string_t* string);

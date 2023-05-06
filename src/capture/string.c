@@ -8,16 +8,14 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include "../../include/my.h"
-#include "../../include/string.h"
-#include "../../include/mini_shell.h"
-
 #include <stdio.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
+#include "mysh.h"
 
-string_t* create_string(shell_t* shell)
+string_t* create_string(void)
 {
     string_t* string = malloc(sizeof(string_t));
     string->next = NULL;
@@ -49,18 +47,24 @@ void print_string(string_t* string)
 
 void copy_string(string_t* dest, string_t* src)
 {
-    dest->len = src->len;
+    dest->len = src->len - 1;
     dest->position = src->position;
-    for (int i = 0; i < src->len; i++)
+    for (int i = 0; i < src->len - 1; i++)
         dest->str[i] = src->str[i];
 }
 
 char* merge_string(string_t* string)
 {
-    int i = 0;
     char* str = malloc(sizeof(char) * (string->len + 1));
     for (int i = 0; i < string->len; i++)
         str[i] = string->str[i];
     str[string->len] = '\0';
     return str;
+}
+
+string_t* get_string(string_t* string)
+{
+    static string_t* saved_string = NULL;
+    if (string != NULL) saved_string = string;
+    return (saved_string);
 }

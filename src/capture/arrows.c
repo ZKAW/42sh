@@ -8,10 +8,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdio.h>
-#include "string.h"
-#include "mini_shell.h"
+#include "line.h"
+#include "mysh.h"
 
-void print_path(void);
 void copy_string(string_t* dest, string_t* src);
 
 void left_arrow(shell_t* shell)
@@ -37,13 +36,13 @@ void up_arrow(shell_t* shell)
     string_t* string = shell->string;
     history_t* history = &shell->history;
     if ((!history->current && !history->head)
-    || history->current && !history->current->next)
+    || (history->current && !history->current->next))
         return;
     history->current = history->current ?
     history->current->next : history->head;
     copy_string(string, history->current);
     dprintf(1, "\x1b[2K\r");
-    print_path();
+    my_putstr(get_prompt_prefix(), 1);
     print_string(shell->string);
 }
 
@@ -63,7 +62,7 @@ void down_arrow(shell_t* shell)
         string->str[0] = '\0';
     }
     dprintf(1, "\x1b[2K\r");
-    print_path();
+    my_putstr(get_prompt_prefix(), 1);
     print_string(shell->string);
 }
 

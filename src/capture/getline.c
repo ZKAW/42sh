@@ -10,19 +10,18 @@
 #include <termios.h>
 #include <stdio.h>
 #include <time.h>
-#include "../../include/my.h"
-#include "../../include/string.h"
-#include "../../include/mini_shell.h"
+#include <stdbool.h>
+#include "mysh.h"
 
 int handle_commands(char c, shell_t* shell);
 void disable_raw_mode(struct termios* raw);
 void enable_raw_mode(struct termios* raw);
+string_t* get_string(string_t* string);
 
 
 void handle_regular_char(shell_t* shell, char c)
 {
     int i = 0;
-    char_t* character;
     char* str;
     string_t* string = shell->string;
     append_string(c, string);
@@ -38,12 +37,13 @@ void handle_regular_char(shell_t* shell, char c)
     }
 }
 
-char* end_of_line(shell_t* shell)
+ssize_t end_of_line(shell_t* shell, char **bufferptr)
 {
     history_t* history = &shell->history;
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     dprintf(1, "%c", '\n');
+    shell->string->str[shell->string->len++] = '\n';
     sprintf(shell->string->hour, "%d:%d", tm.tm_hour, tm.tm_min);
     disable_raw_mode(&shell->term);
     history->position = 0;
@@ -52,24 +52,44 @@ char* end_of_line(shell_t* shell)
         history->head->prev = shell->string;
     history->head = shell->string;
     history->current = NULL;
-    return merge_string(shell->string);
+    *bufferptr = merge_string(shell->string);
+    return shell->string->len;
 }
 
-char* my_getline(shell_t* shell)
+void sigint_handler(int sig) {
+    string_t* string = get_string(NULL);
+    (void)sig;
+    if (string->len != 0) {
+        write(STDOUT_FILENO, "^C", 2);
+        string->len = 0;
+        string->position = 0;
+        string->str[0] = '\0';
+    }
+    write(STDOUT_FILENO, "\n", 1);
+    my_putstr(get_prompt_prefix(), 1);
+}
+
+ssize_t my_getline(char **bufferptr, shell_t* shell)
 {
     char c;
     int valread = 0;
-    shell->string = create_string(shell);
+    shell->string = create_string();
+    get_string(shell->string);
+    signal(SIGINT, sigint_handler);
     enable_raw_mode(&shell->term);
     for (;;) {
         valread = read(0, &c, 1);
-        if (valread < 0)
+        if (valread < 0 && c != '\004')
             continue;
+        if (c == '\004') {
+            disable_raw_mode(&shell->term);
+            return -1;
+        }
         if (c == '\n')
-            return end_of_line(shell);
+            return end_of_line(shell, bufferptr);
         if (handle_commands(c, shell))
             continue;
         handle_regular_char(shell, c);
     }
-    return NULL;
+    return 0;
 }

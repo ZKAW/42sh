@@ -8,9 +8,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdio.h>
-#include "../../include/my.h"
-#include "../../include/string.h"
-#include "../../include/mini_shell.h"
+#include "mysh.h"
 
 
 int handle_arrows(shell_t* shell);
@@ -46,6 +44,16 @@ int handle_commands(char c, shell_t* shell)
     string_t* string = shell->string;
     if (handle_backspace(c, string))
         return 1;
+    //handle control + c
+    if (c == '\003') {
+        if (string->len != 0) {
+            dprintf(1, "^C\n");
+            string->len = 0;
+            string->position = 0;
+            string->str[0] = '\0';
+        }
+        return 1;
+    }
     if (c == '\033') {
         if (handle_arrows(shell))
             return 1;
