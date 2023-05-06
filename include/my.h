@@ -51,7 +51,7 @@
         char *my_revstr(char *str);
         int is_include(char to_find, char *str);
         char *my_strncat(char *dest, char const *src, int nb);
-        char** my_str_to_word_array(char const * str);
+        char** my_str_to_word_array(char* str, char* delim);
         int count_long_digits(long nb);
         int is_alpha(char c);
         char *my_realloc(char* str, size_t size);

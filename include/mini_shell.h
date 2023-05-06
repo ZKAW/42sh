@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "my.h"
+#include "builtin.h"
 
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
@@ -26,6 +27,7 @@
             int state;
             char** paths;
             pid_t sub;
+            alias_t *alias;
         } shell_t;
 
         typedef struct command {
@@ -58,4 +60,7 @@
         char** get_env_paths(char** envp);
         void my_unsetenv(char** cmd, shell_t* shell);
         void throw_error(char* const strerror, shell_t* shell, int ernum);
+        alias_t* init_alias(char* argv, shell_t *shell);
+        char* clean_str(char* str);
+
 #endif
