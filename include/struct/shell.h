@@ -19,4 +19,10 @@ typedef struct shell {
     pid_t sub;
 } shell_t;
 
+typedef struct path {
+    char** list;
+} path_t;
+
+static const path_t PATHS = {NULL};
+
 #endif /* !SHELL_H_ */

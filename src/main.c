@@ -22,12 +22,16 @@ void handle_command(list_t* list, shell_t* shell)
         shell->state = 1;
     }
     while (list) {
+        if ((list->condition == OR && shell->state == 0)
+        || (list->condition == AND && shell->state != 0)) {
+            list = list->next;
+            continue;
+        }
         head = list->cmd;
         if (is_builtin(head->path))
             run_builtin(head, shell);
-        if (is_builtin(head->path) && !head->next)
-            return;
-        execute(head, shell);
+        else
+            execute(head, shell);
         list = list->next;
     }
 }
@@ -46,7 +50,7 @@ int verify_pipe(shell_t* shell)
             continue;
         if (size == EOF)
             return 1;
-        handle_command(get_command(line), shell);
+        handle_command(parse_command(line, shell), shell);
     }
     return 1;
 }
@@ -67,7 +71,7 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
         size = getline(&line, &len, stdin);
         if (size == 1) continue;
         if (size == EOF) break;
-        handle_command(get_command(line), shell);
+        handle_command(parse_command(line, shell), shell);
     }
     if (isatty(0))
         write(1, "exit\n", 5);

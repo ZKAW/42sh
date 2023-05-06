@@ -36,3 +36,13 @@ void dump_cmd(cmd_t* cmd)
         cmd = cmd->next;
     }
 }
+
+void dump_list(list_t* list)
+{
+    while (list) {
+        dprintf(1, "\nNEW LIST:\n");
+        dprintf(1, "condition: %d\n", list->condition);
+        dump_cmd(list->cmd);
+        list = list->next;
+    }
+}

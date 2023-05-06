@@ -36,7 +36,7 @@ char* get_full_path(char* input, shell_t* shell);
 int set_input(cmd_t* cmd, shell_t* shell, int fd[2]);
 char **tokenize_string(char *input, char *sep);
 void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2]);
-list_t* parse_command(char *cmd_str);
+list_t* parse_command(char *cmd_str, shell_t* shell);
 list_t* split_pipes(char* input, list_t* next);
 list_t* get_command(char * str);
 void parse_output(cmd_t* command);

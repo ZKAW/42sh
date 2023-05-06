@@ -12,26 +12,37 @@
 
         typedef struct command cmd_t;
         typedef struct command_array list_t;
+        typedef struct shell shell_t;
 
-        #define TOKENS 7
+        #define PARAMS char* cmd_str, list_t** command_array, shell_t* shell
+        #define N_TOKENS 10
 
-        char* parse_double_output(char* cmd_str, list_t** command_array);
-        char* parse_single_output(char* cmd_str, list_t** command_array);
-        char* parse_double_input(char* cmd_str, list_t** command_array);
-        char* parse_single_input(char* cmd_str, list_t** command_array);
-        char* parse_default_token(char* cmd_str, list_t** command_array);
-        char* parse_pipe(char* cmd_str, list_t** command_array);
-        char* parse_semicolon(char* cmd_str, list_t** command_array);
+        char* parse_double_output(PARAMS);
+        char* parse_single_output(PARAMS);
+        char* parse_double_input(PARAMS);
+        char* parse_single_input(PARAMS);
+        char* parse_default_token(PARAMS);
+        char* parse_pipe(PARAMS);
+        char* parse_semicolon(PARAMS);
+        char* parse_backticks(PARAMS);
+        char* parse_parenthesis(PARAMS);
+        char* parse_and(PARAMS);
+        char* parse_or(PARAMS);
 
-        static char* tokens[TOKENS] = {">>",">", "<<", "<", "|", ";" ,NULL};
+        static char* tokens[N_TOKENS] = {
+            ">>",">", "<<", "<", "||" ,"|", ";", "`", "&&" ,NULL
+            };
 
-        char* (*parsers[TOKENS])(char* cmd_str, list_t** command_array) = {
+        static char* (*parsers[N_TOKENS]) (PARAMS) = {
             parse_double_output,
             parse_single_output,
             parse_double_input,
             parse_single_input,
+            parse_or,
             parse_pipe,
             parse_semicolon,
+            parse_backticks,
+            parse_and
         };
 
 #endif
