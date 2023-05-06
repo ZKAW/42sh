@@ -10,7 +10,7 @@
 char* get_full_path(char* input, shell_t* shell)
 {
     struct stat info;
-    char** paths = get_env_paths(shell->envp);
+    char** paths = shell->paths;
     char* test_path;
     int input_s = strlen(input);
     for (int i = 0; paths[i]; i++) {

@@ -17,19 +17,19 @@ void teach_child(char* path, char** cmd, shell_t* shell)
 void run_command(cmd_t* cmd, shell_t* shell)
 {
     int fd[2];
-    char* path;
+    char* path = cmd->argv[0];
+    char *full_path = get_full_path(cmd->argv[0], shell);
 
-    if (!is_builtin(cmd->argv[0]) && !CHAR_IN_STR('/', cmd->argv[0])
-    && !CHAR_IN_STR('\\', cmd->argv[0]))
-        path = get_full_path(cmd->argv[0], shell);
-    else
-        path = cmd->argv[0];
-    if (!path && !is_builtin(cmd->argv[0]) && not_existing(cmd->argv[0], shell))
+    if (full_path)
+        path = full_path;
+    if (!is_builtin(cmd->argv[0]) && not_existing(path, shell)) {
+        exit(1);
         return;
+    }
     if (is_builtin(cmd->argv[0])) {
         run_builtin(cmd, shell);
         exit(shell->state);
-    }   else {
+    } else {
         if (cmd->input_type != NONE)
             set_input(cmd, shell, fd);
         if (cmd->output_type != NONE)
