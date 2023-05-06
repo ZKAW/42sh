@@ -52,10 +52,17 @@ void down_arrow(shell_t* shell)
 {
     string_t* string = shell->string;
     history_t* history = &shell->history;
-    if (!history->current || !history->current->prev)
+    if (!history->current)
         return;
-    history->current = history->current->prev;
-    copy_string(string, history->current);
+    if (history->current->prev) {
+        history->current = history->current->prev;
+        copy_string(string, history->current);
+    } else {
+        history->current = NULL;
+        string->len = 0;
+        string->position = 0;
+        string->str[0] = '\0';
+    }
     dprintf(1, "\x1b[2K\r");
     print_path();
     print_string(shell->string);
