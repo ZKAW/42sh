@@ -38,8 +38,16 @@ void run_command(cmd_t* cmd, shell_t* shell)
     }
 }
 
-void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2])
-{
+void handle_sigchld(int signo) {
+    (void)signo;
+}
+
+// TODO: fix second pipe not getting executed
+/*
+ls | cat -e
+-> cat -e is not executed
+*/
+void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2]) {
     pid_t new_sub = fork();
 
     if (new_sub == 0) {
@@ -47,14 +55,29 @@ void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2])
         dup2(fd[1], 1);
         close(fd[1]);
         run_command(cmd->next, shell);
+        // exit(shell->state);
         return;
     }
-    waitpid(new_sub, &shell->state, 0);
+
+    fcntl(fd[0], F_SETFL, O_NONBLOCK);
+    signal(SIGCHLD, handle_sigchld);
+
+    // read from the pipe until the child process has exited
+    while (waitpid(new_sub, &shell->state, WNOHANG) == 0) {
+        char buf[1024];
+        int n = read(fd[0], buf, sizeof(buf));
+        if (n > 0) {
+            write(1, buf, n);
+        }
+    }
+
+    // restore the default signal handler
+    signal(SIGCHLD, SIG_DFL);
+
     handle_status(shell, cmd);
     SHARED_STATUS = shell->state;
-    close(fd[1]);
-    dup2(fd[0], 0);
     close(fd[0]);
+    close(fd[1]);
 }
 
 void execute(cmd_t* cmd, shell_t* shell)
