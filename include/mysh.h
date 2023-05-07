@@ -53,7 +53,7 @@ char *get_env_var(char **env, char *key);
 char *copy_until(char *dst, char *src, char *delim);
 void error(char *msg);
 void throw_error(char* const strerror, shell_t* shell, int ernum);
-shell_t* init_vars(shell_t* shell);
-shell_t* init_special_vars(shell_t* shell);
+void init_vars(shell_t* shell);
+void init_special_vars(shell_t* shell);
 
 #endif

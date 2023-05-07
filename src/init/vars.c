@@ -7,12 +7,11 @@
 
 #include "mysh.h"
 
-shell_t *init_vars(shell_t *shell)
+void init_vars(shell_t *shell)
 {
     shell->vars = malloc(sizeof(var_t));
     shell->vars->key = NULL;
     shell->vars->value = NULL;
     shell->vars->next = NULL;
     init_special_vars(shell);
-    return shell;
 }

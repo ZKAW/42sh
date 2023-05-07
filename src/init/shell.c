@@ -21,6 +21,6 @@ shell_t* init_shell(char** envp)
     shell->history.current = NULL;
     shell->history.position = 0;
     shell->history.len = 0;
-    shell = init_vars(shell);
+    init_vars(shell);
     return shell;
 }

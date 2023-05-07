@@ -48,6 +48,7 @@ int assign_variables(cmd_t* cmd, shell_t* shell)
                 return 1;
             }
             cmd->argv[i] = var;
+            printf("cmd->argv[%d]: %s\n", i, cmd->argv[i]);
         }
     }
     return 0;
@@ -56,10 +57,10 @@ int assign_variables(cmd_t* cmd, shell_t* shell)
 void run_command(cmd_t* cmd, shell_t* shell)
 {
     int fd[2];
-    char* path = cmd->argv[0];
-    char *full_path = get_full_path(cmd->argv[0], shell);
     if(assign_variables(cmd, shell) == 1)
         return;
+    char* path = cmd->argv[0];
+    char *full_path = get_full_path(cmd->argv[0], shell);
 
     if (full_path)
         path = full_path;
