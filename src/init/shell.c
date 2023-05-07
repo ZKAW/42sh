@@ -7,6 +7,19 @@
 
 #include "mysh.h"
 
+/*
+typedef struct shared_memory_s {
+    void *shared_var;
+    char *shmaddr;
+    int shmid;
+} shared_memory_t;
+*/
+
+static void create_shared_status(shell_t* shell)
+{
+    shell->shared_status = create_shm(0);
+}
+
 shell_t* init_shell(char** envp)
 {
     shell_t* shell = malloc(sizeof(shell_t));
@@ -21,5 +34,6 @@ shell_t* init_shell(char** envp)
     shell->history.current = NULL;
     shell->history.position = 0;
     shell->history.len = 0;
+    create_shared_status(shell);
     return shell;
 }

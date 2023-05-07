@@ -47,11 +47,14 @@ void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2])
         dup2(fd[1], 1);
         close(fd[1]);
         run_command(cmd->next, shell);
-    } else {
-        close(fd[1]);
-        dup2(fd[0], 0);
-        close(fd[0]);
+        return;
     }
+    waitpid(new_sub, &shell->state, 0);
+    handle_status(shell, cmd);
+    SHARED_STATUS = shell->state;
+    close(fd[1]);
+    dup2(fd[0], 0);
+    close(fd[0]);
 }
 
 void execute(cmd_t* cmd, shell_t* shell)
@@ -61,8 +64,11 @@ void execute(cmd_t* cmd, shell_t* shell)
     if (sub == 0) {
         shell->sub = getpid();
         run_command(cmd, shell);
-    } else {
-        waitpid(sub, &shell->state, 0);
-        handle_error(shell);
+        return;
     }
+    waitpid(sub, &shell->state, 0);
+    handle_status(shell, cmd);
+    if (shell->state == 0 && cmd->input_type == PIPE)
+        return;
+    SHARED_STATUS = shell->state;
 }

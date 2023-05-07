@@ -14,6 +14,7 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/wait.h>
+#include <sys/shm.h>
 #include <string.h>
 
 #include "lib.h"
@@ -21,6 +22,7 @@
 #include "struct/command.h"
 #include "struct/shell.h"
 #include "macro/utils.h"
+#include "macro/cmd.h"
 
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
@@ -30,7 +32,7 @@
 shell_t* init_shell(char** envp);
 void execute(cmd_t* cmd, shell_t* shell);
 int not_existing(char* path, shell_t* shell);
-void handle_error(shell_t* shell);
+void handle_status(shell_t* shell, cmd_t* cmd);
 void run_builtin(cmd_t* cmd, shell_t* shell);
 char** get_env_paths(char** envp);
 int is_builtin(char* path);
@@ -53,5 +55,7 @@ char *get_env_var(char **env, char *key);
 char *copy_until(char *dst, char *src, char *delim);
 void error(char *msg);
 void throw_error(char* const strerror, shell_t* shell, int ernum);
+shared_memory_t create_shm(int shared_var);
+void detach_shm(shared_memory_t shared_memory);
 
 #endif

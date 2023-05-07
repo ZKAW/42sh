@@ -30,8 +30,17 @@ void handle_child_error(char** argv)
     exit(1);
 }
 
-void handle_error(shell_t* shell)
+void handle_status(shell_t* shell, cmd_t* cmd)
 {
+    int return_value = 0;
+
+    if (WIFEXITED(shell->state)) {
+        return_value = WEXITSTATUS(shell->state);
+        if (return_value == 0 && cmd->input_type == PIPE)
+            return;
+        shell->state = return_value;
+        return;
+    }
     if (WIFSIGNALED(shell->state)) {
         if (WTERMSIG(shell->state) == SIGSEGV)
             write(2, "Segmentation fault", 18);

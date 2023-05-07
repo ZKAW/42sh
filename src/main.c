@@ -50,14 +50,22 @@ int verify_pipe(shell_t* shell)
     return 1;
 }
 
+void exit_shm(shell_t* shell)
+{
+    int status = *shell->shared_status.shared_var;
+    detach_shm(shell->shared_status);
+    exit(status);
+}
+
 int main(int ac UNUSED, char** av UNUSED, char** envp)
 {
     ssize_t size = 0;
     char* line = "";
     shell_t* shell = init_shell(envp);
     call_env(shell->envp);
+
     if (verify_pipe(shell))
-        return shell->state;
+        exit_shm(shell);
     while (1) {
         my_putstr(get_prompt_prefix(), 1);
         size = my_getline(&line, shell);
@@ -68,5 +76,6 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
     if (isatty(0))
         write(1, "exit\n", 5);
 
+    exit_shm(shell);
     return (shell->state);
 }

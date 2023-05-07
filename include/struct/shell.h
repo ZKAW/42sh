@@ -11,18 +11,20 @@
     #include <sys/types.h>
     #include <termios.h>
     #include "line.h"
+    #include "memory.h"
 
-        typedef struct shell {
-            char* root;
-            char** envp;
-            char* last_path;
-            int state;
-            char** paths;
-            pid_t sub;
-            struct termios term;
-            string_t* string;
-            history_t history;
-        } shell_t;
+typedef struct shell {
+    char* root;
+    char** envp;
+    char* last_path;
+    int state;
+    char** paths;
+    pid_t sub;
+    struct termios term;
+    string_t* string;
+    history_t history;
+    shared_memory_t shared_status;
+} shell_t;
 
 typedef struct path {
     char** list;
