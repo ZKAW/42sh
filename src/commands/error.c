@@ -14,6 +14,7 @@ int not_existing(char* path, shell_t* shell)
     write(2, path, strlen(path));
     write(2, ": Command not found.\n", 21);
     shell->state = 1;
+    SHARED_STATUS = shell->state;
     return 1;
 }
 
