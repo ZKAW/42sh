@@ -27,7 +27,7 @@ void init_special_vars(shell_t *shell)
     add_special_var(shell, "cwd", NULL);
     add_special_var(shell, "cwdcmd", NULL);
     add_special_var(shell, "ignoreeof", NULL);
-    add_special_var(shell, "term", "test");
+    add_special_var(shell, "term", "xterm-256color");
     add_special_var(shell, "precmd", NULL);
     update_cwd(shell);
 }
