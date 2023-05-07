@@ -12,6 +12,12 @@
     #include <termios.h>
     #include "line.h"
 
+typedef struct var {
+    char* key;
+    char* value;
+    struct var* next;
+} var_t;
+
         typedef struct shell {
             char* root;
             char** envp;
@@ -22,6 +28,7 @@
             struct termios term;
             string_t* string;
             history_t history;
+            var_t* vars;
         } shell_t;
 
 typedef struct path {

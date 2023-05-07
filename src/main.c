@@ -56,11 +56,13 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
     char* line = "";
     shell_t* shell = init_shell(envp);
     call_env(shell->envp);
+    size_t len = 0;
     if (verify_pipe(shell))
         return shell->state;
     while (1) {
         my_putstr(get_prompt_prefix(), 1);
-        size = my_getline(&line, shell);
+        //size = my_getline(&line, shell);
+        size = getline(&line, &len, stdin);
         if (size == 1) continue;
         if (size == EOF) break;
         handle_command(parse_command(line, shell), shell);
