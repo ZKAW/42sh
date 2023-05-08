@@ -32,7 +32,7 @@
 shell_t* init_shell(char** envp);
 void execute(cmd_t* cmd, shell_t* shell);
 int not_existing(char* path, shell_t* shell);
-void handle_status(shell_t* shell, cmd_t* cmd);
+int handle_status(shell_t* shell, cmd_t* cmd, int state);
 void run_builtin(cmd_t* cmd, shell_t* shell);
 char** get_env_paths(char** envp);
 int is_builtin(char* path);
@@ -45,7 +45,7 @@ list_t* split_pipes(char* input, list_t* next);
 list_t* get_command(char * str);
 void parse_output(cmd_t* command);
 void parse_input(cmd_t* command);
-void set_output(cmd_t* cmd);
+void set_output(cmd_t* cmd, int input_fd[2]);
 list_t* reverse_cmd(list_t* head);
 char** envp_cpy(char** envp);
 void handle_child_error(char** argv);

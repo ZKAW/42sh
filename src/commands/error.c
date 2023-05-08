@@ -31,26 +31,26 @@ void handle_child_error(char** argv)
     exit(1);
 }
 
-void handle_status(shell_t* shell, cmd_t* cmd)
+int handle_status(shell_t* shell, cmd_t* cmd, int state)
 {
     int return_value = 0;
 
-    if (WIFEXITED(shell->state)) {
-        return_value = WEXITSTATUS(shell->state);
+    if (WIFEXITED(state)) {
+        return_value = WEXITSTATUS(state);
         if (return_value == 0 && cmd->input_type == PIPE)
             return;
-        shell->state = return_value;
-        return;
+        return return_value;
     }
-    if (WIFSIGNALED(shell->state)) {
-        if (WTERMSIG(shell->state) == SIGSEGV)
+    if (WIFSIGNALED(state)) {
+        if (WTERMSIG(state) == SIGSEGV)
             write(2, "Segmentation fault", 18);
-        if (WTERMSIG(shell->state) == SIGFPE)
+        if (WTERMSIG(state) == SIGFPE)
             write(2, "Floating exception", 18);
-        if (WCOREDUMP(shell->state))
+        if (WCOREDUMP(state))
             write(2, " (core dumped)", 14);
         write(2, "\n", 1);
     }
-    if (shell->state == 256 || shell->state == 15)
-        shell->state = 1;
+    if (state == 256 || state == 15)
+        state = 1;
+    return state;
 }
