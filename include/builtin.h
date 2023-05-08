@@ -30,4 +30,10 @@ static const struct builtin_cmd builtin_cmds[] = {
     {NULL, NULL}
 };
 
+typedef struct alias_s {
+    char *alias;
+    char *command;
+    struct alias_s *next;
+} alias_t;
+
 #endif /* !BUILTIN_H_ */
