@@ -53,11 +53,24 @@ void copy_string(string_t* dest, string_t* src)
         dest->str[i] = src->str[i];
 }
 
-char* merge_string(string_t* string)
+char* merge_string(string_t* string, shell_t* shell)
 {
-    char* str = malloc(sizeof(char) * (string->len + 1));
-    for (int i = 0; i < string->len; i++)
-        str[i] = string->str[i];
-    str[string->len] = '\0';
-    return str;
+    char buffer[4096] = {0};
+    int position = 0;
+    string_t* last = shell->history.head;
+    for (int i = 0; i < string->len; i++) {
+        if (strncmp(&string->str[i], "!!", 2) == 0) {
+            strncpy(buffer + position, last->str, last->len - 1);
+            position += last->len - 1;
+            i++;
+            continue;
+        }
+        buffer[position++] = string->str[i];
+    }
+    buffer[position] = '\0';
+    string->len = position;
+    for (int i = 0; i < position; i++)
+        string->str[i] = buffer[i];
+    string->str[position] = '\n';
+    return strdup(buffer);
 }

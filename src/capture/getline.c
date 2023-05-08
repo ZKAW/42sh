@@ -48,12 +48,12 @@ ssize_t end_of_line(shell_t* shell, char **bufferptr)
     sprintf(shell->string->hour, "%d:%d", tm.tm_hour, tm.tm_min);
     disable_raw_mode(&shell->term);
     history->position = 0;
+    *bufferptr = merge_string(shell->string, shell);
     shell->string->next = history->head;
     if (history->head)
         history->head->prev = shell->string;
     history->head = shell->string;
     history->current = NULL;
-    *bufferptr = merge_string(shell->string);
     return shell->string->len;
 }
 
