@@ -77,8 +77,7 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
         if (size == EOF) break;
         handle_command(parse_command(line, shell), shell);
     }
-    if (isatty(0))
-        write(1, "exit\n", 5);
+    if (isatty(0)) write(1, "exit\n", 5);
     exit_shm(shell);
     return (shell->state);
 }

@@ -39,38 +39,10 @@ void append_string(char c, string_t* string)
     strncpy(string->str, cpy, string->len);
 }
 
-void print_string(string_t* string)
-{
-    for (int i = 0; i < string->len; i++)
-        dprintf(1, "%c", string->str[i]);
-}
-
 void copy_string(string_t* dest, string_t* src)
 {
     dest->len = src->len - 1;
     dest->position = src->position;
     for (int i = 0; i < src->len - 1; i++)
         dest->str[i] = src->str[i];
-}
-
-char* merge_string(string_t* string, shell_t* shell)
-{
-    char buffer[4096] = {0};
-    int position = 0;
-    string_t* last = shell->history.head;
-    for (int i = 0; i < string->len; i++) {
-        if (strncmp(&string->str[i], "!!", 2) == 0) {
-            strncpy(buffer + position, last->str, last->len - 1);
-            position += last->len - 1;
-            i++;
-            continue;
-        }
-        buffer[position++] = string->str[i];
-    }
-    buffer[position] = '\0';
-    string->len = position;
-    for (int i = 0; i < position; i++)
-        string->str[i] = buffer[i];
-    string->str[position] = '\n';
-    return strdup(buffer);
 }
