@@ -56,11 +56,15 @@ int set_input(cmd_t* cmd, shell_t* shell, int fd[2])
     return 0;
 }
 
-void set_output(cmd_t* cmd)
+void set_output(cmd_t* cmd, int output_fd[2])
 {
-    int output_fd;
+    int file_fd;
     if (cmd->output_type == FILE_PATH) {
-        output_fd = open(cmd->output, O_RDWR | cmd->append | O_CREAT, 0644);
-        dup2(output_fd, 1);
+        file_fd = open(cmd->output, O_RDWR | cmd->append | O_CREAT, 0644);
+        dup2(file_fd, 1);
+    }
+    if (cmd->output_type == PIPE) {
+        dup2(output_fd[1], 1);
+        close(output_fd[1]);
     }
 }

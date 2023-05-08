@@ -8,7 +8,8 @@
 #ifndef COMMAND_H_
     #define COMMAND_H_
 
-        #define MAX_ARGS 256
+    #define MAX_ARGS 256
+    #define FD_STATUS 10
 
 typedef enum {
     NONE,

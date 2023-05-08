@@ -61,10 +61,3 @@ char* merge_string(string_t* string)
     str[string->len] = '\0';
     return str;
 }
-
-string_t* get_string(string_t* string)
-{
-    static string_t* saved_string = NULL;
-    if (string != NULL) saved_string = string;
-    return (saved_string);
-}

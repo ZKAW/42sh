@@ -15,6 +15,7 @@ void handle_command(list_t* list, shell_t* shell)
     if (list == NULL) {
         printf("Invalid null command.\n");
         shell->state = 1;
+        SHARED_STATUS = shell->state;
     }
     while (list) {
         if ((list->condition == OR && shell->state == 0)
@@ -36,18 +37,29 @@ int verify_pipe(shell_t* shell)
     ssize_t size = 0;
     size_t len = 0;
     char* line = "";
+    int status = 0;
 
     if (isatty(0))
         return 0;
     while (size != EOF) {
         size = getline(&line, &len, stdin);
-        if (size == 1)
-            continue;
-        if (size == EOF)
-            return 1;
+        if (size == 1) continue;
+        if (size == EOF) return 1;
+        status = SHARED_STATUS;
         handle_command(parse_command(line, shell), shell);
+        if (status == 1) {
+            shell->state = status;
+            return 1;
+        }
     }
     return 1;
+}
+
+void exit_shm(shell_t* shell)
+{
+    int status = *shell->shared_status.shared_var;
+    detach_shm(shell->shared_status);
+    exit(status);
 }
 
 int main(int ac UNUSED, char** av UNUSED, char** envp)
@@ -57,7 +69,7 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
     shell_t* shell = init_shell(envp);
     call_env(shell->envp);
     if (verify_pipe(shell))
-        return shell->state;
+        exit_shm(shell);
     while (1) {
         my_putstr(get_prompt_prefix(), 1);
         size = my_getline(&line, shell);
@@ -67,6 +79,6 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
     }
     if (isatty(0))
         write(1, "exit\n", 5);
-
+    exit_shm(shell);
     return (shell->state);
 }

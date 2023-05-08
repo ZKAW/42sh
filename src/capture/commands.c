@@ -44,7 +44,6 @@ int handle_commands(char c, shell_t* shell)
     string_t* string = shell->string;
     if (handle_backspace(c, string))
         return 1;
-    //handle control + c
     if (c == '\003') {
         if (string->len != 0) {
             dprintf(1, "^C\n");
