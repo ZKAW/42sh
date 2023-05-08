@@ -38,6 +38,6 @@
         string_t* create_string(void);
         void append_string(char c, string_t* string);
         void print_string(string_t* string);
-        char* merge_string(string_t* string);
+        char* merge_string(string_t* string, shell_t* shell);
         void show_string_info(string_t* string);
 #endif
