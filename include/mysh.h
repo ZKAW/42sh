@@ -21,6 +21,7 @@
 #include "builtin.h"
 #include "struct/command.h"
 #include "struct/shell.h"
+#include "struct/pipe.h"
 #include "macro/utils.h"
 #include "macro/cmd.h"
 

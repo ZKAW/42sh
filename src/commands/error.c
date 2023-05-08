@@ -38,7 +38,7 @@ int handle_status(shell_t* shell, cmd_t* cmd, int state)
     if (WIFEXITED(state)) {
         return_value = WEXITSTATUS(state);
         if (return_value == 0 && cmd->input_type == PIPE)
-            return;
+            return 0;
         return return_value;
     }
     if (WIFSIGNALED(state)) {
@@ -50,7 +50,5 @@ int handle_status(shell_t* shell, cmd_t* cmd, int state)
             write(2, " (core dumped)", 14);
         write(2, "\n", 1);
     }
-    if (state == 256 || state == 15)
-        state = 1;
     return state;
 }
