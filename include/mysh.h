@@ -33,7 +33,7 @@
 shell_t* init_shell(char** envp);
 void execute(cmd_t* cmd, shell_t* shell);
 int not_existing(char* path, shell_t* shell);
-int handle_status(shell_t* shell, cmd_t* cmd, int state);
+int handle_status(shell_t* shell, int state);
 void run_builtin(cmd_t* cmd, shell_t* shell);
 char** get_env_paths(char** envp);
 int is_builtin(char* path);

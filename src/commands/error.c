@@ -22,7 +22,7 @@ void handle_child_error(char** argv)
 {
     if (errno == 8) {
         write(2, argv[0], strlen(argv[0]));
-        write(2, ": Exec format error. Wrong Architecture.\n", 41);
+        write(2, ": Exec format error. Binary file not executable.\n", 49);
     }
     if (errno == 13) {
         write(2, argv[0], strlen(argv[0]));
@@ -31,14 +31,12 @@ void handle_child_error(char** argv)
     exit(1);
 }
 
-int handle_status(shell_t* shell, cmd_t* cmd, int state)
+int handle_status(shell_t* shell, int state)
 {
     int return_value = 0;
 
     if (WIFEXITED(state)) {
         return_value = WEXITSTATUS(state);
-        if (return_value == 0 && cmd->input_type == PIPE)
-            return 0;
         return return_value;
     }
     if (WIFSIGNALED(state)) {

@@ -7,6 +7,8 @@
 
 #include "mysh.h"
 
+void handle_sigchld(int signo);
+
 void teach_child(char* path, char** cmd, shell_t* shell)
 {
     if (execve(path, cmd, shell->envp) == -1) {
@@ -38,11 +40,30 @@ void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2])
     }
 }
 
-void handle_sigchld(int signo) {
-    (void)signo;
+void wait_pipe_execution(pipe_t pipe, shell_t* shell)
+{
+    int output = 0, input = 0;
+    close(pipe.fd[0]);
+    fcntl(pipe.fd[0], F_SETFL, O_NONBLOCK);
+    while (waitpid(pipe.input_pid, &input, WNOHANG) == 0) {
+        char buf[1024];
+        int n = read(pipe.fd[0], buf, sizeof(buf));
+        if (n > 0) {
+            write(1, buf, n);
+        }
+    }
+    close(pipe.fd[1]);
+    close(pipe.fd[0]);
+    waitpid(pipe.output_pid, &output, 0);
+    if (input != 0)
+        shell->state = handle_status(shell, input);
+    if (output != 0)
+        shell->state = handle_status(shell, output);
+    exit(shell->state);
 }
 
-void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2]) {
+void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2])
+{
     pid_t input_sub = fork();
     if (input_sub == 0) {
         run_command(cmd->next, shell, fd);
@@ -56,27 +77,7 @@ void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2]) {
         return;
     }
     signal(SIGCHLD, handle_sigchld);
-    int output = 0, input = 0;
-    close(fd[0]);
-    fcntl(fd[0], F_SETFL, O_NONBLOCK);
-    while (waitpid(input_sub, &input, WNOHANG) == 0) {
-        char buf[1024];
-        int n = read(fd[0], buf, sizeof(buf));
-        if (n > 0) {
-            write(1, buf, n);
-        }
-    }
-    close(fd[1]);
-    close(fd[0]);
-    waitpid(output_sub, &output, 0);
-    if (input != 0)
-        shell->state = handle_status(shell, cmd->next, input);
-    if (output != 0)
-        shell->state = handle_status(shell, cmd, output);
-    // dprintf(2, "output: %d\n", WIFSIGNALED(output));
-    // dprintf(2, "input: %d\n", WIFSIGNALED(input));
-    // dprintf(2, "state: %d\n", shell->state);
-    exit(shell->state);
+    wait_pipe_execution((pipe_t) {input_sub, output_sub, fd}, shell);
     signal(SIGCHLD, SIG_DFL);
 }
 
@@ -90,6 +91,6 @@ void execute(cmd_t* cmd, shell_t* shell)
         return;
     }
     waitpid(sub, &shell->state, 0);
-    shell->state = handle_status(shell, cmd, shell->state);
+    shell->state = handle_status(shell, shell->state);
     SHARED_STATUS = shell->state;
 }

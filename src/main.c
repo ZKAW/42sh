@@ -43,10 +43,8 @@ int verify_pipe(shell_t* shell)
         return 0;
     while (size != EOF) {
         size = getline(&line, &len, stdin);
-        if (size == 1)
-            continue;
-        if (size == EOF)
-            return 1;
+        if (size == 1) continue;
+        if (size == EOF) return 1;
         status = SHARED_STATUS;
         handle_command(parse_command(line, shell), shell);
         if (status == 1) {
@@ -70,7 +68,6 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
     char* line = "";
     shell_t* shell = init_shell(envp);
     call_env(shell->envp);
-
     if (verify_pipe(shell))
         exit_shm(shell);
     while (1) {
@@ -82,7 +79,6 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
     }
     if (isatty(0))
         write(1, "exit\n", 5);
-
     exit_shm(shell);
     return (shell->state);
 }

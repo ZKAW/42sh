@@ -17,6 +17,7 @@ int handle_commands(char c, shell_t* shell);
 void disable_raw_mode(struct termios* raw);
 void enable_raw_mode(struct termios* raw);
 string_t* get_string(string_t* string);
+void sigint_handler(int sig);
 
 
 void handle_regular_char(shell_t* shell, char c)
@@ -56,25 +57,11 @@ ssize_t end_of_line(shell_t* shell, char **bufferptr)
     return shell->string->len;
 }
 
-void sigint_handler(int sig) {
-    string_t* string = get_string(NULL);
-    (void)sig;
-    if (string->len != 0) {
-        write(STDOUT_FILENO, "^C", 2);
-        string->len = 0;
-        string->position = 0;
-        string->str[0] = '\0';
-    }
-    write(STDOUT_FILENO, "\n", 1);
-    my_putstr(get_prompt_prefix(), 1);
-}
-
 ssize_t my_getline(char **bufferptr, shell_t* shell)
 {
     char c;
     int valread = 0;
-    shell->string = create_string();
-    get_string(shell->string);
+    shell->string = get_string(create_string());
     signal(SIGINT, sigint_handler);
     enable_raw_mode(&shell->term);
     for (;;) {

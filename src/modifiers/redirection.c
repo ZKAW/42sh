@@ -32,55 +32,6 @@ void guarantee_pipe(int fd[2], shell_t* shell)
     }
 }
 
-// static int exec_pipe(shell_t *shell, int index)
-// {
-//     dup2(shell->parent_fd[0], 0);
-//     if (index != shell->cmd->nb_pipes - 1)
-//         dup2(shell->child_fd[1], 1);
-
-//     close(shell->child_fd[0]);
-//     close(shell->child_fd[1]);
-
-//     shell->cmd = shell->pipes[index];
-//     handle_redirs(shell);
-//     exit(shell->return_code);
-// }
-
-
-// static void exec_command(shell_t *shell)
-// {
-//     int status;
-
-//     close(shell->child_fd[1]);
-//     shell->parent_fd[0] = shell->child_fd[0];
-//     if (shell->cmd->index == shell->cmd->nb_pipes - 1) wait(&status);
-//     int return_code = interpret_status(status, errno,
-//                             shell->cmd->args[0], 0);
-//     if (return_code != 0)
-//         shell->return_code = return_code;
-// }
-
-// void handle_pipes(shell_t *shell)
-// {
-//     for (int i = 0; i < shell->cmd->nb_pipes; i++) {
-//         shell->cmd->index = i;
-//         if (create_pipe(shell->child_fd)) return;
-
-//         pid_t pid = fork();
-//         if (pid == -1) {
-//             perror("fork");
-//             shell->return_code = 1;
-//             return;
-//         }
-//         if (pid == 0) exec_pipe(shell, i);
-
-//         exec_command(shell);
-//     }
-
-//     close(shell->parent_fd[0]);
-// }
-
-
 int set_input(cmd_t* cmd, shell_t* shell, int fd[2])
 {
     int file_fd;
