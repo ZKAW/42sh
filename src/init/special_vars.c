@@ -7,27 +7,31 @@
 
 #include "mysh.h"
 
-void add_special_var(shell_t *shell, char *key, char *value)
+void set_var(shell_t *shell, char *key, char *value)
 {
-    var_t *tmp = malloc(sizeof(var_t));
+    for (var_t *tmp = shell->vars; tmp->next != NULL; tmp = tmp->next) {
+        if (my_strcmp(tmp->key, key) == 0) {
+            tmp->value = value;
+            return;
+        }
+    }
+    var_t *tmp2 = malloc(sizeof(var_t));
     if (shell->vars->key == NULL) {
         shell->vars->key = key;
         shell->vars->value = value;
         return;
     }
-    for (tmp = shell->vars; tmp->next != NULL; tmp = tmp->next);
-    tmp->next = malloc(sizeof(var_t));
-    tmp->next->key = key;
-    tmp->next->value = value;
-    tmp->next->next = NULL;
+    for (tmp2 = shell->vars; tmp2->next != NULL; tmp2 = tmp2->next);
+    tmp2->next = malloc(sizeof(var_t));
+    tmp2->next->key = key;
+    tmp2->next->value = value;
+    tmp2->next->next = NULL;
 }
 
 void init_special_vars(shell_t *shell)
 {
-    add_special_var(shell, "cwd", NULL);
-    add_special_var(shell, "cwdcmd", NULL);
-    add_special_var(shell, "ignoreeof", NULL);
-    add_special_var(shell, "term", "xterm-256color");
-    add_special_var(shell, "precmd", NULL);
-    update_cwd(shell);
+    char *cwd = malloc(sizeof(char) * 500);
+    cwd = getcwd(cwd, 500);
+    set_var(shell, "cwd", cwd);
+    set_var(shell, "term", get_env_var(shell->envp, "TERM"));
 }
