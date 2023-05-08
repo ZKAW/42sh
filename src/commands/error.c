@@ -11,8 +11,7 @@ int not_existing(char* path, shell_t* shell)
 {
     if (access(path, F_OK) == 0)
         return 0;
-    write(2, path, strlen(path));
-    write(2, ": Command not found.\n", 21);
+    dprintf(2, "%s: Command not found.\n", path);
     shell->state = 1;
     SHARED_STATUS = shell->state;
     return 1;
@@ -21,17 +20,15 @@ int not_existing(char* path, shell_t* shell)
 void handle_child_error(char** argv)
 {
     if (errno == 8) {
-        write(2, argv[0], strlen(argv[0]));
-        write(2, ": Exec format error. Binary file not executable.\n", 49);
+        dprintf(2, "%s: Exec format error. Wrong Architecture.\n", argv[0]);
     }
     if (errno == 13) {
-        write(2, argv[0], strlen(argv[0]));
-        write(2, ": Permission denied.\n", 21);
+        dprintf(2, "%s: Permission denied.\n", argv[0]);
     }
     exit(1);
 }
 
-int handle_status(shell_t* shell, int state)
+int handle_status(int state)
 {
     int return_value = 0;
 

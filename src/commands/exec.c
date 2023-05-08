@@ -56,9 +56,9 @@ void wait_pipe_execution(pipe_t pipe, shell_t* shell)
     close(pipe.fd[0]);
     waitpid(pipe.output_pid, &output, 0);
     if (input != 0)
-        shell->state = handle_status(shell, input);
+        shell->state = handle_status(input);
     if (output != 0)
-        shell->state = handle_status(shell, output);
+        shell->state = handle_status(output);
     exit(shell->state);
 }
 
@@ -91,6 +91,6 @@ void execute(cmd_t* cmd, shell_t* shell)
         return;
     }
     waitpid(sub, &shell->state, 0);
-    shell->state = handle_status(shell, shell->state);
+    shell->state = handle_status(shell->state);
     SHARED_STATUS = shell->state;
 }
