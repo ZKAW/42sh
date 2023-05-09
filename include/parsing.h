@@ -32,7 +32,7 @@
 
         static char* tokens[N_TOKENS] = {
             ">>",">", "<<", "<", "||" ,"|", ";", "`", "&&" ,"\'", "\"", NULL
-            };
+        };
 
         static char* (*parsers[N_TOKENS]) (PARAMS) = {
             parse_double_output,
