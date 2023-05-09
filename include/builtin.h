@@ -15,6 +15,8 @@ void builtin_env(char** cmd UNUSED, shell_t* shell);
 void builtin_setenv(char** cmd, shell_t* shell);
 void builtin_unsetenv(char** cmd, shell_t* shell);
 void builtin_exit(char** cmd, shell_t* shell);
+void builtin_alias(char** cmd, shell_t* shell);
+void builtin_unalias(char** cmd, shell_t* shell);
 
 struct builtin_cmd {
     const char *name;
@@ -27,13 +29,9 @@ static const struct builtin_cmd builtin_cmds[] = {
     {"setenv", builtin_setenv},
     {"unsetenv", builtin_unsetenv},
     {"exit", builtin_exit},
+    {"alias", builtin_alias},
+    {"unalias", builtin_unalias},
     {NULL, NULL}
 };
-
-typedef struct alias_s {
-    char *alias;
-    char *command;
-    struct alias_s *next;
-} alias_t;
 
 #endif /* !BUILTIN_H_ */

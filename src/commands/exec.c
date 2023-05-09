@@ -16,10 +16,6 @@ void teach_child(char* path, char** cmd, shell_t* shell)
 
 char *get_local_var(shell_t *shell, char *key)
 {
-    // iterate through shell->vars
-    // if shell->vars[i].key == key, return shell->vars[i].value
-    // else return NULL
-    printf("key: %s\n", key);
     for (int i = 0; shell->vars->next != NULL; i++) {
         if (my_strcmp(shell->vars->key, key) == 0)
             return shell->vars->value;
@@ -32,14 +28,6 @@ char *get_local_var(shell_t *shell, char *key)
 
 int assign_variables(cmd_t* cmd, shell_t* shell)
 {
-    // iterate through cmd->argv
-    // if cmd->argv[i] starts with $, replace it with the value of the variable
-    // also check if the value of the variable corresponds to a get_env_var value
-    // if value != NULL, variable is found inside env variable, else it doesn't exist
-    // if variable doesn't exist, print error message
-    // if variable exists, replace cmd->argv[i] with the value of the variable
-    // if variable doesn't exist, return 1
-    // else return 0
     for (int i = 0; cmd->argv[i] != NULL; i++) {
         if (cmd->argv[i][0] == '$') {
             char *var = get_local_var(shell, cmd->argv[i] + 1);
@@ -48,8 +36,34 @@ int assign_variables(cmd_t* cmd, shell_t* shell)
                 return 1;
             }
             cmd->argv[i] = var;
-            printf("cmd->argv[%d]: %s\n", i, cmd->argv[i]);
         }
+    }
+    return 0;
+}
+
+char* get_alias(shell_t* shell, char* key)
+{
+    for (int i = 0; shell->aliases->next != NULL; i++) {
+        if (my_strcmp(shell->aliases->command, key) == 0)
+            return shell->aliases->alias;
+        shell->aliases = shell->aliases->next;
+        }
+    if (my_strcmp(shell->aliases->command, key) == 0) {
+        printf("%s\n", shell->aliases->alias);
+        return shell->aliases->alias;
+    }
+    return NULL;
+}
+
+int cmd_is_alias(cmd_t* cmd, shell_t* shell)
+{
+    for (int i = 0; cmd->argv[i] != NULL; i++) {
+        char *alias = get_alias(shell, cmd->argv[i]);
+        if (alias == NULL) {
+            return 1;
+        }
+        cmd->argv[i] = alias;
+        printf("f: %s\n", cmd->argv[i]);
     }
     return 0;
 }
@@ -59,6 +73,8 @@ void run_command(cmd_t* cmd, shell_t* shell)
     int fd[2];
     if(assign_variables(cmd, shell) == 1)
         return;
+    // if(cmd_is_alias(cmd, shell) == 1)
+    //     return;
     char* path = cmd->argv[0];
     char *full_path = get_full_path(cmd->argv[0], shell);
 
