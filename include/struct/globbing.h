@@ -8,8 +8,8 @@
 #ifndef SH_42_GLOBBING_H
     #define SH_42_GLOBBING_H
 
-        static char* oppeners = "*?[{";
-        static char* closers = "*?]}";
+        const char* oppeners = "*?[{";
+        const char* closers = "*?]}";
 
         typedef enum {
             GLOB_STAR, // * -> any string
