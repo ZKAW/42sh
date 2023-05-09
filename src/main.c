@@ -66,8 +66,7 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
 {
     ssize_t size = 0;
     char* line = "";
-    shell_t* shell = init_shell(envp);
-    call_env(shell->envp);
+    shell_t* shell = get_shell(init_shell(envp));
     if (verify_pipe(shell))
         exit_shm(shell);
     while (1) {
@@ -82,3 +81,31 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
     exit_shm(shell);
     return (shell->state);
 }
+
+// int main() {
+//     pid_t pid = fork();
+
+//     if (pid == 0) {
+//         // Child process
+//         printf("Child process executing...\n");
+//         sleep(10); // Simulate some work
+//         printf("Child process exiting...\n");
+//         exit(0);
+//     } else if (pid > 0) {
+//         // Parent process
+//         printf("Parent process executing...\n");
+//         printf("Sending SIGSTOP signal to child process...\n");
+//         kill(pid, SIGSTOP); // Suspend the child process
+//         printf("Child process suspended\n");
+//         sleep(5); // Wait for 5 seconds
+//         printf("Sending SIGCONT signal to child process...\n");
+//         kill(pid, SIGCONT); // Resume the child process
+//         wait(NULL); // Wait for the child process to exit
+//     } else {
+//         // Error
+//         printf("Failed to create child process\n");
+//         return 1;
+//     }
+
+//     return 0;
+// }

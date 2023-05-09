@@ -9,7 +9,7 @@
 
 string_t* get_string(string_t* string);
 
-void handle_sigchld(int signo)
+void sigchld_handler(int signo)
 {
     (void)signo;
 }
@@ -27,3 +27,11 @@ void sigint_handler(int sig)
     write(STDOUT_FILENO, "\n", 1);
     my_putstr(get_prompt_prefix(), 1);
 }
+
+// void sigtstp_handler(int sig)
+// {
+//     (void)sig;
+//     shell_t* shell = get_shell(NULL);
+//     tcsetpgrp(STDIN_FILENO, shell->sub);
+//     kill(shell->sub, SIGTSTP);
+// }

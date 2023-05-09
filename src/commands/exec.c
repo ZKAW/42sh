@@ -7,7 +7,7 @@
 
 #include "mysh.h"
 
-void handle_sigchld(int signo);
+void sigchld_handler(int signo);
 
 void teach_child(char* path, char** cmd, shell_t* shell)
 {
@@ -76,7 +76,7 @@ void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2])
         teach_child(get_full_path(cmd->argv[0], shell), cmd->argv, shell);
         return;
     }
-    signal(SIGCHLD, handle_sigchld);
+    signal(SIGCHLD, sigchld_handler);
     wait_pipe_execution((pipe_t) {input_sub, output_sub, fd}, shell);
     signal(SIGCHLD, SIG_DFL);
 }

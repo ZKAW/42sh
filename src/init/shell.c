@@ -34,6 +34,7 @@ shell_t* init_shell(char** envp)
     shell->history.current = NULL;
     shell->history.position = 0;
     shell->history.len = 0;
+    shell->pgid = getpgrp();
     create_shared_status(shell);
     return shell;
 }

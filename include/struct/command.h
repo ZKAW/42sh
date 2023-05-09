@@ -42,6 +42,7 @@ typedef struct command_array {
     condition_t condition;
     struct command_array* next;
     struct command_array* prev;
+    bool is_background;
 } list_t;
 
 #endif /* !COMMAND_H_ */

@@ -20,10 +20,13 @@ typedef struct shell {
     int state;
     char** paths;
     pid_t sub;
+    pid_t pgid;
     struct termios term;
     string_t* string;
     history_t history;
     shared_memory_t shared_status;
+    __sighandler_t sigtstp_handler;
+    __sighandler_t sigcont_handler;
 } shell_t;
 
 typedef struct path {

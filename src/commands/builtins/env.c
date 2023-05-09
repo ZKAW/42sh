@@ -12,13 +12,6 @@ void builtin_env(char** cmd UNUSED, shell_t* shell)
     print_array(shell->envp);
 }
 
-char **call_env(char **env)
-{
-    static char **saved_env = NULL;
-    if (saved_env == NULL) saved_env = env;
-    return (saved_env);
-}
-
 char** envp_cpy(char** envp)
 {
     int i;
