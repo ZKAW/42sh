@@ -34,12 +34,12 @@ extern int arrlen(char **arr)
     return i;
 }
 
-extern int full_arrlen(char **arr)
+extern char *concat_str(char *dest, char *src)
 {
-    int total = 0;
-    int i;
+    int len_arr = strlen(dest);
 
-    for (i = 0; arr[i]; ++i)
-        total += strlen(arr[i]);
-    return total + i;
+    dest = realloc(dest, ((len_arr + strlen(src)) + 2));
+    dest = (dest[len_arr - 1] != '/') ? strcat(dest, "/")
+    : dest;
+    return strcat(dest, src);
 }

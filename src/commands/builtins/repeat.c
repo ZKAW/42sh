@@ -7,6 +7,16 @@
 
 #include "../../../include/mysh.h"
 
+static int full_arrlen(char **arr)
+{
+    int total = 0;
+    int i;
+
+    for (i = 0; arr[i]; ++i)
+        total += strlen(arr[i]);
+    return total + i;
+}
+
 static int check_alph(char *str)
 {
     for (int i = 0; str[i]; ++i)
