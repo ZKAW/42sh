@@ -7,6 +7,7 @@
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <dirent.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
@@ -24,6 +25,7 @@
 #include "struct/pipe.h"
 #include "macro/utils.h"
 #include "macro/cmd.h"
+#include "struct/dir.h"
 
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
@@ -59,4 +61,11 @@ void throw_error(char* const strerror, shell_t* shell, int ernum);
 shared_memory_t create_shm(int shared_var);
 void detach_shm(shared_memory_t shared_memory);
 string_t* get_string(string_t* string);
+extern char **split_cmd(char **envp);
+extern int remove_first_n_chars(char *str, int n);
+extern int core_completion(char *cmd, char **arr, char ***output);
+extern int cmp_sort(const void *a, const void *b);
+extern int completion(char *cmd, char **envp);
+extern int arrlen(char **arr);
+
 #endif
