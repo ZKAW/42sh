@@ -26,6 +26,7 @@
 #include "macro/utils.h"
 #include "macro/cmd.h"
 #include "struct/dir.h"
+#include "struct/echo.h"
 
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
@@ -68,5 +69,15 @@ extern int cmp_sort(const void *a, const void *b);
 extern int completion(char *cmd, char **envp);
 extern int arrlen(char **arr);
 extern char *concat_str(char *dest, char *src);
+extern char* arr_to_str(char** arr, char delim);
+extern char *parse_string(char *str);
+extern char *parse_args(char **str, args_t *struc);
+extern int in_string(char *str, char c);
+extern int search_char(char *str, char c);
+extern int check_back_backspaces(char *str, args_t *struc);
+extern int handle_basicdisplay(char *str, args_t *struc);
+extern int free_data(char *str, args_t *struc);
+extern int check_interpretation(int *interpret, char *args);
+extern int print_help(void);
 
 #endif
