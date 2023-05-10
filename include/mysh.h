@@ -67,5 +67,6 @@ extern int core_completion(char *cmd, char **arr, char ***output);
 extern int cmp_sort(const void *a, const void *b);
 extern int completion(char *cmd, char **envp);
 extern int arrlen(char **arr);
+extern int full_arrlen(char **arr);
 
 #endif

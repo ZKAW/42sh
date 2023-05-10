@@ -33,3 +33,13 @@ extern int arrlen(char **arr)
     for (i = 0; arr[i]; ++i);
     return i;
 }
+
+extern int full_arrlen(char **arr)
+{
+    int total = 0;
+    int i;
+
+    for (i = 0; arr[i]; ++i)
+        total += strlen(arr[i]);
+    return total + i;
+}

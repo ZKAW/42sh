@@ -15,6 +15,7 @@ void builtin_env(char** cmd UNUSED, shell_t* shell);
 void builtin_setenv(char** cmd, shell_t* shell);
 void builtin_unsetenv(char** cmd, shell_t* shell);
 void builtin_exit(char** cmd, shell_t* shell);
+void repeat_builtin(char** cmd, shell_t* shell);
 
 struct builtin_cmd {
     const char *name;
@@ -27,6 +28,7 @@ static const struct builtin_cmd builtin_cmds[] = {
     {"setenv", builtin_setenv},
     {"unsetenv", builtin_unsetenv},
     {"exit", builtin_exit},
+    {"repeat", repeat_builtin},
     {NULL, NULL}
 };
 
