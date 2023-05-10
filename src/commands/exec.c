@@ -85,18 +85,19 @@ void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2])
 void execute(cmd_t* cmd, shell_t* shell)
 {
     pid_t sub = fork();
-    if (cmd->is_background && cmd->job->pgid == -1) {
+
+    if (sub == 0) {
+        shell->sub = (IS_JOB_BG(cmd->job)) ? setsid() : getpid();
+        run_command(cmd, shell, NULL);
+        return;
+    }
+    if (IS_JOB_BG(cmd->job) && cmd->job->pgid == -1) {
         cmd->job->pgid = sub;
         printf("[%d] %d\n", cmd->job->id, cmd->job->pgid);
         fflush(stdout);
     }
 
-    if (sub == 0) {
-        shell->sub = cmd->is_background ? setsid() : getpid();
-        run_command(cmd, shell, NULL);
-        return;
-    }
-    if (cmd->is_background)
+    if (IS_JOB_BG(cmd->job))
         return;
     waitpid(sub, &shell->state, 0);
     shell->state = handle_status(shell->state);

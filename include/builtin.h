@@ -10,15 +10,18 @@
 
     #include "mysh.h"
 
-void builtin_cd(char** cmd, shell_t* shell);
-void builtin_env(char** cmd UNUSED, shell_t* shell);
-void builtin_setenv(char** cmd, shell_t* shell);
-void builtin_unsetenv(char** cmd, shell_t* shell);
-void builtin_exit(char** cmd, shell_t* shell);
+    #define BUILTIN_PARAMS char** cmd, shell_t* shell
+
+void builtin_cd(BUILTIN_PARAMS);
+void builtin_env(BUILTIN_PARAMS);
+void builtin_setenv(BUILTIN_PARAMS);
+void builtin_unsetenv(BUILTIN_PARAMS);
+void builtin_exit(BUILTIN_PARAMS);
+void builtin_jobs(BUILTIN_PARAMS);
 
 struct builtin_cmd {
     const char *name;
-    void (*func)(char** cmd, shell_t* shell);
+    void (*func)(BUILTIN_PARAMS);
 };
 
 static const struct builtin_cmd builtin_cmds[] = {
@@ -28,6 +31,7 @@ static const struct builtin_cmd builtin_cmds[] = {
     {"setenv", builtin_setenv},
     {"unsetenv", builtin_unsetenv},
     {"exit", builtin_exit},
+    {"jobs", builtin_jobs},
     {NULL, NULL}
 };
 

@@ -63,7 +63,8 @@ cmd_t* append_command(list_t* array);
 void close_cmd(cmd_t* cmd);
 void add_job(shell_t *shell, job_t *job);
 void set_job_status(shell_t *shell, job_t *job, job_status_t status);
-job_t *init_job(shell_t *shell, char *name);
+job_t *init_job(shell_t *shell, char *name, job_type_t type);
 int is_pid_alive(pid_t pid);
+void display_jobs(shell_t *shell, int verbose);
 
 #endif

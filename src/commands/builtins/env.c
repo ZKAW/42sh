@@ -7,8 +7,9 @@
 
 #include "mysh.h"
 
-void builtin_env(char** cmd UNUSED, shell_t* shell)
+void builtin_env(BUILTIN_PARAMS)
 {
+    (void)cmd;
     print_array(shell->envp);
 }
 

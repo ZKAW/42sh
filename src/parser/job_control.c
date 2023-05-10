@@ -11,7 +11,6 @@ char *parse_bg(char *cmd_str, list_t **command_array, shell_t *shell)
 {
     (void)shell;
     cmd_t *cmd = (*command_array)->cmd;
-    cmd->is_background = true;
-    cmd->job = init_job(shell, cmd->argv[0]);
+    cmd->job = init_job(shell, cmd->argv[0], BG);
     return cmd_str;
 }

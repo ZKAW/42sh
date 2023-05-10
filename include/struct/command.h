@@ -37,7 +37,6 @@ typedef struct command {
     int append;
     struct command* next;
     struct command* prev;
-    bool is_background;
     job_t* job;
 } cmd_t;
 
