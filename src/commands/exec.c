@@ -41,10 +41,6 @@ int assign_variables(cmd_t* cmd, shell_t* shell)
     return 0;
 }
 
-
-////////////////////////
-
-
 char *get_alias(shell_t *shell, char *key)
 {
     if (shell->aliases->alias == NULL)
@@ -84,6 +80,22 @@ void insert_str_to_array(char** array, char* str, int index, cmd_t* cmd)
         cmd->argv[j] = splitted[j];
 }
 
+void add_str_to_end_of_array(char** array, char* str, cmd_t* cmd)
+{
+    char** new_array = malloc(sizeof(char*) * (my_array_len(array) + 1));
+    int i = 0;
+    for (; array[i] != NULL; i++)
+        new_array[i] = array[i];
+    char** splitted = my_str_to_word_array(str, ' ');
+    for (int j = 0; splitted[j] != NULL; j++) {
+        new_array[i] = splitted[j];
+        i++;
+    }
+    new_array[i] = NULL;
+    for (int j = 0; splitted[j] != NULL; j++)
+        cmd->argv[j] = splitted[j];
+}
+
 int cmd_is_alias(cmd_t* cmd, shell_t* shell)
 {
     for (int i = 0; cmd->argv[i] != NULL; i++) {
@@ -96,9 +108,27 @@ int cmd_is_alias(cmd_t* cmd, shell_t* shell)
     return 0;
 }
 
+void precmd_on_alias(cmd_t* cmd, shell_t* shell)
+{
+    char *alias = NULL; alias_t *tmp = NULL;
+    if (shell->aliases->alias == NULL)
+        return;
+    for (tmp = shell->aliases; tmp->next != NULL; tmp = tmp->next) {
+        if (my_strcmp(tmp->alias, "precmd") == 0)
+            alias = tmp->command;
+    }
+    if (my_strcmp(tmp->alias, "precmd") == 0)
+        alias = tmp->command;
+
+    if (alias != NULL) {
+        add_str_to_end_of_array(cmd->argv, alias, cmd);
+    }
+}
+
 void run_command(cmd_t* cmd, shell_t* shell)
 {
     int fd[2];
+    precmd_on_alias(cmd, shell);
     if(assign_variables(cmd, shell) == 1)
         return;
     cmd_is_alias(cmd, shell);
