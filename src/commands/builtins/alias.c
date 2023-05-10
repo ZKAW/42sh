@@ -43,6 +43,16 @@ alias_t* add_alias(char **buffer, alias_t *alias)
     return (alias);
 }
 
+int have_space(char *str)
+{
+    int i = 0;
+    for (; str[i] != '\0'; i++) {
+        if (str[i] == ' ')
+            return (1);
+    }
+    return (0);
+}
+
 void show_alias(alias_t *alias, char **buffer)
 {
     alias_t *tmp;
@@ -73,9 +83,15 @@ void print_alias(alias_t *alias)
         return;
     }
     for (tmp = alias; tmp->next != NULL; tmp = tmp->next) {
-        printf("%s\t(%s)\n", tmp->alias, tmp->command);
+        if (have_space(tmp->command) == 1)
+            printf("%s\t(%s)\n", tmp->alias, tmp->command);
+        else
+            printf("%s\t%s\n", tmp->alias, tmp->command);
     }
-    printf("%s\t(%s)\n", tmp->alias, tmp->command);
+    if (have_space(tmp->command) == 1)
+        printf("%s\t(%s)\n", tmp->alias, tmp->command);
+    else
+        printf("%s\t%s\n", tmp->alias, tmp->command);
 }
 
 void builtin_alias(char** cmd, shell_t *shell)

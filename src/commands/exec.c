@@ -98,16 +98,10 @@ int cmd_is_alias(cmd_t* cmd, shell_t* shell)
 
 void run_command(cmd_t* cmd, shell_t* shell)
 {
-    // for (int i = 0; cmd->argv[i] != NULL; i++) {
-    //     printf("%s\n", cmd->argv[i]);
-    // }
     int fd[2];
     if(assign_variables(cmd, shell) == 1)
         return;
     cmd_is_alias(cmd, shell);
-    for (int i = 0; cmd->argv[i] != NULL; i++) {
-        printf("%s\n", cmd->argv[i]);
-    }
     char* path = cmd->argv[0];
     char *full_path = get_full_path(cmd->argv[0], shell);
 
