@@ -53,3 +53,10 @@ void reverse_head(cmd_t** head)
         *head = temp->prev;
     }
 }
+
+void add_arg(cmd_t* cmd, char* arg)
+{
+    cmd->argv = realloc(cmd->argv, sizeof(char*) * (cmd->argc + 2));
+    cmd->argv[cmd->argc++] = arg;
+    cmd->argv[cmd->argc] = NULL;
+}

@@ -29,7 +29,7 @@ shell_t* init_shell(char** envp)
     shell->last_path = malloc(sizeof (char) * 500);
     shell->state = 0;
     shell->paths = get_env_paths(envp);
-        shell->history.head = NULL;
+    shell->history.head = NULL;
     shell->history.tail = NULL;
     shell->history.current = NULL;
     shell->history.position = 0;

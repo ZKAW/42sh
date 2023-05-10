@@ -23,10 +23,11 @@ typedef enum CONDITION {
     OR,
 } condition_t;
 
+
 typedef struct command {
     int argc;
     char* path;
-    char* argv[256];
+    char** argv;
     char* output;
     char* input;
     char* full_output;
@@ -42,6 +43,7 @@ typedef struct command_array {
     condition_t condition;
     struct command_array* next;
     struct command_array* prev;
+    int in_subshell;
 } list_t;
 
 #endif /* !COMMAND_H_ */

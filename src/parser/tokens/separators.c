@@ -39,6 +39,6 @@ char* parse_quotes(char* cmd_str, list_t** command_array, shell_t* shell)
         cmd_str++;
     }
     cmd_str++;
-    cmd->argv[cmd->argc++] = strdup(buffer);
+    add_arg(cmd, strdup(buffer));
     return cmd_str;
 }

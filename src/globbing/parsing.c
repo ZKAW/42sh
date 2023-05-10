@@ -6,6 +6,7 @@
 */
 
 #include "mysh.h"
+#include "struct/globbing.h"
 
 globber_type get_globber(char *str)
 {
@@ -61,7 +62,7 @@ globber_t* globber_create(char *str)
         globber->next = next;
         next = globber;
     }
-    return globber;
+    return reverse_globber(globber);
 }
 
 globber_t* reverse_globber(globber_t *globber)
@@ -76,5 +77,3 @@ globber_t* reverse_globber(globber_t *globber)
     return next;
 }
 
-//globber_t *globber = globber_create(str);
-//dump_globbing(reverse_globber(globber));

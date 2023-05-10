@@ -1,13 +1,54 @@
 /*
 ** EPITECH PROJECT, 2023
-** 42sh
+** lib
 ** File description:
-** manage_array
+** replace_arr
 */
 
+#include "lib.h"
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lib.h"
+
+void replace_arr_at_index(char ***main_arr_ptr, char **sub_arr, int index)
+{
+    char **main_arr = *main_arr_ptr;
+    int main_size = tablen(main_arr);
+    int sub_size = tablen(sub_arr);
+    size_t new_size = main_size + sub_size - 1;
+    char **new_arr = malloc(sizeof(char *) * (new_size + 1 ));
+
+    for (int i = 0; i < index; i++)
+        new_arr[i] = main_arr[i];
+    for (int i = 0; i < sub_size; i++)
+        new_arr[index + i] = sub_arr[i];
+    for (int i = index + 1; i < main_size; i++)
+        new_arr[i + sub_size - 1] = main_arr[i];
+
+    new_arr[new_size] = NULL;
+    free(main_arr);
+    *main_arr_ptr = new_arr;
+}
+
+void insert_arr_at_index(char ***main_arr_ptr, char **sub_arr, int index)
+{
+    char **main_arr = *main_arr_ptr;
+    int main_size = tablen(main_arr);
+    int sub_size = tablen(sub_arr);
+    size_t new_size = main_size + sub_size;
+    char **new_arr = malloc(sizeof(char *) * (new_size + 1 ));
+
+    for (int i = 0; i < index; i++)
+        new_arr[i] = main_arr[i];
+    for (int i = 0; i < sub_size; i++)
+        new_arr[index + i] = sub_arr[i];
+    for (int i = index; i < main_size; i++)
+        new_arr[i + sub_size] = main_arr[i];
+
+    new_arr[new_size] = NULL;
+    free(main_arr);
+    *main_arr_ptr = new_arr;
+}
 
 char** array_append(char** array, char* const str)
 {

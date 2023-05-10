@@ -22,7 +22,6 @@
 #include "struct/command.h"
 #include "struct/shell.h"
 #include "struct/pipe.h"
-#include "struct/globbing.h"
 #include "macro/utils.h"
 #include "macro/cmd.h"
 
@@ -47,6 +46,7 @@ list_t* split_pipes(char* input, list_t* next);
 list_t* get_command(char * str);
 void parse_output(cmd_t* command);
 void parse_input(cmd_t* command);
+char** get_files(char *path);
 void set_output(cmd_t* cmd, int input_fd[2]);
 list_t* reverse_cmd(list_t* head);
 char** envp_cpy(char** envp);
@@ -54,10 +54,12 @@ void handle_child_error(char** argv);
 char **call_env(char **env);
 char *get_prompt_prefix(void);
 char *get_env_var(char **env, char *key);
+void add_arg(cmd_t* cmd, char* arg);
 char *copy_until(char *dst, char *src, char *delim);
 void error(char *msg);
 void throw_error(char* const strerror, shell_t* shell, int ernum);
 shared_memory_t create_shm(int shared_var);
 void detach_shm(shared_memory_t shared_memory);
 string_t* get_string(string_t* string);
+
 #endif

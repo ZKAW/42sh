@@ -7,6 +7,7 @@
 
 #include "mysh.h"
 #include "parsing.h"
+#include "struct/globbing.h"
 
 void dump_args(char** args)
 {
@@ -53,9 +54,9 @@ void dump_globber(globber_t* globber)
     if (globber->type == GLOB_LITTERAL)
         dprintf(1, "litteral string: %s", globber->value);
     if (globber->type == GLOB_STAR)
-        dprintf(1, "any string", globber->value);
+        dprintf(1, "any string");
     if (globber->type == GLOB_QUESTION)
-        dprintf(1, "any char", globber->value);
+        dprintf(1, "any char");
     if (globber->type == GLOB_BRACKET)
         dprintf(1, "any char in range %s", globber->value);
     if (globber->type == GLOB_FILTER)
