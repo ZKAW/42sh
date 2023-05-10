@@ -45,10 +45,6 @@ int set_input(cmd_t* cmd, shell_t* shell, int fd[2]);
 char **tokenize_string(char *input, char *sep);
 void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2]);
 list_t* parse_command(char *cmd_str, shell_t* shell);
-list_t* split_pipes(char* input, list_t* next);
-list_t* get_command(char * str);
-void parse_output(cmd_t* command);
-void parse_input(cmd_t* command);
 void set_output(cmd_t* cmd, int input_fd[2]);
 list_t* reverse_cmd(list_t* head);
 char** envp_cpy(char** envp);
@@ -65,5 +61,9 @@ shell_t* get_shell(shell_t* shell);
 list_t* append_list(list_t* array);
 cmd_t* append_command(list_t* array);
 void close_cmd(cmd_t* cmd);
+void add_job(shell_t *shell, job_t *job);
+void set_job_status(shell_t *shell, job_t *job, job_status_t status);
+job_t *init_job(shell_t *shell, char *name);
+int is_pid_alive(pid_t pid);
 
 #endif

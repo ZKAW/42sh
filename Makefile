@@ -31,6 +31,7 @@ $(NAME):
 	@$(CC) -o $(NAME) $(OBJ) $(CFLAGS)
 	@echo "$(MSG_LINK)"
 
+
 %.o: %.c
 	@echo "$(MSG_CC)"
 	@$(CC) $(CFLAGS) -c $< -o $@

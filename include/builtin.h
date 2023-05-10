@@ -24,6 +24,7 @@ struct builtin_cmd {
 static const struct builtin_cmd builtin_cmds[] = {
     {"cd", builtin_cd},
     {"env", builtin_env},
+    {"printenv", builtin_env},
     {"setenv", builtin_setenv},
     {"unsetenv", builtin_unsetenv},
     {"exit", builtin_exit},

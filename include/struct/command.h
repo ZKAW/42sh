@@ -11,6 +11,8 @@
     #define MAX_ARGS 256
     #define FD_STATUS 10
 
+    #include "job.h"
+
 typedef enum {
     NONE,
     PIPE,
@@ -35,6 +37,8 @@ typedef struct command {
     int append;
     struct command* next;
     struct command* prev;
+    bool is_background;
+    job_t* job;
 } cmd_t;
 
 typedef struct command_array {
@@ -42,7 +46,6 @@ typedef struct command_array {
     condition_t condition;
     struct command_array* next;
     struct command_array* prev;
-    bool is_background;
 } list_t;
 
 #endif /* !COMMAND_H_ */

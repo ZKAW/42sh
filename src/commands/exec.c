@@ -6,6 +6,7 @@
 */
 
 #include "mysh.h"
+#include <threads.h>
 
 void sigchld_handler(int signo);
 
@@ -84,12 +85,19 @@ void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2])
 void execute(cmd_t* cmd, shell_t* shell)
 {
     pid_t sub = fork();
+    if (cmd->is_background && cmd->job->pgid == -1) {
+        cmd->job->pgid = sub;
+        printf("[%d] %d\n", cmd->job->id, cmd->job->pgid);
+        fflush(stdout);
+    }
 
     if (sub == 0) {
-        shell->sub = getpid();
+        shell->sub = cmd->is_background ? setsid() : getpid();
         run_command(cmd, shell, NULL);
         return;
     }
+    if (cmd->is_background)
+        return;
     waitpid(sub, &shell->state, 0);
     shell->state = handle_status(shell->state);
     SHARED_STATUS = shell->state;

@@ -12,6 +12,7 @@
     #include <termios.h>
     #include "line.h"
     #include "memory.h"
+    #include "job.h"
 
 typedef struct shell {
     char* root;
@@ -25,8 +26,8 @@ typedef struct shell {
     string_t* string;
     history_t history;
     shared_memory_t shared_status;
-    __sighandler_t sigtstp_handler;
-    __sighandler_t sigcont_handler;
+    int job_nb;
+    job_t **jobs;
 } shell_t;
 
 typedef struct path {

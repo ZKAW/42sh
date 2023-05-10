@@ -48,7 +48,6 @@ list_t* parse_command(char *cmd_str, shell_t* shell)
     append_command(command_array);
     while (*cmd_str && command_array->cmd->argc < MAX_ARGS) {
         cmd_str = skip_whitespace(cmd_str);
-        // set cmd job type
         if (*cmd_str == '\0')
             break;
         cmd_str = parse_token(cmd_str, &command_array, shell);
