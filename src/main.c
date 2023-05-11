@@ -24,10 +24,11 @@ void handle_command(list_t* list, shell_t* shell)
             continue;
         }
         head = list->cmd;
-        if (is_builtin(head->path))
+        if (is_builtin(head->path)) {
             run_builtin(head, shell);
-        else
+        } else {
             execute(head, shell);
+        }
         list = list->next;
     }
 }

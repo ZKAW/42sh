@@ -9,7 +9,10 @@
 
 void free_arr(char** arr)
 {
-    for (int i = 0; arr[i] != NULL; i++)
-        free(arr[i]);
-    free(arr);
+    for (int i = 0; arr[i] != NULL; i++) {
+        if (arr[i])
+            free(arr[i]);
+    }
+    if (arr)
+        free(arr);
 }

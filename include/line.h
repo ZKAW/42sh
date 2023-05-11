@@ -40,4 +40,5 @@
         void print_string(string_t* string);
         char* merge_string(string_t* string, shell_t* shell);
         void show_string_info(string_t* string);
+        char* get_last_command(shell_t* shell);
 #endif

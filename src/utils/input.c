@@ -10,7 +10,7 @@
 char *get_prompt_prefix(void)
 {
     char *cwd = getcwd(NULL, 0);
-    char **env = call_env(NULL);
+    char **env = get_shell(NULL)->envp;
     char *home = get_env_var(env, "HOME");
     char *prompt;
 

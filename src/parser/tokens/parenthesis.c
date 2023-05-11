@@ -7,10 +7,6 @@
 
 #include "mysh.h"
 
-list_t* append_list(list_t* array);
-cmd_t* append_command(list_t* array);
-void close_cmd(cmd_t* cmd);
-
 char* parse_parenthesis(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     (void)shell;
