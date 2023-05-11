@@ -7,7 +7,7 @@
 
 #include "../../../include/mysh.h"
 
-static char *concat_path(char *path, char *cmd, int len)
+static char *concat_path_len(char *path, char *cmd, int len)
 {
     char *str = NULL;
 
@@ -40,7 +40,7 @@ static int which_core(char *cmd, char **arr)
     if (check_builtin(builtin_cmd, cmd))
         return 0;
     for (int i = 0; arr[i]; ++i) {
-        if (access((str = concat_path(arr[i], cmd, len)), F_OK) != -1) {
+        if (access((str = concat_path_len(arr[i], cmd, len)), F_OK) != -1) {
             my_putstr(str, 1);
             my_putstr("\n", 1);
             free(str);
