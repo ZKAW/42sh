@@ -7,7 +7,7 @@
 
 #include "mysh.h"
 
-void builtin_exit(char** cmd, shell_t* shell)
+void builtin_exit(BUILTIN_PARAMS)
 {
     if (tablen(cmd) > 2) {
         throw_error("exit: Expression Syntax.\n", shell, 1);

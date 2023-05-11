@@ -7,16 +7,10 @@
 
 #include "mysh.h"
 
-void builtin_env(char** cmd UNUSED, shell_t* shell)
+void builtin_env(BUILTIN_PARAMS)
 {
+    (void)cmd;
     print_array(shell->envp);
-}
-
-char **call_env(char **env)
-{
-    static char **saved_env = NULL;
-    if (saved_env == NULL) saved_env = env;
-    return (saved_env);
 }
 
 char** envp_cpy(char** envp)

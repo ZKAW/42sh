@@ -7,7 +7,9 @@
 
 #include "mysh.h"
 
-void handle_sigchld(int signo)
+string_t* get_string(string_t* string);
+
+void sigchld_handler(int signo)
 {
     (void)signo;
 }
@@ -29,6 +31,6 @@ void sigint_handler(int sig)
 void sigtstp_handler(int sig)
 {
     string_t* string = get_string(NULL);
-    (void)sig;
     (void)string;
+    (void)sig;
 }

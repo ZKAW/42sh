@@ -28,7 +28,7 @@ void handle_cd_error(char* dir, shell_t* shell)
     SHARED_STATUS = shell->state;
 }
 
-void builtin_cd(char** cmd, shell_t* shell)
+void builtin_cd(BUILTIN_PARAMS)
 {
     char actual_path[500], **var_env = shell->envp, *dir, *var;
     if (tablen(cmd) > 2) {

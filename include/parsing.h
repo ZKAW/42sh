@@ -15,7 +15,11 @@
         typedef struct shell shell_t;
 
         #define PARAMS char* cmd_str, list_t** command_array, shell_t* shell
+<<<<<<< HEAD
         #define N_TOKENS 13
+=======
+        #define N_TOKENS 11
+>>>>>>> job_control
 
         char* parse_double_output(PARAMS);
         char* parse_single_output(PARAMS);
@@ -28,12 +32,19 @@
         char* parse_parenthesis(PARAMS);
         char* parse_and(PARAMS);
         char* parse_or(PARAMS);
+<<<<<<< HEAD
         char* parse_quotes(PARAMS);
         char* parse_var(PARAMS);
 
         static char* tokens[] = {
             ">>",">", "<<", "<", "||" ,"|", ";", "`", "&&" ,"\'", "\"", "$",
             NULL
+=======
+        char *parse_bg(PARAMS);
+
+        static char* tokens[N_TOKENS] = {
+            ">>", ">", "<<", "<", "&&", "&", "||" ,"|", ";", "`", NULL
+>>>>>>> job_control
         };
 
         static char* (*parsers[]) (PARAMS) = {
@@ -41,14 +52,19 @@
             parse_single_output,
             parse_double_input,
             parse_single_input,
+            parse_and,
+            parse_bg,
             parse_or,
             parse_pipe,
             parse_semicolon,
             parse_backticks,
+<<<<<<< HEAD
             parse_and,
             parse_quotes,
             parse_quotes,
             parse_var
+=======
+>>>>>>> job_control
         };
 
 #endif
