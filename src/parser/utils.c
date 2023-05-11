@@ -20,7 +20,7 @@ void close_cmd(cmd_t* cmd)
         if (cmd->arg_type[i] != SIMPLE) continue;
         globber = globber_create(cmd->argv[i]);
         if (globber->type == GLOB_LITTERAL && !globber->next) continue;
-        i = replace_globber(globber, i, cmd);
+        i += replace_globber(globber, i, cmd);
     }
 }
 

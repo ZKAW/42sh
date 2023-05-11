@@ -1,0 +1,398 @@
+[901]
+NAME="Nothing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ''
+[901-END]
+
+[902]
+NAME="Exec two command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls /etc'
+  echo 'cat /etc/resolv.conf'
+[902-END]
+
+[903]
+NAME="Testing with /usr/bin PATH"
+SETUP="export TERM=xterm ; PATH='/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[903-END]
+
+[904]
+NAME="Testing with /bin PATH"
+SETUP="export TERM=xterm ; PATH='/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[904-END]
+
+[905]
+NAME="run commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat /etc/resolv.conf'
+  sleep 0.5
+  echo 'ls -l /etc'
+  sleep 0.5
+  echo 'pwd'
+[905-END]
+
+[906]
+NAME="setenv and unsetenv"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo 'setenv titi'
+  echo 'setenv tata coucou'
+  echo 'env'
+  echo '/usr/bin/env'
+  echo 'setenv var1 val1'
+  echo 'setenv var2 val2'
+[906-END]
+
+[907]
+NAME="builtin cd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo 'ls -l'
+  echo 'cd /usr'
+  echo 'ls -l'
+[907-END]
+
+[908]
+NAME="many tab and space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo -e "\t\t    ls\t     \t-l    \t\t  \t -a /usr   \t\t"
+[908-END]
+
+[909]
+NAME="Launch DivZero program with core dump"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/bin/divzero"
+[909-END]
+
+[910]
+NAME="Launch segfault program with core dump"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/bin/segfault"
+[910-END]
+
+[911]
+NAME="Execute program without exec perm"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/bin/noexecperm"
+[911-END]
+
+[912]
+NAME="Execute folder"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/bin"
+[912-END]
+
+[913]
+NAME="Execute inexistant program"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/bin/inexistant"
+[913-END]
+
+[914]
+NAME="Execute incompatible bin"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/bin/wrong_bin"
+[914-END]
+
+[915]
+NAME="Setenv with too many arguments"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "setenv titi coucou coucou"
+[915-END]
+
+[916]
+NAME="unsetenv multiple arguments"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv HOSTTYPE'
+  echo 'unsetenv VENDOR'
+  echo 'unsetenv OSTYPE'
+  echo 'unsetenv MACHTYPE'
+  echo 'unsetenv SHLVL'
+  echo 'unsetenv PWD'
+  echo 'unsetenv LOGNAME'
+  echo 'unsetenv USER'
+  echo 'unsetenv GROUP'
+  echo 'unsetenv HOST'
+  echo 'unsetenv REMOTEHOST'
+  echo 'unsetenv _'
+  echo 'unsetenv LS_COLORS'
+  echo 'unsetenv NOTE'
+  echo 'setenv tata coucou'
+  echo 'setenv titi coucou'
+  echo 'setenv toto coucou'
+  echo 'unsetenv tata titi toto'
+  echo 'env'
+[916-END]
+
+[917]
+NAME="Semicolon modifier"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l ; pwd'
+[917-END]
+
+[918]
+NAME="Multiple semicolon modifiers"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l ; pwd ; ls -l /usr'
+[918-END]
+
+[919]
+NAME="Pipe redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l | cat -e'
+[919-END]
+
+[920]
+NAME="Multiple pipe redirections"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l | cat -e | grep total'
+[920-END]
+
+[921]
+NAME="Multiple commands with semicolon and pipe redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l ; pwd ; ls -l /usr | cat -e | grep total'
+[921-END]
+
+[922]
+NAME="Pipeline with error return code"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd | ls -l | ./invalid_command | pwd'
+[922-END]
+
+[923]
+NAME="Pipeline with error return code 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd | ls -l | ./invalid_command'
+[923-END]
+
+[924]
+NAME="Multiple commands pipeline with error return code"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd | ls -l | ./invalid_command | pwd | ls -l | ./invalid_command'
+  echo 'ls'
+[924-END]
+
+[925]
+NAME="Pipeline error code order"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l | ./invalid_command | ls fds | pwd'
+[925-END]
+
+[926]
+NAME="Simple redirection - >"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l > .outputfile'
+  echo 'cat .outputfile'
+  echo 'rm .outputfile'
+[926-END]
+
+[927]
+NAME="Simple redirection - >>"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l >> .outputfile'
+  echo 'pwd >> .outputfile'
+  echo 'ls -l /usr >> .outputfile'
+  echo 'cat .outputfile'
+  echo 'rm .outputfile'
+[927-END]
+
+[928]
+NAME="Simple redirection - <"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo test string > inputfile'
+  echo 'cat < inputfile'
+  echo 'rm inputfile'
+[928-END]
+
+[929]
+NAME="Simple redirection - <<"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat << EOF'
+  sleep 0.3
+  echo 'test string'
+  sleep 0.3
+  echo 'another test string'
+  sleep 0.3
+  echo 'EOF'
+[929-END]
+
+[930]
+NAME="Advanced redirections"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l > .outputfile'
+  echo 'cat < .outputfile > .outputfile2'
+  echo 'cat .outputfile2'
+  echo 'rm .outputfile .outputfile2'
+[930-END]
+
+[931]
+NAME="Advanced redirections 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l > .outputfile'
+  echo 'cat < .outputfile >> .outputfile2'
+  echo 'echo test string >> .outputfile2'
+  echo 'cat .outputfile2'
+  echo 'rm .outputfile .outputfile2'
+[931-END]
+
+[932]
+NAME="Pipeline and redirections"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l | cat -e > .outputfile'
+  echo 'cat .outputfile'
+  echo 'rm .outputfile'
+[932-END]
+
+[933]
+NAME="Pipeline and redirections 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l | cat -e >> .outputfile'
+  echo 'pwd >> .outputfile'
+  echo 'ls -l /usr >> .outputfile'
+  echo 'cat .outputfile'
+  echo 'rm .outputfile'
+[933-END]
+
+[934]
+NAME="Pipe with builtin"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="PATH=$OLDPATH"
+TESTS=
+  echo 'setenv | /usr/bin/grep PLOP | /usr/bin/sed s/PLOP/YEAH/g'
+  echo '/bin/ls | cd rsc'
+  echo '/bin/ls -l'
+  echo 'exit 45 | /usr/bin/cat /etc/resolv.conf'
+[934-END]
+
+[935]
+NAME="simple pipe 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -l /usr | wc -l"
+[935-END]
+
+[936]
+NAME="Multiple commands and pipes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "grep CDH < tests/data.txt | tr R T > fic ; cat fic | sed s/A// > fic2"
+  echo "rm fic fic2"
+[936-END]
+
+[937]
+NAME="Single pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "|"
+  echo " | "
+[937-END]
+
+[938]
+NAME="Builtin with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "exit 45 | cat -e"
+[938-END]
+
+[939]
+NAME="Builtin with pipe 2"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cd .. | cat -e"
+  echo "pwd"
+[939-END]
+
+[940]
+NAME="Subject mandatory"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cd ; </etc/hosts od -c | grep xx | wc >> /tmp/z -l ; cd - && echo \"OK\""
+[940-END]

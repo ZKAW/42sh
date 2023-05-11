@@ -20,7 +20,7 @@ char* parse_default_token(char* cmd_str, list_t** command_array, shell_t* shell)
     char arg[256];
     (void)shell;
     cmd_t* cmd = (*command_array)->cmd;
-    cmd_str = copy_until(arg, cmd_str, ";><| \t\n");
+    cmd_str = copy_until(arg, cmd_str, ";><|& \t\n");
     add_arg(cmd, strdup(arg), SIMPLE);
     return cmd_str;
 }
@@ -28,6 +28,7 @@ char* parse_default_token(char* cmd_str, list_t** command_array, shell_t* shell)
 char* parse_token(char* cmd_str, list_t** array, shell_t* shell)
 {
     int is_token = 0;
+
     for (int i = 0; tokens[i]; i++) {
         if (strncmp(cmd_str, tokens[i], strlen(tokens[i])) == 0) {
             is_token = 1;
