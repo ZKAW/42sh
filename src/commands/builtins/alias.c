@@ -7,22 +7,29 @@
 
 #include "mysh.h"
 
-alias_t* add_alias(char **buffer, alias_t *alias)
+char* concat_cmds_on_alias(char **buffer)
 {
-    int i = 3; char *tmp2 = malloc(sizeof(char) * 100);
-    alias_t *tmp;
+    int i = 3;
+    char *tmp2 = malloc(sizeof(char) * (strlen(buffer[2]) + 1));
+    tmp2[0] = '\0';
     tmp2 = strcat(tmp2, buffer[2]);
     for (; buffer[i] != NULL; i++) {
+        tmp2 = realloc(tmp2, sizeof(char) * (strlen(tmp2) +
+        strlen(buffer[i]) + 2));
+
         tmp2 = strcat(tmp2, " ");
         tmp2 = strcat(tmp2, buffer[i]);
     }
     tmp2 = strcat(tmp2, "\0");
+    return (tmp2);
+}
 
+alias_t* add_alias(char **buffer, alias_t *alias)
+{
+    alias_t *tmp; char *tmp2 = concat_cmds_on_alias(buffer);
     if (alias->alias == NULL) {
-        alias->alias = buffer[1];
-        alias->command = tmp2;
-        alias->next = NULL;
-        return (alias);
+        alias->alias = buffer[1]; alias->command = tmp2;
+        alias->next = NULL; return (alias);
     }
     for (tmp = alias; tmp->next != NULL; tmp = tmp->next) {
         if (my_strcmp(tmp->alias, buffer[1]) == 0) {
@@ -37,20 +44,8 @@ alias_t* add_alias(char **buffer, alias_t *alias)
         return (alias);
     }
     tmp->next = malloc(sizeof(alias_t));
-    tmp->next->alias = buffer[1];
-    tmp->next->command = tmp2;
-    tmp->next->next = NULL;
-    return (alias);
-}
-
-int have_space(char *str)
-{
-    int i = 0;
-    for (; str[i] != '\0'; i++) {
-        if (str[i] == ' ')
-            return (1);
-    }
-    return (0);
+    tmp->next->alias = buffer[1]; tmp->next->command = tmp2;
+    tmp->next->next = NULL; return (alias);
 }
 
 void show_alias(alias_t *alias, char **buffer)

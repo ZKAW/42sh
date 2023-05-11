@@ -55,5 +55,10 @@ void error(char *msg);
 void throw_error(char* const strerror, shell_t* shell, int ernum);
 void init_vars(shell_t* shell);
 void init_special_vars(shell_t* shell);
+void set_var(shell_t* shell, char* key, char* value);
+void update_cwd(shell_t* shell);
+int have_space(char *str);
+int assign_variables(cmd_t* cmd, shell_t* shell);
+void cmd_is_alias(cmd_t *cmd, shell_t* shell);
 
 #endif
