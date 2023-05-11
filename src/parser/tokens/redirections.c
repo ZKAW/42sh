@@ -10,7 +10,7 @@
 char* parse_file_name(char** cmd_str)
 {
     char out_file[256];
-    *cmd_str = copy_until(out_file, *cmd_str, "; \t\n");
+    *cmd_str = copy_until(out_file, *cmd_str, ";><| \t\n");
     return strdup(out_file);
 }
 

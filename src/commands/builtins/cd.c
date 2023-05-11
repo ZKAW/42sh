@@ -36,7 +36,6 @@ void builtin_cd(char** cmd, shell_t* shell)
         return;
     }
     dir = (tablen(cmd) == 1 || !strcmp(cmd[1], "~")) ? "$HOME" : cmd[1];
-
     if (dir[0] == '$') {
         var = find_envp(dir, shell);
         var_env = tokenize_string(var, "=");

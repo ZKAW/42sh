@@ -18,8 +18,8 @@ void handle_command(list_t* list, shell_t* shell)
         SHARED_STATUS = shell->state;
     }
     while (list) {
-        if ((list->condition == OR && shell->state == 0)
-        || (list->condition == AND && shell->state != 0)) {
+        if ((list->condition == OR && SHARED_STATUS == 0)
+        || (list->condition == AND && SHARED_STATUS != 0)) {
             list = list->next;
             continue;
         }
@@ -47,10 +47,6 @@ int verify_pipe(shell_t* shell)
         if (size == EOF) return 1;
         status = SHARED_STATUS;
         handle_command(parse_command(line, shell), shell);
-        if (status == 1) {
-            shell->state = status;
-            return 1;
-        }
     }
     return 1;
 }
