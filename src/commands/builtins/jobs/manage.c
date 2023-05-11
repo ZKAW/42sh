@@ -18,7 +18,8 @@ void add_job(shell_t *shell, job_t *job)
         return;
     }
     for (; shell->job_control->jobs[i]; i++);
-    shell->job_control->jobs = realloc(shell->job_control->jobs, sizeof(job_t *) * (i + 2));
+    shell->job_control->jobs = realloc(shell->job_control->jobs,
+                                sizeof(job_t *) * (i + 2));
     shell->job_control->jobs[i] = job;
     shell->job_control->jobs[i + 1] = NULL;
 }
