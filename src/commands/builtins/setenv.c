@@ -41,7 +41,7 @@ char* get_var_name(char** cmd, shell_t* shell)
     return env_n;
 }
 
-void builtin_setenv(char** cmd, shell_t* shell)
+void builtin_setenv(BUILTIN_PARAMS)
 {
     int i = 0, size = 0;
     char* new_env, **envp = shell->envp, *env_n;

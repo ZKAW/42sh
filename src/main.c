@@ -24,10 +24,11 @@ void handle_command(list_t* list, shell_t* shell)
             continue;
         }
         head = list->cmd;
-        if (is_builtin(head->path))
+        if (is_builtin(head->path)) {
             run_builtin(head, shell);
-        else
+        } else {
             execute(head, shell);
+        }
         list = list->next;
     }
 }
@@ -62,8 +63,7 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
 {
     ssize_t size = 0;
     char* line = "";
-    shell_t* shell = init_shell(envp);
-    call_env(shell->envp);
+    shell_t* shell = get_shell(init_shell(envp));
     if (verify_pipe(shell))
         exit_shm(shell);
     while (1) {

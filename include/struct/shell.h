@@ -12,6 +12,7 @@
     #include <termios.h>
     #include "line.h"
     #include "memory.h"
+    #include "job.h"
 
 typedef struct alias_s {
     char *alias;
@@ -32,12 +33,14 @@ typedef struct shell {
     int state;
     char** paths;
     pid_t sub;
+    pid_t pgid;
     struct termios term;
     string_t* string;
     history_t history;
     shared_memory_t shared_status;
     var_t* vars;
     alias_t* aliases;
+    job_control_t *job_control;
 } shell_t;
 
 typedef struct path {

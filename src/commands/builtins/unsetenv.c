@@ -18,7 +18,7 @@ static char** unset_var(char* var_name, char** envp)
     return envp;
 }
 
-void builtin_unsetenv(char** cmd, shell_t* shell)
+void builtin_unsetenv(BUILTIN_PARAMS)
 {
     char **envp = shell->envp;
     if (tablen(cmd) < 2) {
