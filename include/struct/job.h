@@ -11,6 +11,7 @@
     #include <sys/types.h>
 
     #define IS_JOB_BG(job) (job && job->type == BG)
+    #define IS_JOB_FG(job) (job && job->type == FG)
 
 typedef enum job_status_e {
     RUNNING,
@@ -30,5 +31,12 @@ typedef struct job_s {
     job_status_t status;
     job_type_t type;
 } job_t;
+
+typedef struct job_control {
+    int job_nb;
+    job_t **jobs;
+    job_t *prev_job;
+    job_t *current_job;
+} job_control_t;
 
 #endif /* !JOBS_H_ */

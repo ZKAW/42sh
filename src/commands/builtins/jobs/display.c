@@ -36,14 +36,14 @@ void display_jobs(shell_t *shell, int verbose)
 {
     int i = 0;
 
-    for (; shell->jobs[i]; i++) {
-        if (is_pid_alive(shell->jobs[i]->pgid) == 0) {
-            shell->jobs[i]->status = TERMINATED;
+    for (; shell->job_control->jobs[i]; i++) {
+        if (is_pid_alive(shell->job_control->jobs[i]->pgid) == 0) {
+            shell->job_control->jobs[i]->status = TERMINATED;
         }
-        display_job(shell->jobs[i], verbose);
-        if (shell->jobs[i]->status == TERMINATED) {
-            free(shell->jobs[i]);
-            shell->jobs[i] = NULL;
+        display_job(shell->job_control->jobs[i], verbose);
+        if (shell->job_control->jobs[i]->status == TERMINATED) {
+            free(shell->job_control->jobs[i]);
+            shell->job_control->jobs[i] = NULL;
             continue;
         }
     }

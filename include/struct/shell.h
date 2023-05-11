@@ -26,8 +26,7 @@ typedef struct shell {
     string_t* string;
     history_t history;
     shared_memory_t shared_status;
-    int job_nb;
-    job_t **jobs;
+    job_control_t *job_control;
 } shell_t;
 
 typedef struct path {

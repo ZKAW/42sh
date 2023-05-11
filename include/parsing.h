@@ -31,7 +31,7 @@
         char *parse_bg(PARAMS);
 
         static char* tokens[N_TOKENS] = {
-            ">>",">", "<<", "<", "||" ,"|", ";", "`", "&&", "&", NULL
+            ">>", ">", "<<", "<", "&&", "&", "||" ,"|", ";", "`", NULL
         };
 
         static char* (*parsers[N_TOKENS]) (PARAMS) = {
@@ -39,12 +39,12 @@
             parse_single_output,
             parse_double_input,
             parse_single_input,
+            parse_and,
+            parse_bg,
             parse_or,
             parse_pipe,
             parse_semicolon,
             parse_backticks,
-            parse_and,
-            parse_bg,
         };
 
 #endif

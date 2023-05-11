@@ -15,8 +15,8 @@ job_t *init_job(shell_t *shell, char *name, job_type_t type)
     job->pgid = -1;
     job->status = RUNNING;
     job->type = type;
-    shell->job_nb++;
-    job->id = shell->job_nb;
+    shell->job_control->job_nb++;
+    job->id = shell->job_control->job_nb;
     add_job(shell, job);
 
     return job;

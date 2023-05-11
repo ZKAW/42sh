@@ -12,5 +12,8 @@ char *parse_bg(char *cmd_str, list_t **command_array, shell_t *shell)
     (void)shell;
     cmd_t *cmd = (*command_array)->cmd;
     cmd->job = init_job(shell, cmd->argv[0], BG);
+    close_cmd((*command_array)->cmd);
+    *command_array = append_list(*command_array);
+    append_command(*command_array);
     return cmd_str;
 }

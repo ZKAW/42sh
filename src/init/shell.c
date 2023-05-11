@@ -7,17 +7,15 @@
 
 #include "mysh.h"
 
-/*
-typedef struct shared_memory_s {
-    void *shared_var;
-    char *shmaddr;
-    int shmid;
-} shared_memory_t;
-*/
-
-static void create_shared_status(shell_t* shell)
+static job_control_t* init_job_control(void)
 {
-    shell->shared_status = create_shm(0);
+    job_control_t* job_control = malloc(sizeof(job_control_t));
+
+    job_control->job_nb = 0;
+    job_control->jobs = NULL;
+    job_control->prev_job = NULL;
+    job_control->current_job = NULL;
+    return job_control;
 }
 
 shell_t* init_shell(char** envp)
@@ -35,6 +33,7 @@ shell_t* init_shell(char** envp)
     shell->history.position = 0;
     shell->history.len = 0;
     shell->pgid = getpgrp();
-    create_shared_status(shell);
+    shell->shared_status = create_shm(EXIT_SUCCESS);
+    shell->job_control = init_job_control();
     return shell;
 }
