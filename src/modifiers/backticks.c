@@ -35,6 +35,7 @@ char* render_backtick(char* const str, shell_t* shell)
         close(fd[0]);
         close(fd[1]);
         handle_command(parse_command(str, shell), shell);
+        exit(shell->state);
     } else {
         close(fd[1]);
         waitpid(pid, &status, 0);
@@ -56,6 +57,6 @@ char* parse_backticks(char* cmd_str, list_t** command_array, shell_t* shell)
     content = render_backtick(command, shell);
     args = tokenize_string(content, " \t\n");
     for (int i = 0; args[i]; i++)
-        cmd->argv[cmd->argc++] = strdup(args[i]);
+        add_arg(cmd, args[i], BACKTICKS);
     return cmd_str;
 }

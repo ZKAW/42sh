@@ -20,9 +20,8 @@ char* parse_default_token(char* cmd_str, list_t** command_array, shell_t* shell)
     char arg[256];
     (void)shell;
     cmd_t* cmd = (*command_array)->cmd;
-    cmd_str = copy_until(arg, cmd_str, ";><|& \t\n");
-    cmd->argv[cmd->argc] = strdup(arg);
-    cmd->argc++;
+    cmd_str = copy_until(arg, cmd_str, ";><| \t\n");
+    add_arg(cmd, strdup(arg), SIMPLE);
     return cmd_str;
 }
 
