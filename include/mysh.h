@@ -54,12 +54,13 @@ void handle_child_error(char** argv);
 char **call_env(char **env);
 char *get_prompt_prefix(void);
 char *get_env_var(char **env, char *key);
-void add_arg(cmd_t* cmd, char* arg);
+void add_arg(cmd_t* cmd, char* arg, int is_litteral);
 char *copy_until(char *dst, char *src, char *delim);
 void error(char *msg);
 void throw_error(char* const strerror, shell_t* shell, int ernum);
 shared_memory_t create_shm(int shared_var);
 void detach_shm(shared_memory_t shared_memory);
 string_t* get_string(string_t* string);
+shell_t* get_shell(shell_t* shell);
 
 #endif

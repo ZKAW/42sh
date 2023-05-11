@@ -17,9 +17,9 @@ void close_cmd(cmd_t* cmd)
     cmd->argv[cmd->argc] = NULL;
     cmd->path = cmd->argv[0];
     for (int i = 0; cmd->argv[i]; i++) {
+        if (cmd->arg_type[i] != SIMPLE) continue;
         globber = globber_create(cmd->argv[i]);
-        if (globber->type == GLOB_LITTERAL && !globber->next)
-            continue;
+        if (globber->type == GLOB_LITTERAL && !globber->next) continue;
         i = replace_globber(globber, i, cmd);
     }
 }

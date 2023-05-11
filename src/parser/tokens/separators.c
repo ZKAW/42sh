@@ -39,6 +39,6 @@ char* parse_quotes(char* cmd_str, list_t** command_array, shell_t* shell)
         cmd_str++;
     }
     cmd_str++;
-    add_arg(cmd, strdup(buffer));
+    add_arg(cmd, strdup(buffer), QUOTTED);
     return cmd_str;
 }

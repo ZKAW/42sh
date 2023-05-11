@@ -45,7 +45,7 @@ int set_input(cmd_t* cmd, shell_t* shell, int fd[2])
     guarantee_pipe(fd, shell);
     if (cmd->input_type == STD) {
         get_input(cmd);
-        write(fd[1], cmd->input, strlen(cmd->input));
+        dprintf(2, "%s", cmd->input);
         close(fd[1]);
         dup2(fd[0], 0);
         close(fd[0]);

@@ -2,11 +2,10 @@
 ** EPITECH PROJECT, 2022
 ** 42sh
 ** File description:
-** replacing.c
+** tokens.c
 */
 
 #include "mysh.h"
-#include <alloca.h>
 #include "struct/globbing.h"
 
 int match(char* str, globber_t* globbing);
@@ -58,47 +57,15 @@ int check_bracket(char** str, globber_t* globbing)
 int check_filter(char** str, globber_t* globbing)
 {
     char* cpy = *str;
-    char* filter = globbing->value;
+    char** filters = tokenize_string(globbing->value, ",");
     int i = 0;
-
-    while (filter[i]) {
-        if (filter[i] == *cpy) {
-            *str += 1;
+    while (filters[i]) {
+        if (my_strncmp(cpy, filters[i], strlen(filters[i])) == 0) {
+            *str += strlen(filters[i]);
             return 1;
         }
         i++;
     }
     return 0;
 }
-
-int replace_globber(globber_t* globbing, int index, cmd_t* cmd)
-{
-    char* matched[1000] = {NULL};
-    int position = 0;
-    char** files = get_files(".");
-    for (int i = 0; files[i]; i++) {
-        if (match(files[i], globbing))
-            matched[position++] = files[i];
-    }
-    if (tablen(matched) == 0)
-        return 0;
-    replace_arr_at_index(&cmd->argv, matched, index);
-    return tablen(matched) - 1;
-}
-
-int match(char* str, globber_t* globbing)
-{
-    char* head = str;
-    int (*check[])(char**, globber_t*) = {check_star, check_question,
-        check_bracket, check_filter, check_litteral};
-    while (globbing) {
-        if (!check[globbing->type](&str, globbing))
-            return 0;
-        globbing = globbing->next;
-    }
-    if (*str != '\0')
-        return 1;
-    return 1;
-}
-
 

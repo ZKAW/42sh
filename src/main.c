@@ -66,7 +66,7 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
 {
     ssize_t size = 0;
     char* line = "";
-    shell_t* shell = init_shell(envp);
+    shell_t* shell = get_shell(init_shell(envp));
     call_env(shell->envp);
     if (verify_pipe(shell))
         exit_shm(shell);
