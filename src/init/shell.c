@@ -35,5 +35,10 @@ shell_t* init_shell(char** envp)
     shell->history.position = 0;
     shell->history.len = 0;
     create_shared_status(shell);
+    shell->aliases = malloc(sizeof(alias_t));
+    shell->aliases->alias = NULL;
+    shell->aliases->command = NULL;
+    shell->aliases->next = NULL;
+    init_vars(shell);
     return shell;
 }

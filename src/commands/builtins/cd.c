@@ -50,4 +50,5 @@ void builtin_cd(char** cmd, shell_t* shell)
         return;
     }
     strcpy(shell->last_path, actual_path);
+    update_cwd(shell);
 }

@@ -25,6 +25,31 @@ typedef struct shell {
     history_t history;
     shared_memory_t shared_status;
 } shell_t;
+typedef struct alias_s {
+    char *alias;
+    char *command;
+    struct alias_s *next;
+} alias_t;
+
+typedef struct var {
+    char* key;
+    char* value;
+    struct var* next;
+} var_t;
+
+typedef struct shell {
+    char* root;
+    char** envp;
+    char* last_path;
+    int state;
+    char** paths;
+    pid_t sub;
+    struct termios term;
+    string_t* string;
+    history_t history;
+    var_t* vars;
+    alias_t *aliases;
+} shell_t;
 
 typedef struct path {
     char** list;

@@ -19,11 +19,11 @@ void teach_child(char* path, char** cmd, shell_t* shell)
 void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2])
 {
     int input_fd[2];
+    cmd_is_alias(cmd, shell);
+    if (assign_variables(cmd, shell) == 1) return;
     char* path = cmd->argv[0];
     char *full_path = get_full_path(cmd->argv[0], shell);
-
-    if (full_path)
-        path = full_path;
+    if (full_path) path = full_path;
     if (!is_builtin(cmd->argv[0]) && not_existing(path, shell)) {
         exit(1);
         return;

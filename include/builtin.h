@@ -19,6 +19,8 @@ void repeat_builtin(char** cmd, shell_t* shell);
 void which_builtin(char **cmd, shell_t* shell);
 void where_builtin(char **cmd, shell_t *shell);
 void echo_builtin(char **cmd, shell_t *shell);
+void builtin_alias(char** cmd, shell_t* shell);
+void builtin_unalias(char** cmd, shell_t* shell);
 
 struct builtin_cmd {
     const char *name;
@@ -35,6 +37,8 @@ static const struct builtin_cmd builtin_cmds[] = {
     {"which", which_builtin},
     {"where", where_builtin},
     {"echo", echo_builtin},
+    {"alias", builtin_alias},
+    {"unalias", builtin_unalias},
     {NULL, NULL}
 };
 
