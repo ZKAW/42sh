@@ -63,6 +63,7 @@ char** get_matching_files(char** files, char* path, globber_t* globbing)
     matched[position] = NULL;
     return matched;
 }
+
 int replace_globber(globber_t* globbing, int index, cmd_t* cmd)
 {
     shell_t* shell = get_shell(NULL);

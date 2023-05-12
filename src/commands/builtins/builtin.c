@@ -16,7 +16,8 @@ int is_builtin(char* path)
     return 0;
 }
 
-void restore_stdin_stdout(int saved_input, int saved_output) {
+void restore_stdin_stdout(int saved_input, int saved_output)
+{
     dup2(saved_input, 0);
     dup2(saved_output, 1);
     close(saved_input);

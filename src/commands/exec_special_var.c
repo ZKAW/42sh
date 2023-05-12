@@ -9,6 +9,19 @@
 
 //same but global because have repetitif code
 
+void alias_special_var(shell_t *shell)
+{
+    char *precmd = get_precmd_var(shell);
+    if (precmd != NULL)
+        shell->precmd = precmd;
+    char* cwdcmd = get_cwdcmd_var(shell);
+    if (cwdcmd != NULL)
+        shell->cwdcmd = cwdcmd;
+    char* fignore = get_fignore_var(shell);
+    if (fignore != NULL)
+        shell->fignore = fignore;
+}
+
 char* get_fignore_var(shell_t* shell)
 {
     char *alias = NULL; alias_t *tmp = NULL;

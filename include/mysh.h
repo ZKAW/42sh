@@ -114,5 +114,6 @@ char* get_cwdcmd_var(shell_t* shell);
 char* get_fignore_var(shell_t* shell);
 void handle_command(list_t* list, shell_t* shell);
 int replace_globber(globber_t* globbing, int index, cmd_t* cmd);
+void alias_special_var(shell_t *shell);
 
 #endif

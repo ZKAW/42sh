@@ -17,14 +17,13 @@ void set_var(shell_t *shell, char *key, char *value)
         return;
     }
     for (tmp = shell->vars; tmp->next != NULL; tmp = tmp->next) {
-        if (my_strcmp(tmp->key, key) == 0) {
+        if (strcmp(tmp->key, key) == 0) {
             tmp->value = value;
             return;
         }
     }
-    if (my_strcmp(tmp->key, key) == 0) {
-        tmp->value = value;
-        return;
+    if (strcmp(tmp->key, key) == 0) {
+        tmp->value = value; return;
     }
     tmp->next = malloc(sizeof(var_t));
     tmp->next->key = key;

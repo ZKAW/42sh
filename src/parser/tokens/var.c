@@ -41,7 +41,6 @@ char* get_next_token(char* cmd_str, char* delims)
 
 char* clear_str(char* str)
 {
-    //delete \n \t and space on the string
     int i = 0;
     int j = 0;
     int len = strlen(str);

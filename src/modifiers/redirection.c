@@ -35,8 +35,7 @@ void guarantee_pipe(int fd[2], shell_t* shell)
 int set_input(cmd_t* cmd, shell_t* shell, int fd[2])
 {
     int file_fd;
-    if (cmd->input_type == NONE)
-        return 0;
+    if (cmd->input_type == NONE) return 0;
     if (cmd->input_type == FILE_PATH) {
         file_fd = open(cmd->input, O_RDONLY);
         dup2(file_fd, 0);
@@ -50,11 +49,9 @@ int set_input(cmd_t* cmd, shell_t* shell, int fd[2])
         dup2(fd[0], 0);
         close(fd[0]);
     }
-    if (is_builtin(cmd->path))
-        return 0;
+    if (is_builtin(cmd->path)) return 0;
     if (cmd->input_type == PIPE) {
-        prepare_pipe(cmd, shell, fd);
-        return fd[0];
+        prepare_pipe(cmd, shell, fd); return fd[0];
     }
     return 0;
 }
@@ -74,17 +71,3 @@ int set_output(cmd_t* cmd, int output_fd[2])
     }
     return 1;
 }
-
-// void restore_stdin_stdout(int saved_stdin, int saved_stdout)
-// {
-//     if (dup2(saved_stdin, STDIN_FILENO) == -1) {
-//         perror("dup2");
-//         exit(EXIT_FAILURE);
-//     }
-//     if (dup2(saved_stdout, STDOUT_FILENO) == -1) {
-//         perror("dup2");
-//         exit(EXIT_FAILURE);
-//     }
-//     close(saved_stdin);
-//     close(saved_stdout);
-// }
