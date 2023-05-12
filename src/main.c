@@ -13,28 +13,23 @@ void handle_command(list_t* list, shell_t* shell)
 {
     cmd_t* head;
     if (list == NULL) {
-        printf("Invalid null command.\n");
-        shell->state = 1;
+        printf("Invalid null command.\n"); shell->state = 1;
         SHARED_STATUS = shell->state;
     }
     while (list) {
         if ((list->condition == OR && SHARED_STATUS == 0)
         || (list->condition == AND && SHARED_STATUS != 0)) {
-            list = list->next;
-            continue;
+            list = list->next; continue;
         }
         head = list->cmd;
-        if (is_builtin(head->path)) {
-            run_builtin(head, shell);
-        } else {
+        if (is_builtin(head->path)) run_builtin(head, shell);
+        else
             execute(head, shell);
-        }
         list = list->next;
     }
     if (shell->precmd != NULL && shell->loop == 0) {
         list_t *list_precmd = parse_command(shell->precmd, shell);
-        shell->loop = 1;
-        handle_command(list_precmd, shell);
+        shell->loop = 1; handle_command(list_precmd, shell);
     }
 }
 
