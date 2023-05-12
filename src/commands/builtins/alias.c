@@ -89,6 +89,19 @@ void print_alias(alias_t *alias)
         printf("%s\t%s\n", tmp->alias, tmp->command);
 }
 
+void alias_special_var(shell_t *shell)
+{
+    char *precmd = get_precmd_var(shell);
+    if (precmd != NULL)
+        shell->precmd = precmd;
+    char* cwdcmd = get_cwdcmd_var(shell);
+    if (cwdcmd != NULL)
+        shell->cwdcmd = cwdcmd;
+    char* fignore = get_fignore_var(shell);
+    if (fignore != NULL)
+        shell->fignore = fignore;
+}
+
 void builtin_alias(char** cmd, shell_t *shell)
 {
     int argc = 0;
@@ -105,4 +118,5 @@ void builtin_alias(char** cmd, shell_t *shell)
         return;
     }
     add_alias(cmd, shell->aliases);
+    alias_special_var(shell);
 }
