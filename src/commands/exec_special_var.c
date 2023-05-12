@@ -7,7 +7,24 @@
 
 #include "mysh.h"
 
-char* get_cwdcmd_var(shell_t* shell, char* key)
+//same but global because have repetitif code
+
+char* get_fignore_var(shell_t* shell)
+{
+    char *alias = NULL; alias_t *tmp = NULL;
+    if (shell->aliases->alias == NULL)
+        return NULL;
+    for (tmp = shell->aliases; tmp->next != NULL; tmp = tmp->next) {
+        if (strcmp(tmp->alias, "fignore") == 0)
+            alias = strdup(tmp->command);
+    }
+    if (strcmp(tmp->alias, "fignore") == 0)
+        alias = strdup(tmp->command);
+
+    return alias;
+}
+
+char* get_cwdcmd_var(shell_t* shell)
 {
     char *alias = NULL; alias_t *tmp = NULL;
     if (shell->aliases->alias == NULL)
@@ -22,7 +39,7 @@ char* get_cwdcmd_var(shell_t* shell, char* key)
     return alias;
 }
 
-char* get_precmd_var(shell_t* shell, char* key)
+char* get_precmd_var(shell_t* shell)
 {
     char *alias = NULL; alias_t *tmp = NULL;
     if (shell->aliases->alias == NULL)

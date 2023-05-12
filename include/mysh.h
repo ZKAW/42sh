@@ -107,8 +107,9 @@ int assign_variables(cmd_t* cmd, shell_t* shell);
 void cmd_is_alias(cmd_t *cmd, shell_t* shell);
 char *get_local_var(shell_t *shell, char *key);
 void replace_str_to_array(char** array, char* str, int index, cmd_t* cmd);
-char* get_precmd_var(shell_t* shell, char* key);
-char* get_cwdcmd_var(shell_t* shell, char* key);
+char* get_precmd_var(shell_t* shell);
+char* get_cwdcmd_var(shell_t* shell);
+char* get_fignore_var(shell_t* shell);
 void handle_command(list_t* list, shell_t* shell);
 
 #endif

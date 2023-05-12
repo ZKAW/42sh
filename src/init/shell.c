@@ -38,8 +38,6 @@ shell_t* init_shell(char** envp)
     shell->aliases->alias = NULL;
     shell->aliases->command = NULL;
     shell->aliases->next = NULL;
-    shell->precmd = NULL;
-    shell->cwdcmd = NULL;
     init_vars(shell);
     return shell;
 }

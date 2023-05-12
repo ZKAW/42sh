@@ -43,6 +43,7 @@ typedef struct shell {
     alias_t* aliases;
     char *precmd;
     char* cwdcmd;
+    char* fignore;
     job_control_t *job_control;
 } shell_t;
 
