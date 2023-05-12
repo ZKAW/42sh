@@ -414,7 +414,7 @@ CLEAN=""
 TESTS=
   echo "ls ls */*/*.c"
 [943-END]
-echo "ls caca | rev && echo 'dont display'" 
+echo "ls caca | rev && echo 'dont display'"
 
 [944]
 NAME="conditions | simple || "
@@ -452,3 +452,37 @@ CLEAN=""
 TESTS=
   echo "cat < /x/invalid_file"
 [947-END]
+
+[948]
+NAME="Repeat - simple"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "repeat 5 ls -l"
+[948-END]
+
+[949]
+NAME="Repeat - complex"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "repeat 5 ls -l | cat -e >> .outputfile"
+  echo "cat .outputfile"
+  echo "rm .outputfile"
+[949-END]
+
+[950]
+NAME="Repeat - invalid"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "repeat 5"
+[950-END]
+
+[951]
+NAME="Repeat - error"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "repeat 5 ls invalid_file"
+[951-END]
