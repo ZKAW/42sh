@@ -12,11 +12,11 @@
         static char* closers = "*?]}";
 
         typedef enum {
-            GLOB_STAR, // * -> any string
-            GLOB_QUESTION, // ? -> any char
-            GLOB_BRACKET, // [a-z] -> any char in range
-            GLOB_FILTER, // {a,b,c} -> a, b, c are filters.
-            GLOB_LITTERAL, // litteral string
+            GLOB_STAR,
+            GLOB_QUESTION,
+            GLOB_BRACKET,
+            GLOB_FILTER,
+            GLOB_LITTERAL,
         } globber_type;
 
         typedef struct globber {

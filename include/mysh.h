@@ -30,6 +30,7 @@
 #include "macro/cmd.h"
 #include "struct/dir.h"
 #include "struct/echo.h"
+#include "struct/globbing.h"
 
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
@@ -112,5 +113,6 @@ char* get_precmd_var(shell_t* shell);
 char* get_cwdcmd_var(shell_t* shell);
 char* get_fignore_var(shell_t* shell);
 void handle_command(list_t* list, shell_t* shell);
+int replace_globber(globber_t* globbing, int index, cmd_t* cmd);
 
 #endif

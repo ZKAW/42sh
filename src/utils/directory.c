@@ -39,6 +39,15 @@ int is_directory(char *path)
     return (1);
 }
 
+void get_directory_files(char *path, char **files, int i, struct dirent *dirent)
+{
+    if (is_directory(path)) {
+        files = realloc(files, sizeof(char *) * (i + 2));
+        files[i] = strdup(dirent->d_name);
+        i++;
+    }
+}
+
 char** get_recursive_files(char* root)
 {
     DIR *dir = opendir(root);
@@ -52,11 +61,7 @@ char** get_recursive_files(char* root)
     while ((dirent = readdir(dir)) != NULL) {
         if (dirent->d_name[0] != '.') {
             path = my_strcat(root, dirent->d_name);
-            if (is_directory(path)) {
-                files = realloc(files, sizeof(char *) * (i + 2));
-                files[i] = strdup(dirent->d_name);
-                i++;
-            }
+            get_directory_files(path, files, i, dirent);
         }
     }
     files[i] = NULL;

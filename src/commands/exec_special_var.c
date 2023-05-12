@@ -56,14 +56,15 @@ char* get_precmd_var(shell_t* shell)
 
 char *get_local_var(shell_t *shell, char *key)
 {
+    var_t *tmp;
     if (shell->vars == NULL)
         return NULL;
-    for (int i = 0; shell->vars->next != NULL; i++) {
-        if (my_strcmp(shell->vars->key, key) == 0)
-            return shell->vars->value;
-        shell->vars = shell->vars->next;
+
+    for (tmp = shell->vars; tmp->next != NULL; tmp = tmp->next) {
+        if (my_strcmp(tmp->key, key) == 0)
+            return tmp->value;
     }
-    if (my_strcmp(shell->vars->key, key) == 0)
-        return shell->vars->value;
+    if (my_strcmp(tmp->key, key) == 0)
+        return tmp->value;
     return NULL;
 }
