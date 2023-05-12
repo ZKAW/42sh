@@ -63,7 +63,7 @@ int replace_globber(globber_t* globbing, int index, cmd_t* cmd)
     replace_arr_at_index(&cmd->argv, matched, index);
     if (tablen(matched) == 0) {
         dprintf(2, "%s: No match.\n", cmd->argv[0]);
-        SHARED_STATUS = 1;
+        set_status(shell, 1);
         exit(1);
         return 0;
     }

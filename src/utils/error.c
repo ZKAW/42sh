@@ -17,5 +17,5 @@ void throw_error(char* const strerror, shell_t* shell, int ernum)
 {
     dprintf(2, "%s", strerror);
     shell->state = ernum;
-    SHARED_STATUS = ernum;
+    set_status(shell, ernum);
 }

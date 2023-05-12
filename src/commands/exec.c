@@ -16,7 +16,7 @@ void teach_child(char* path, cmd_t *cmd, shell_t* shell)
     if (is_builtin(cmd->argv[0])) {
         run_builtin(cmd, shell);
     } else if (check_globbing(cmd, shell) == 1) {
-        SHARED_STATUS = 1;
+        set_status(shell, 1);
         exit(1);
     }
     if (execve(path, cmd->argv, shell->envp) == -1) {
@@ -108,5 +108,5 @@ void execute(cmd_t* cmd, shell_t* shell)
         return;
     waitpid(sub, &shell->state, 0);
     shell->state = handle_status(shell->state);
-    SHARED_STATUS = shell->state;
+    set_status(shell, shell->state);
 }

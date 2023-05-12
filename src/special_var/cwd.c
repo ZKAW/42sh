@@ -12,5 +12,5 @@ void update_cwd(shell_t *shell)
     char *cwd = malloc(sizeof(char) * 500);
     cwd = getcwd(cwd, 500);
     set_var(shell, "cwd", cwd);
-    SHARED_STATUS = 0;
+    set_status(shell, 0);
 }

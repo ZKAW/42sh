@@ -44,6 +44,7 @@ static const struct builtin_cmd builtin_cmds[] = {
     {"alias", builtin_alias},
     {"unalias", builtin_unalias},
     {"jobs", builtin_jobs},
+    // {"set", builtin_jobs},
     {NULL, NULL}
 };
 
