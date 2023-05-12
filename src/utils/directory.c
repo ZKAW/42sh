@@ -50,7 +50,7 @@ char** get_recursive_files(const char* root)
     int i = 0, j;
     if (dir == NULL) return NULL;
     while ((dirent = readdir(dir)) != NULL) {
-        if (!strcmp(dirent->d_name, ".") || !strcmp(dirent->d_name, ".."))
+        if (!strncmp(dirent->d_name, ".", 1) || !strcmp(dirent->d_name, ".."))
             continue;
         path = create_relative_path(root, dirent->d_name);
         files = realloc(files, sizeof(char*) * (i + 2));

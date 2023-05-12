@@ -486,3 +486,19 @@ CLEAN=""
 TESTS=
   echo "repeat 5 ls invalid_file"
 [951-END]
+
+[952]
+NAME="inhibitor | fake filter"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cat tests/globbing/\{a,b,c}.c"
+[952-END]
+
+[953]
+NAME="inhibitor | fake star"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cat tests/globbing/\*"
+[953-END]

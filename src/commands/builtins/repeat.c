@@ -48,14 +48,12 @@ static char *concat_arr(char **arr, char delim)
 
 void repeat_builtin(char **cmd, shell_t *shell)
 {
-
     char *str = NULL;
     list_t *list = NULL;
     if (strcmp(cmd[0], "repeat"))
         return;
     if (arrlen(cmd) < 3) {
         throw_error("repeat: Too few arguments.\n", shell, 1);
-
         return;
     }
     if (check_alph(cmd[1])) {

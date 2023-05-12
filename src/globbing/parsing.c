@@ -21,9 +21,10 @@ globber_t* parse_litteral(globber_t* globber, char** buffer)
     int i = 0;
     char* oppeners = "*?[{";
     char* src = *buffer;
-    while (*src && !strchr(oppeners, *src)
-    && *src != ' ' && *src != '\t'
+    while (*src && *src != ' ' && *src != '\t'
     && *src != '\n' && *src != '\0') {
+        if (strchr(oppeners, *src)) break;
+        if (*src == '\\') src++;
         globber->value[i] = *src;
         i++;
         src++;
