@@ -42,17 +42,23 @@ char* parse_token(char* cmd_str, list_t** array, shell_t* shell)
     return cmd_str;
 }
 
+int check_cmd_integrity(cmd_t* cmd)
+{
+    while (cmd) {
+        if (cmd->argc == 0) return 1;
+        if (cmd->input_type == PIPE && cmd->next == NULL) return 1;
+        if (cmd->output_type == PIPE && cmd->prev == NULL) return 1;
+        cmd = cmd->next;
+    }
+    return 0;
+}
+
 int check_command_integrity(list_t* list)
 {
     cmd_t* cmd;
     for (list_t* it = list; it; it = it->next) {
         cmd = it->cmd;
-        while (cmd) {
-            if (cmd->argc == 0) return 1;
-            if (cmd->input_type == PIPE && cmd->next == NULL) return 1;
-            if (cmd->output_type == PIPE && cmd->prev == NULL) return 1;
-            cmd = cmd->next;
-        }
+        if (check_cmd_integrity(cmd)) return 1;
     }
     return 0;
 }
