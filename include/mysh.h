@@ -53,7 +53,7 @@ list_t* get_command(char * str);
 void parse_output(cmd_t* command);
 void parse_input(cmd_t* command);
 char** get_files(char *path);
-void set_output(cmd_t* cmd, int input_fd[2]);
+int set_output(cmd_t* cmd, int input_fd[2]);
 list_t* reverse_cmd(list_t* head);
 char** envp_cpy(char** envp);
 void handle_child_error(char** argv);
@@ -105,5 +105,5 @@ void update_cwd(shell_t* shell);
 int have_space(char *str);
 int assign_variables(cmd_t* cmd, shell_t* shell);
 void cmd_is_alias(cmd_t *cmd, shell_t* shell);
-
+int check_globbing(cmd_t* cmd, shell_t* shell);
 #endif

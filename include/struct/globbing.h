@@ -27,6 +27,7 @@
 
         globber_type get_globber(char *str);
         globber_t* reverse_globber(globber_t *globber);
+        globber_t* globber_create(char* str);
         void dump_globbing(globber_t *globber);
         int check_litteral(char** str, globber_t* globbing);
         int check_star(char** str, globber_t* globbing);

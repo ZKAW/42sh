@@ -42,6 +42,21 @@ char* parse_token(char* cmd_str, list_t** array, shell_t* shell)
     return cmd_str;
 }
 
+int check_command_integrity(list_t* list)
+{
+    cmd_t* cmd;
+    for (list_t* it = list; it; it = it->next) {
+        cmd = it->cmd;
+        while (cmd) {
+            if (cmd->argc == 0) return 1;
+            if (cmd->input_type == PIPE && cmd->next == NULL) return 1;
+            if (cmd->output_type == PIPE && cmd->prev == NULL) return 1;
+            cmd = cmd->next;
+        }
+    }
+    return 0;
+}
+
 list_t* parse_command(char *cmd_str, shell_t* shell)
 {
     list_t* command_array = append_list(NULL);
@@ -52,11 +67,12 @@ list_t* parse_command(char *cmd_str, shell_t* shell)
             break;
         cmd_str = parse_token(cmd_str, &command_array, shell);
     }
-    if (command_array->cmd->argc == 0) {
-        dprintf(2, "Invalid null command.\n");
-        exit(1);
-    }
     close_cmd(command_array->cmd);
+    if (check_command_integrity(command_array)) {
+        dprintf(2, "Invalid null command.\n");
+        SHARED_STATUS = 1;
+        return NULL;
+    }
     command_array = reverse_cmd(command_array);
     return command_array;
 }

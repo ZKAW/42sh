@@ -40,31 +40,51 @@ int set_input(cmd_t* cmd, shell_t* shell, int fd[2])
     if (cmd->input_type == FILE_PATH) {
         file_fd = open(cmd->input, O_RDONLY);
         dup2(file_fd, 0);
-        return 0;
+        return file_fd;
     }
     guarantee_pipe(fd, shell);
     if (cmd->input_type == STD) {
         get_input(cmd);
-        dprintf(2, "%s", cmd->input);
+        write(fd[1], cmd->input, my_strlen(cmd->input));
         close(fd[1]);
         dup2(fd[0], 0);
         close(fd[0]);
     }
+    if (is_builtin(cmd->path))
+        return 0;
     if (cmd->input_type == PIPE) {
         prepare_pipe(cmd, shell, fd);
+        return fd[0];
     }
     return 0;
 }
 
-void set_output(cmd_t* cmd, int output_fd[2])
+int set_output(cmd_t* cmd, int output_fd[2])
 {
     int file_fd;
     if (cmd->output_type == FILE_PATH) {
         file_fd = open(cmd->output, O_RDWR | cmd->append | O_CREAT, 0644);
         dup2(file_fd, 1);
+        return file_fd;
     }
     if (cmd->output_type == PIPE) {
         dup2(output_fd[1], 1);
         close(output_fd[1]);
+        return output_fd[1];
     }
+    return 1;
 }
+
+// void restore_stdin_stdout(int saved_stdin, int saved_stdout)
+// {
+//     if (dup2(saved_stdin, STDIN_FILENO) == -1) {
+//         perror("dup2");
+//         exit(EXIT_FAILURE);
+//     }
+//     if (dup2(saved_stdout, STDOUT_FILENO) == -1) {
+//         perror("dup2");
+//         exit(EXIT_FAILURE);
+//     }
+//     close(saved_stdin);
+//     close(saved_stdout);
+// }
