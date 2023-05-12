@@ -53,7 +53,7 @@ list_t* get_command(char * str);
 void parse_output(cmd_t* command);
 void parse_input(cmd_t* command);
 char** get_files(char *path);
-void set_output(cmd_t* cmd, int input_fd[2]);
+int set_output(cmd_t* cmd, int input_fd[2]);
 list_t* reverse_cmd(list_t* head);
 char** envp_cpy(char** envp);
 void handle_child_error(char** argv);

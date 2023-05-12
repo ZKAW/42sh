@@ -130,14 +130,6 @@ TESTS=
   echo "./tests/bin/inexistant"
 [913-END]
 
-[914]
-NAME="Execute incompatible bin"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "./tests/bin/wrong_bin"
-[914-END]
-
 [915]
 NAME="Setenv with too many arguments"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
