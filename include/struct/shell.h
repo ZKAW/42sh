@@ -34,6 +34,7 @@ typedef struct shell {
     char** paths;
     pid_t sub;
     pid_t pgid;
+    pid_t pid;
     struct termios term;
     string_t* string;
     history_t history;

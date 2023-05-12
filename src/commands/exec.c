@@ -12,9 +12,9 @@ void sigchld_handler(int signo);
 
 void teach_child(char* path, cmd_t *cmd, shell_t* shell)
 {
+    if (check_globbing(cmd, shell) == 1) exit(1);
     if (is_builtin(cmd->argv[0])) {
         run_builtin(cmd, shell);
-        exit(shell->state);
     }
     if (execve(path, cmd->argv, shell->envp) == -1) {
         handle_child_error(cmd->argv);
@@ -82,6 +82,7 @@ void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2])
 
 void execute(cmd_t* cmd, shell_t* shell)
 {
+    int fd[2];
     pid_t sub = fork();
 
     if (sub == 0) {

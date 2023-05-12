@@ -12,11 +12,6 @@ ssize_t my_getline(char **bufferptr, shell_t* shell);
 void handle_command(list_t* list, shell_t* shell)
 {
     cmd_t* head;
-    if (list == NULL) {
-        printf("Invalid null command.\n");
-        shell->state = 1;
-        SHARED_STATUS = shell->state;
-    }
     while (list) {
         if ((list->condition == OR && SHARED_STATUS == 0)
         || (list->condition == AND && SHARED_STATUS != 0)) {
@@ -48,6 +43,10 @@ int verify_pipe(shell_t* shell)
         if (size == EOF) return 1;
         status = SHARED_STATUS;
         handle_command(parse_command(line, shell), shell);
+        if (status == 1) {
+            shell->state = status;
+            return 1;
+        }
     }
     return 1;
 }

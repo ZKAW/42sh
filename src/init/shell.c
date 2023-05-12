@@ -32,6 +32,7 @@ shell_t* init_shell(char** envp)
     shell->history.position = 0;
     shell->history.len = 0;
     shell->pgid = getpgrp();
+    shell->pid = getpid();
     shell->shared_status = create_shm(EXIT_SUCCESS);
     shell->job_control = init_job_control();
     shell->aliases = malloc(sizeof(alias_t));

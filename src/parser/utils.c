@@ -6,11 +6,18 @@
 */
 
 #include "mysh.h"
+#include "struct/globbing.h"
+
+int replace_globber(globber_t* globbing, int index, cmd_t* cmd);
 
 void close_cmd(cmd_t* cmd)
 {
-    cmd->argv[cmd->argc] = NULL;
-    cmd->path = cmd->argv[0];
+    if (cmd->argv) {
+        cmd->argv[cmd->argc] = NULL;
+        cmd->path = cmd->argv[0];
+    } else {
+        cmd->path = NULL;
+    }
 }
 
 cmd_t* append_command(list_t* array)
