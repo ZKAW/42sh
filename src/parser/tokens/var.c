@@ -6,6 +6,7 @@
 */
 
 #include "mysh.h"
+#include <string.h>
 
 void close_cmd(cmd_t* cmd);
 cmd_t* append_command(list_t* array);

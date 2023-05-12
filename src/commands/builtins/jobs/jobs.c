@@ -26,7 +26,7 @@ void builtin_jobs(BUILTIN_PARAMS)
 
     if (raise_jobs_errors(cmd, cmd_len)) {
         shell->state = 1;
-        SHARED_STATUS = shell->state;
+        set_status(shell, shell->state);
         return;
     }
 

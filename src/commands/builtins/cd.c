@@ -25,7 +25,7 @@ void handle_cd_error(char* dir, shell_t* shell)
     write(2, error, strlen(error));
     write(2, ".\n", 2);
     shell->state = 1;
-    SHARED_STATUS = shell->state;
+    set_status(shell, shell->state);
 }
 
 void builtin_cd(BUILTIN_PARAMS)

@@ -14,7 +14,7 @@ void handle_command(list_t* list, shell_t* shell)
     cmd_t* head;
     if (list == NULL) {
         shell->state = 1;
-        SHARED_STATUS = shell->state;
+        set_status(shell, shell->state);
     }
     while (list) {
         if ((list->condition == OR && SHARED_STATUS == 0)

@@ -76,7 +76,7 @@ list_t* parse_command(char *cmd_str, shell_t* shell)
     close_cmd(command_array->cmd);
     if (check_command_integrity(command_array)) {
         dprintf(2, "Invalid null command.\n");
-        SHARED_STATUS = 1;
+        set_status(shell, 1);
         return NULL;
     }
     command_array = reverse_cmd(command_array);

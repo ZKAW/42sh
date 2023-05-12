@@ -13,7 +13,7 @@ int not_existing(char* path, shell_t* shell)
         return 0;
     dprintf(2, "%s: Command not found.\n", path);
     shell->state = 1;
-    SHARED_STATUS = shell->state;
+    set_status(shell, shell->state);
     return 1;
 }
 

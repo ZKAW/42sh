@@ -65,3 +65,9 @@ void add_arg(cmd_t* cmd, char* arg, int is_litteral)
     cmd->arg_type[cmd->argc++] = is_litteral;
     cmd->argv[cmd->argc] = NULL;
 }
+
+void set_status(shell_t* shell, int ret)
+{
+    SHARED_STATUS = ret;
+    set_var(shell, "?", my_itoa(ret));
+}

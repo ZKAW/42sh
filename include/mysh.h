@@ -115,5 +115,6 @@ char* get_fignore_var(shell_t* shell);
 void handle_command(list_t* list, shell_t* shell);
 int replace_globber(globber_t* globbing, int index, cmd_t* cmd);
 void alias_special_var(shell_t *shell);
+void set_status(shell_t* shell, int ret);
 
 #endif
