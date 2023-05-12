@@ -18,6 +18,14 @@ static job_control_t* init_job_control(void)
     return job_control;
 }
 
+static void init_aliases(shell_t* shell)
+{
+    shell->aliases = malloc(sizeof(alias_t));
+    shell->aliases->alias = NULL;
+    shell->aliases->command = NULL;
+    shell->aliases->next = NULL;
+}
+
 shell_t* init_shell(char** envp)
 {
     shell_t* shell = malloc(sizeof(shell_t));
@@ -35,10 +43,7 @@ shell_t* init_shell(char** envp)
     shell->pid = getpid();
     shell->shared_status = create_shm(EXIT_SUCCESS);
     shell->job_control = init_job_control();
-    shell->aliases = malloc(sizeof(alias_t));
-    shell->aliases->alias = NULL;
-    shell->aliases->command = NULL;
-    shell->aliases->next = NULL;
+    init_aliases(shell);
     init_vars(shell);
     return shell;
 }

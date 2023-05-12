@@ -43,13 +43,3 @@ extern int arrlen(char **arr)
     for (i = 0; arr[i]; ++i);
     return i;
 }
-
-extern char *concat_str(char *dest, char *src)
-{
-    int len_arr = strlen(dest);
-
-    dest = realloc(dest, ((len_arr + strlen(src)) + 2));
-    dest = (dest[len_arr - 1] != '/') ? strcat(dest, "/")
-    : dest;
-    return strcat(dest, src);
-}

@@ -9,6 +9,9 @@
 
 void init_vars(shell_t *shell)
 {
+    shell->precmd = NULL;
+    shell->cwdcmd = NULL;
+    shell->fignore = NULL;
     shell->vars = malloc(sizeof(var_t));
     shell->vars->key = NULL;
     shell->vars->value = NULL;

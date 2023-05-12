@@ -51,8 +51,7 @@ int set_input(cmd_t* cmd, shell_t* shell, int fd[2])
     }
     if (is_builtin(cmd->path)) return 0;
     if (cmd->input_type == PIPE) {
-        prepare_pipe(cmd, shell, fd);
-        return fd[0];
+        prepare_pipe(cmd, shell, fd); return fd[0];
     }
 }
 

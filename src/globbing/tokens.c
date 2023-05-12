@@ -74,4 +74,3 @@ int check_filter(char** str, globber_t* globbing)
     }
     return 0;
 }
-

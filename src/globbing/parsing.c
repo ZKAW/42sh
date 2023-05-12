@@ -76,4 +76,3 @@ globber_t* reverse_globber(globber_t *globber)
     }
     return next;
 }
-

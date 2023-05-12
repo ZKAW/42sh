@@ -105,4 +105,5 @@ void builtin_alias(char** cmd, shell_t *shell)
         return;
     }
     add_alias(cmd, shell->aliases);
+    alias_special_var(shell);
 }

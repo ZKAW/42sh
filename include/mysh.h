@@ -30,6 +30,7 @@
 #include "macro/cmd.h"
 #include "struct/dir.h"
 #include "struct/echo.h"
+#include "struct/globbing.h"
 
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
@@ -106,4 +107,13 @@ int have_space(char *str);
 int assign_variables(cmd_t* cmd, shell_t* shell);
 void cmd_is_alias(cmd_t *cmd, shell_t* shell);
 int check_globbing(cmd_t* cmd, shell_t* shell);
+char *get_local_var(shell_t *shell, char *key);
+void replace_str_to_array(char** array, char* str, int index, cmd_t* cmd);
+char* get_precmd_var(shell_t* shell);
+char* get_cwdcmd_var(shell_t* shell);
+char* get_fignore_var(shell_t* shell);
+void handle_command(list_t* list, shell_t* shell);
+int replace_globber(globber_t* globbing, int index, cmd_t* cmd);
+void alias_special_var(shell_t *shell);
+
 #endif

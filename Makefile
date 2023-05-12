@@ -22,7 +22,8 @@ MSG_CLEAN = $(CC_RED)[RM] $(CC_RESET)Object files$(CC_RESET)
 MSG_CSTYLE = $(CC_GREEN)[CSTYLE] $(CC_RESET)Running...
 
 OBJ	= $(SRC:.c=.o)
-CFLAGS = -Wall -Wextra -I ./include -L ./lib/my -lmy -Wno-unused-variable -Wno-unused-parameter
+CFLAGS = -Wall -Wextra -I ./include -L ./lib/my -lmy -Wno-unused-variable \
+	-Wno-unused-parameter
 
 .SILENT:
 
