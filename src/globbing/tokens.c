@@ -22,8 +22,10 @@ int check_litteral(char** str, globber_t* globbing)
 int check_star(char** str, globber_t* globbing)
 {
     char* cpy = *str;
-    if (!globbing->next)
+    if (!globbing->next) {
+        while (**str) (*str)++;
         return 1;
+    }
     while (*cpy) {
         if (match(cpy, globbing->next)) {
             *str = cpy;

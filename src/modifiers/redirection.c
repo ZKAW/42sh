@@ -50,9 +50,8 @@ int set_input(cmd_t* cmd, shell_t* shell, int fd[2])
         dup2(fd[0], 0);
         close(fd[0]);
     }
-    if (cmd->input_type == PIPE) {
+    if (cmd->input_type == PIPE)
         prepare_pipe(cmd, shell, fd);
-    }
     return 0;
 }
 

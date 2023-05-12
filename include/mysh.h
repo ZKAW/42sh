@@ -105,4 +105,5 @@ void update_cwd(shell_t* shell);
 int have_space(char *str);
 int assign_variables(cmd_t* cmd, shell_t* shell);
 void cmd_is_alias(cmd_t *cmd, shell_t* shell);
+int check_globbing(cmd_t* cmd, shell_t* shell);
 #endif

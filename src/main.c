@@ -48,6 +48,10 @@ int verify_pipe(shell_t* shell)
         if (size == EOF) return 1;
         status = SHARED_STATUS;
         handle_command(parse_command(line, shell), shell);
+        if (status == 1) {
+            shell->state = status;
+            return 1;
+        }
     }
     return 1;
 }

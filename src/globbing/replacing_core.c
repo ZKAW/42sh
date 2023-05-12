@@ -77,6 +77,3 @@ int replace_globber(globber_t* globbing, int index, cmd_t* cmd)
     }
     return tablen(matched) - 1;
 }
-
-
-

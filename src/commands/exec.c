@@ -12,6 +12,7 @@ void sigchld_handler(int signo);
 
 void teach_child(char* path, cmd_t *cmd, shell_t* shell)
 {
+    if (check_globbing(cmd, shell) == 1) exit(1);
     if (is_builtin(cmd->argv[0])) {
         run_builtin(cmd, shell);
         exit(shell->state);

@@ -48,6 +48,7 @@ NAME="setenv and unsetenv"
 SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
 CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
 TESTS=
+  echo 'unsetenv NLSPATH'
   echo 'unsetenv HOSTTYPE'
   echo 'unsetenv VENDOR'
   echo 'unsetenv OSTYPE'
@@ -150,6 +151,7 @@ NAME="unsetenv multiple arguments"
 SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
 CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
 TESTS=
+  echo 'unsetenv NLSPATH'
   echo 'unsetenv HOSTTYPE'
   echo 'unsetenv VENDOR'
   echo 'unsetenv OSTYPE'
@@ -272,7 +274,7 @@ SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
   echo 'echo test string > .inputfile'
-  echo 'cat < .inputfile'
+  echo 'cat -e < .inputfile'
   echo 'rm .inputfile'
 [928-END]
 
