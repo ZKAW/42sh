@@ -31,6 +31,7 @@ typedef struct shell {
     char** envp;
     char* last_path;
     int state;
+    int loop;
     char** paths;
     pid_t sub;
     pid_t pgid;
@@ -40,6 +41,7 @@ typedef struct shell {
     shared_memory_t shared_status;
     var_t* vars;
     alias_t* aliases;
+    char *precmd;
     job_control_t *job_control;
 } shell_t;
 

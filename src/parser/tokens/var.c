@@ -68,7 +68,7 @@ char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
     }
     char *var = get_local_var(saved_shell, cmd_str);
     if (var == NULL) {
-        printf("null: variable not found\n");
+        printf("%s: Undefined variable.\n", cmd_str);
         return cmd_str;
     }
     cmd_str = strdup(var);

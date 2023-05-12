@@ -105,4 +105,7 @@ void builtin_alias(char** cmd, shell_t *shell)
         return;
     }
     add_alias(cmd, shell->aliases);
+    char *precmd = get_precmd_var(shell, "precmd");
+    if (precmd != NULL)
+        shell->precmd = precmd;
 }

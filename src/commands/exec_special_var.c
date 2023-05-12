@@ -7,11 +7,11 @@
 
 #include "mysh.h"
 
-void precmd_on_alias(cmd_t* cmd, shell_t* shell)
+char* get_precmd_var(shell_t* shell, char* key)
 {
     char *alias = NULL; alias_t *tmp = NULL;
     if (shell->aliases->alias == NULL)
-        return;
+        return NULL;
     for (tmp = shell->aliases; tmp->next != NULL; tmp = tmp->next) {
         if (strcmp(tmp->alias, "precmd") == 0)
             alias = strdup(tmp->command);
@@ -19,13 +19,28 @@ void precmd_on_alias(cmd_t* cmd, shell_t* shell)
     if (strcmp(tmp->alias, "precmd") == 0)
         alias = strdup(tmp->command);
 
-    if (alias != NULL) {
-        char **argv_dup = malloc(sizeof(char*) * (tablen(cmd->argv) + 1));
-        arraydup(argv_dup, cmd->argv);
-        char** buffer = array_append(argv_dup, alias);
-        for (int i = 0; buffer[i] != NULL; i++)
-            cmd->argv[i] = buffer[i];
-    }
+    return alias;
+}
+
+void precmd_on_alias(cmd_t* cmd, shell_t* shell)
+{
+    // char *alias = NULL; alias_t *tmp = NULL;
+    // if (shell->aliases->alias == NULL)
+    //     return;
+    // for (tmp = shell->aliases; tmp->next != NULL; tmp = tmp->next) {
+    //     if (strcmp(tmp->alias, "precmd") == 0)
+    //         alias = strdup(tmp->command);
+    // }
+    // if (strcmp(tmp->alias, "precmd") == 0)
+    //     alias = strdup(tmp->command);
+
+    // if (alias != NULL) {
+    //     char **argv_dup = malloc(sizeof(char*) * (tablen(cmd->argv) + 1));
+    //     arraydup(argv_dup, cmd->argv);
+    //     char** buffer = array_append(argv_dup, alias);
+    //     for (int i = 0; buffer[i] != NULL; i++)
+    //         cmd->argv[i] = buffer[i];
+    // }
 }
 
 char *get_local_var(shell_t *shell, char *key)

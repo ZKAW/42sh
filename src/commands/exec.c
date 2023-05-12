@@ -9,6 +9,7 @@
 #include <threads.h>
 
 void sigchld_handler(int signo);
+void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2]);
 
 void teach_child(char* path, cmd_t *cmd, shell_t* shell)
 {

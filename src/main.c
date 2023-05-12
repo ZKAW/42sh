@@ -31,6 +31,11 @@ void handle_command(list_t* list, shell_t* shell)
         }
         list = list->next;
     }
+    if (shell->precmd != NULL && shell->loop == 0) {
+        list_t *list_precmd = parse_command(shell->precmd, shell);
+        shell->loop = 1;
+        handle_command(list_precmd, shell);
+    }
 }
 
 int verify_pipe(shell_t* shell)
@@ -71,6 +76,7 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
         size = my_getline(&line, shell);
         if (size == 1) continue;
         if (size == EOF) break;
+        shell->loop = 0;
         handle_command(parse_command(line, shell), shell);
     }
     if (isatty(0)) write(1, "exit\n", 5);
