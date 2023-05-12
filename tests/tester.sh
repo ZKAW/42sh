@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MYSHELL="$PWD/42sh"
+MYSHELL="$PWD/mysh"
 REFER="/bin/tcsh -f"
 TRAPSIG=0
 
@@ -17,9 +17,6 @@ EXPR=`which expr`
 MKDIR=`which mkdir`
 CP=`which cp`
 
-test_nb=0
-failed_tests=0
-
 for i in `env | grep BASH_FUNC_ | cut -d= -f1`; do
     f=`echo $i | sed s/BASH_FUNC_//g | sed s/%%//g`
     unset -f $f
@@ -28,7 +25,7 @@ done
 disp_test()
 {
   id=$1
-  $CAT tests/tests_list | $GREP -A1000 "\[$id\]" | $GREP -B1000 "^\[$id-END\]" | $GREP -v "^\[.*\]"
+  $CAT tests | $GREP -A1000 "\[$id\]" | $GREP -B1000 "^\[$id-END\]" | $GREP -v "^\[.*\]"
 }
 
 run_script()
@@ -58,7 +55,7 @@ prepare_test()
   echo "$CLEAN" >> $runnerfn
 
   echo "#!/bin/bash" > $testfn
-  echo "$tests_list" | $TR "²" "\n" >> $testfn
+  echo "$TESTS" | $TR "²" "\n" >> $testfn
 
   chmod 755 $testfn
   chmod 755 $runnerfn
@@ -72,7 +69,7 @@ load_test()
   CLEAN=`disp_test "$id" | $GREP "CLEAN=" | $SED s/'CLEAN='// | $SED s/'"'//g`
   NAME=`disp_test "$id" | $GREP "NAME=" | $SED s/'NAME='// | $SED s/'"'//g`
   TCSHUPDATE=`disp_test "$id" | $GREP "TCSHUPDATE=" | $SED s/'TCSHUPDATE='// | $SED s/'"'//g`
-  tests_list=`disp_test "$id" | $GREP -v "SETUP=" | $GREP -v "CLEAN=" | $GREP -v "NAME=" | $GREP -v "TCSHUPDATE=" | $GREP -v "tests_list=" | $TR "\n" "²" | $SED s/"²$"//`
+  TESTS=`disp_test "$id" | $GREP -v "SETUP=" | $GREP -v "CLEAN=" | $GREP -v "NAME=" | $GREP -v "TCSHUPDATE=" | $GREP -v "TESTS=" | $TR "\n" "²" | $SED s/"²$"//`
   prepare_test
   $WRAPPER
   nb=`$CAT /tmp/.refer.$$ | $GREP -v '^_=' | $GREP -v '^\[1\]' | $WC -l`
@@ -107,7 +104,6 @@ load_test()
       echo "OK"
     fi
   else
-    failed_tests=$((failed_tests+1))
     if [ $debug -ge 1 ]
     then
       echo "Test $id ($NAME) : KO - Check output in /tmp/test.$$/$id/" 
@@ -132,9 +128,9 @@ then
   done
 fi
 
-if [ ! -f tests/tests_list ]
+if [ ! -f tests ]
 then
-  echo "No tests_list file. Please read README.ME" >&2
+  echo "No tests file. Please read README.ME" >&2
   exit 1
 fi
 
@@ -154,9 +150,8 @@ fi
 
 if [ $# -eq 0 ]
 then
-  for lst in `cat tests/tests_list | grep "^\[.*\]$" | grep -vi end | sed s/'\['// | sed s/'\]'//`
+  for lst in `cat tests | grep "^\[.*\]$" | grep -vi end | sed s/'\['// | sed s/'\]'//`
   do
-    test_nb=$((test_nb+1))
     path_backup=$PATH
     load_test $lst 1
     export PATH=$path_backup
@@ -175,10 +170,4 @@ else
   fi
 fi
 
-echo -e "\nTests results:"
-if [ $failed_tests -eq 0 ]; then
-    echo -e "\e[32mAll tests passed\e[0m"
-else
-    # echo -e "\e[31m$failed_tests/$test_nb tests failed\e[0m"
-    echo -e "\e[31m$failed_tests\e[0m/\e[31m$test_nb\e[0m tests failed"
-fi
+##code /tmp/test.$$
