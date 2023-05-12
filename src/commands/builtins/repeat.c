@@ -50,20 +50,22 @@ void repeat_builtin(char **cmd, shell_t *shell)
 {
 
     char *str = NULL;
-
+    list_t *list = NULL;
     if (strcmp(cmd[0], "repeat"))
         return;
     if (arrlen(cmd) < 3) {
-        my_putstr("repeat: Too few arguments.\n", 2);
+        throw_error("repeat: Too few arguments.\n", shell, 1);
+
         return;
     }
     if (check_alph(cmd[1])) {
-        my_putstr("repeat: Badly formed number.\n", 2);
+        throw_error("repeat: Badly formed number.\n", shell, 1);
         return;
     }
     str = concat_arr(cmd + 2, ' ');
+    list = parse_command(str, shell);
     for (int i = atoi(cmd[1]); i != 0; --i)
-        printf("Exec : %s\n", str);
+        handle_command(list, shell);
     free(str);
     return;
 }
