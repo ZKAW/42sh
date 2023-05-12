@@ -10,6 +10,7 @@
 
 globber_type get_globber(char *str)
 {
+    char* oppeners = "*?[{";
     for (int i = 0; oppeners[i]; i++)
         if (*str == oppeners[i]) return i;
     return GLOB_LITTERAL;
@@ -18,6 +19,7 @@ globber_type get_globber(char *str)
 globber_t* parse_litteral(globber_t* globber, char** buffer)
 {
     int i = 0;
+    char* oppeners = "*?[{";
     char* src = *buffer;
     while (*src && !strchr(oppeners, *src)
     && *src != ' ' && *src != '\t'
@@ -34,6 +36,7 @@ globber_t* parse_litteral(globber_t* globber, char** buffer)
 globber_t* get_next_globber(char **buffer)
 {
     char* str = *buffer;
+    char *closers = "*?]}", *oppeners = "*?[{";
     globber_t *globber = malloc(sizeof(globber_t));
     globber->type = get_globber(str);
     int i = 0;

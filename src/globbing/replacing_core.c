@@ -10,6 +10,8 @@
 #include <string.h>
 #include "struct/globbing.h"
 
+char** get_recursive_files(char* root);
+
 char* get_globbing_path(globber_t** globbing)
 {
     globber_t* globber = *globbing;
@@ -52,16 +54,12 @@ char** get_matching_files(char** files, char* path, globber_t* globbing)
     return matched;
 }
 
-char** get_recursive_files(char* root);
-
 int replace_globber(globber_t* globbing, int index, cmd_t* cmd)
 {
     shell_t* shell = get_shell(NULL);
     char* path = get_globbing_path(&globbing);
     char** files = get_recursive_files(path);
-    //print_array(files);
     char** matched = get_matching_files(files, path, globbing);
-    //print_array(matched);
     replace_arr_at_index(&cmd->argv, matched, index);
     if (tablen(matched) == 0) {
         dprintf(2, "%s: No match.\n", cmd->argv[0]);
