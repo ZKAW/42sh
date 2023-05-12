@@ -13,12 +13,11 @@ void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2]);
 
 void teach_child(char* path, cmd_t *cmd, shell_t* shell)
 {
-    if (check_globbing(cmd, shell) == 1) {
-        SHARED_STATUS = 1;
-        exit(1);
-    }
     if (is_builtin(cmd->argv[0])) {
         run_builtin(cmd, shell);
+    } else if (check_globbing(cmd, shell) == 1) {
+        SHARED_STATUS = 1;
+        exit(1);
     }
     if (execve(path, cmd->argv, shell->envp) == -1) {
         handle_child_error(cmd->argv);

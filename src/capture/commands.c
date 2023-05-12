@@ -39,10 +39,22 @@ int handle_backspace(char c, string_t* string)
     return 0;
 }
 
+char* get_actual_command(shell_t* shell)
+{
+    char command[4096] = {0};
+    string_t* string = get_string(NULL);
+    if (string == NULL)
+        return NULL;
+    for (int i = 0; i < string->len; i++)
+        command[i] = string->str[i];
+    return strdup(command);
+}
+
 int end_of_input(shell_t* shell)
 {
     string_t* string = get_string(NULL);
     dprintf(1, "%c", '\n');
+    completion(get_actual_command(shell), shell->envp);
     my_putstr(get_prompt_prefix(), 1);
     print_string(string);
     return 1;

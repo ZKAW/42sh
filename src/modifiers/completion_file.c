@@ -11,8 +11,7 @@ static int is_binary(const char *path)
 {
     struct stat sb;
 
-    if (stat(path, &sb) != 0)
-        exit(84);
+    stat(path, &sb);
     return (S_ISREG(sb.st_mode) && (sb.st_mode & S_IXUSR)) ? 1 : 0;
 }
 
@@ -44,10 +43,8 @@ extern int core_completion(char *cmd, char **arr, char ***output)
     dir_t *dir = malloc(sizeof(dir_t));
     int count = 0;
     char cwd[getpagesize()];
-
     getcwd(cwd, sizeof(cwd));
     *output = malloc(sizeof(char*) * getpagesize());
-
     for (int i = 0; arr[i]; ++i) {
         if (!(dir->dir = opendir(arr[i])))
             continue;

@@ -71,7 +71,6 @@ extern int completion(char *cmd, char **envp)
 {
     char **arr = NULL;
     char **out = NULL;
-
     for (int i = 0; cmd[i]; ++i)
         if (cmd[i] == ' ')
             return 0;
@@ -79,7 +78,5 @@ extern int completion(char *cmd, char **envp)
     core_completion(cmd, arr, &out);
     sort_completion(out);
     print_completion(out);
-    free_arr(arr);
-    free_arr(out);
     return 0;
 }

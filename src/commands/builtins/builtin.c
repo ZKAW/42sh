@@ -42,5 +42,7 @@ void run_builtin(cmd_t* cmd, shell_t* shell)
         }
     }
     fflush(stdout);
+    if (new_input) close(new_input);
+    if (new_output) close(new_output);
     restore_stdin_stdout(saved_input, saved_output);
 }

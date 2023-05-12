@@ -433,3 +433,14 @@ TESTS=
   echo "ls && echo 'display'"
   echo "ls ./foo && echo 'dont display'"
 [945-END]
+
+[946]
+NAME="conditions | simple && "
+SETUP="export PLOP=COUCOU; OLDPATH=$PATH; PATH='/toto'"
+CLEAN="PATH=$OLDPATH"
+TESTS=
+  echo "setenv | /bin/grep PLOP"
+  echo "/bin/ls | cd bin"
+  echo "ls -l"
+  echo "exit 45 | cat /etc/resolv.conf"
+[946-END]

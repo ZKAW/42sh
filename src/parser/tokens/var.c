@@ -10,6 +10,7 @@
 void close_cmd(cmd_t* cmd);
 cmd_t* append_command(list_t* array);
 list_t* append_list(list_t* array);
+char* parse_file_name(char** cmd_str);
 
 int is_delim(char c, char* delims)
 {
@@ -58,18 +59,18 @@ char* clear_str(char* str)
 char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     (void)shell;
-    cmd_str = clear_str(cmd_str);
-
-    cmd_t* cmd = (*command_array)->cmd;
-    shell_t* saved_shell = get_shell(NULL);
-    if (saved_shell == NULL) {
+    if (*cmd_str == '\0' || *(cmd_str - 1) != '$') {
+        add_arg((*command_array)->cmd, strdup("$"), SIMPLE);
         return cmd_str;
     }
-    char *var = get_local_var(saved_shell, cmd_str);
+    cmd_t* cmd = (*command_array)->cmd;
+    shell_t* saved_shell = get_shell(NULL);
+    char* var_name = parse_file_name(&cmd_str);
+    char *var = get_local_var(saved_shell, var_name);
     if (var == NULL) {
         printf("%s: Undefined variable.\n", cmd_str);
         return cmd_str;
     }
-    cmd_str = strdup(var);
+    add_arg(cmd, strdup(var), SIMPLE);
     return cmd_str;
 }
