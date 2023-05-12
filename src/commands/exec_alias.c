@@ -11,6 +11,8 @@ char *get_alias(shell_t *shell, char *key)
 {
     if (shell->aliases->alias == NULL)
         return NULL;
+    if (my_strcmp(key, "$") == 0)
+        return NULL;
     for (int i = 0; shell->aliases->next != NULL; i++) {
         if (my_strcmp(shell->aliases->alias, key) == 0)
             return shell->aliases->command;

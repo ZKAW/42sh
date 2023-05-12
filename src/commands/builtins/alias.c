@@ -52,7 +52,6 @@ void show_alias(alias_t *alias, char **buffer)
 {
     alias_t *tmp;
     if (alias->alias == NULL) {
-        my_putstr("No alias\n", 1);
         return;
     }
     for (tmp = alias; tmp != NULL; tmp = tmp->next) {
@@ -74,7 +73,6 @@ void print_alias(alias_t *alias)
 {
     alias_t *tmp;
     if (alias->alias == NULL) {
-        my_putstr("No alias\n", 1);
         return;
     }
     for (tmp = alias; tmp->next != NULL; tmp = tmp->next) {
