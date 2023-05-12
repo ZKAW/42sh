@@ -32,22 +32,22 @@ void builtin_cd(BUILTIN_PARAMS)
 {
     char actual_path[500], **var_env = shell->envp, *dir, *var;
     if (tablen(cmd) > 2) {
-        throw_error("cd: Too many arguments.\n", shell, 1);
-        return;
+        throw_error("cd: Too many arguments.\n", shell, 1); return;
     }
     dir = (tablen(cmd) == 1 || !strcmp(cmd[1], "~")) ? "$HOME" : cmd[1];
-
     if (dir[0] == '$') {
-        var = find_envp(dir, shell);
-        var_env = tokenize_string(var, "=");
+        var = find_envp(dir, shell); var_env = tokenize_string(var, "=");
         dir = var_env[1];
     }
-    if (!strcmp(dir, "-"))
-        dir = shell->last_path;
+    if (!strcmp(dir, "-")) dir = shell->last_path;
     getcwd(actual_path, 500);
     if (chdir(dir) < 0) {
-        handle_cd_error(dir, shell);
-        return;
+        handle_cd_error(dir, shell); return;
     }
     strcpy(shell->last_path, actual_path);
+    update_cwd(shell);
+    if (shell->cwdcmd != NULL) {
+        list_t *list_cwdcmd = parse_command(shell->cwdcmd, shell);
+        handle_command(list_cwdcmd, shell);
+    }
 }

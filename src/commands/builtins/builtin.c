@@ -16,12 +16,31 @@ int is_builtin(char* path)
     return 0;
 }
 
+void restore_stdin_stdout(int saved_input, int saved_output)
+{
+    dup2(saved_input, 0);
+    dup2(saved_output, 1);
+    close(saved_input);
+    close(saved_output);
+}
+
 void run_builtin(cmd_t* cmd, shell_t* shell)
 {
+    int fd[2];
+    int saved_input = dup(0), saved_output = dup(1);
+    int new_input = 0, new_output = 0;
+    if (getpid() == shell->pid) {
+        if (cmd->output_type != NONE)
+            new_output = set_output(cmd, fd);
+        if (cmd->input_type != NONE)
+            new_input = set_input(cmd, shell, fd);
+    }
     for (int i = 0; builtin_cmds[i].name; i++) {
         if (strcmp(builtin_cmds[i].name, cmd->path) == 0) {
             builtin_cmds[i].func(cmd->argv, shell);
-            return;
+            break;
         }
     }
+    fflush(stdout);
+    restore_stdin_stdout(saved_input, saved_output);
 }

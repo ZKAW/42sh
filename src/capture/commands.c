@@ -39,6 +39,15 @@ int handle_backspace(char c, string_t* string)
     return 0;
 }
 
+int end_of_input(shell_t* shell)
+{
+    string_t* string = get_string(NULL);
+    dprintf(1, "%c", '\n');
+    my_putstr(get_prompt_prefix(), 1);
+    print_string(string);
+    return 1;
+}
+
 int handle_commands(char c, shell_t* shell)
 {
     string_t* string = shell->string;
@@ -53,6 +62,8 @@ int handle_commands(char c, shell_t* shell)
         }
         return 1;
     }
+    if (c == '\004')
+        return end_of_input(shell);
     if (c == '\033') {
         if (handle_arrows(shell))
             return 1;

@@ -28,10 +28,9 @@ void sigint_handler(int sig)
     my_putstr(get_prompt_prefix(), 1);
 }
 
-// void sigtstp_handler(int sig)
-// {
-//     (void)sig;
-//     shell_t* shell = get_shell(NULL);
-//     tcsetpgrp(STDIN_FILENO, shell->sub);
-//     kill(shell->sub, SIGTSTP);
-// }
+void sigtstp_handler(int sig)
+{
+    string_t* string = get_string(NULL);
+    (void)string;
+    (void)sig;
+}

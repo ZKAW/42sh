@@ -7,6 +7,8 @@
 
 #include "mysh.h"
 
+void handle_command(list_t* list, shell_t* shell);
+
 char* store_output(int fd)
 {
     ssize_t nread;
@@ -25,8 +27,6 @@ char* store_output(int fd)
 char* render_backtick(char* const str, shell_t* shell)
 {
     char* content;
-    char** args = tokenize_string(str, " \t\n");
-    char* path = get_full_path(args[0], shell);
     int fd[2], pid, status;
     pipe(fd);
     pid = fork();
@@ -34,7 +34,8 @@ char* render_backtick(char* const str, shell_t* shell)
         dup2(fd[1], 1);
         close(fd[0]);
         close(fd[1]);
-        execve(path, args, NULL);
+        handle_command(parse_command(str, shell), shell);
+        exit(shell->state);
     } else {
         close(fd[1]);
         waitpid(pid, &status, 0);
@@ -56,6 +57,6 @@ char* parse_backticks(char* cmd_str, list_t** command_array, shell_t* shell)
     content = render_backtick(command, shell);
     args = tokenize_string(content, " \t\n");
     for (int i = 0; args[i]; i++)
-        cmd->argv[cmd->argc++] = strdup(args[i]);
+        add_arg(cmd, args[i], BACKTICKS);
     return cmd_str;
 }

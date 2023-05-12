@@ -8,6 +8,9 @@
 #ifndef COMMAND_H_
     #define COMMAND_H_
 
+    #define QUOTTED 1
+    #define BACKTICKS 1
+    #define SIMPLE 0
     #define MAX_ARGS 256
     #define FD_STATUS 10
 
@@ -28,7 +31,8 @@ typedef enum CONDITION {
 typedef struct command {
     int argc;
     char* path;
-    char* argv[256];
+    char** argv;
+    int* arg_type;
     char* output;
     char* input;
     char* full_output;
@@ -45,6 +49,7 @@ typedef struct command_array {
     condition_t condition;
     struct command_array* next;
     struct command_array* prev;
+    int in_subshell;
 } list_t;
 
 #endif /* !COMMAND_H_ */

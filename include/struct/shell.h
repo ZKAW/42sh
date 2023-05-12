@@ -14,18 +14,37 @@
     #include "memory.h"
     #include "job.h"
 
+typedef struct alias_s {
+    char *alias;
+    char *command;
+    struct alias_s *next;
+} alias_t;
+
+typedef struct var {
+    char* key;
+    char* value;
+    struct var* next;
+} var_t;
+
 typedef struct shell {
     char* root;
     char** envp;
     char* last_path;
     int state;
+    int loop;
     char** paths;
     pid_t sub;
     pid_t pgid;
+    pid_t pid;
     struct termios term;
     string_t* string;
     history_t history;
     shared_memory_t shared_status;
+    var_t* vars;
+    alias_t* aliases;
+    char *precmd;
+    char* cwdcmd;
+    char* fignore;
     job_control_t *job_control;
 } shell_t;
 

@@ -49,6 +49,8 @@ ssize_t end_of_line(shell_t* shell, char **bufferptr)
     disable_raw_mode(&shell->term);
     history->position = 0;
     *bufferptr = merge_string(shell->string, shell);
+    if (*bufferptr == NULL)
+        return 1;
     shell->string->next = history->head;
     if (history->head)
         history->head->prev = shell->string;
@@ -65,13 +67,12 @@ ssize_t my_getline(char **bufferptr, shell_t* shell)
     signal(SIGINT, sigint_handler);
     enable_raw_mode(&shell->term);
     for (;;) {
+        c = 0;
         valread = read(0, &c, 1);
-        if (valread < 0 && c != '\004')
+        if (valread < 0 && c == 0)
             continue;
-        if (c == '\004') {
-            disable_raw_mode(&shell->term);
+        if (c == '\004' && get_string(NULL)->len == 0)
             return -1;
-        }
         if (c == '\n')
             return end_of_line(shell, bufferptr);
         if (handle_commands(c, shell))

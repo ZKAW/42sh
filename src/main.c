@@ -13,23 +13,23 @@ void handle_command(list_t* list, shell_t* shell)
 {
     cmd_t* head;
     if (list == NULL) {
-        printf("Invalid null command.\n");
-        shell->state = 1;
+        printf("Invalid null command.\n"); shell->state = 1;
         SHARED_STATUS = shell->state;
     }
     while (list) {
-        if ((list->condition == OR && shell->state == 0)
-        || (list->condition == AND && shell->state != 0)) {
-            list = list->next;
-            continue;
+        if ((list->condition == OR && SHARED_STATUS == 0)
+        || (list->condition == AND && SHARED_STATUS != 0)) {
+            list = list->next; continue;
         }
         head = list->cmd;
-        if (is_builtin(head->path)) {
-            run_builtin(head, shell);
-        } else {
+        if (is_builtin(head->path)) run_builtin(head, shell);
+        else
             execute(head, shell);
-        }
         list = list->next;
+    }
+    if (shell->precmd != NULL && shell->loop == 0) {
+        list_t *list_precmd = parse_command(shell->precmd, shell);
+        shell->loop = 1; handle_command(list_precmd, shell);
     }
 }
 
@@ -75,10 +75,10 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
         size = my_getline(&line, shell);
         if (size == 1) continue;
         if (size == EOF) break;
+        shell->loop = 0;
         handle_command(parse_command(line, shell), shell);
     }
-    if (isatty(0))
-        write(1, "exit\n", 5);
+    if (isatty(0)) write(1, "exit\n", 5);
     exit_shm(shell);
     return (shell->state);
 }
