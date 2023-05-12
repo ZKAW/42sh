@@ -54,10 +54,12 @@ void unalias_all(shell_t *shell)
 void builtin_unalias(char** cmd, shell_t *shell)
 {
     alias_t *tmp; alias_t *tmp2;
-    if (cmd[1] == NULL)
+    if (cmd[1] == NULL) {
         my_putstr("unalias: Too few arguments.\n", 1); return;
-    if (my_strcmp(cmd[1], "*") == 0)
+    }
+    if (my_strcmp(cmd[1], "*") == 0) {
         unalias_all(shell); return;
+    }
     for (tmp = shell->aliases; tmp->next != NULL; tmp = tmp->next) {
         if (my_strcmp(tmp->alias, cmd[1]) == 0) {
             tmp2 = tmp->next;
