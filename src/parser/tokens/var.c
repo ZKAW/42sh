@@ -64,15 +64,16 @@ char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
         cmd_str = strdup("$");
         return cmd_str;
     }
-    cmd_str = clear_str(cmd_str);
-
 
     cmd_t* cmd = (*command_array)->cmd;
     shell_t* saved_shell = get_shell(NULL);
     if (saved_shell == NULL) {
         return cmd_str;
     }
-    char *var = get_local_var(saved_shell, cmd_str);
+    char **parsed_str = tokenize_string(cmd_str, " \t\n");
+    printf("parsed_str[0]: %s\n", parsed_str[0]);
+    char *var = get_local_var(saved_shell, parsed_str[0]);
+    printf("var: %s\n", var);
     if (var == NULL) {
         printf("%s: Undefined variable.\n", cmd_str);
         return cmd_str;
