@@ -58,7 +58,14 @@ char* clear_str(char* str)
 char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     (void)shell;
+
+    printf("cmd_str: %s\n", cmd_str);
+    if (cmd_str == NULL || cmd_str[0] == '\0') {
+        cmd_str = strdup("$");
+        return cmd_str;
+    }
     cmd_str = clear_str(cmd_str);
+
 
     cmd_t* cmd = (*command_array)->cmd;
     shell_t* saved_shell = get_shell(NULL);

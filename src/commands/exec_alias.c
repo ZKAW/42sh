@@ -27,7 +27,8 @@ void replace_str_to_array(char** array, char* str, int index, cmd_t* cmd)
     int i = 0;
     for (; i < index; i++)
         new_array[i] = array[i];
-    char** splitted = my_str_to_word_array(str, ' ');
+    char** splitted = malloc(sizeof(char*) * (tablen(array) + 1));
+    splitted = my_str_to_word_array(str, ' ');
     for (int j = 0; splitted[j] != NULL; j++) {
         new_array[i] = splitted[j];
         i++;
@@ -44,7 +45,7 @@ void cmd_is_alias(cmd_t* cmd, shell_t* shell)
     for (int i = 0; cmd->argv[i] != NULL; i++) {
         char *alias = get_alias(shell, cmd->argv[i]);
         if (alias != NULL) {
-            replace_str_to_array(cmd->argv, alias, i, cmd);
+            replace_arr_at_index(&cmd->argv, tokenize_string(alias, " "), i);
             return;
         }
     }
