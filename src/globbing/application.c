@@ -8,6 +8,8 @@
 #include "mysh.h"
 #include "struct/globbing.h"
 
+int replace_globber(globber_t* globbing, int index, cmd_t* cmd);
+
 int check_globbing(cmd_t* cmd, shell_t* shell)
 {
     globber_t* globber = NULL;
@@ -15,9 +17,8 @@ int check_globbing(cmd_t* cmd, shell_t* shell)
         if (cmd->arg_type[i] != SIMPLE) continue;
         globber = globber_create(cmd->argv[i]);
         if (globber->type == GLOB_LITTERAL && !globber->next) continue;
-        i = replace_globber(globber, i, cmd);
+        i += replace_globber(globber, i, cmd);
         if (i == 0) {
-            SHARED_STATUS = 1;
             return 1;
         }
     }

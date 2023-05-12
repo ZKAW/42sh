@@ -390,3 +390,46 @@ CLEAN=""
 TESTS=
   echo "cd ; </etc/hosts od -c | grep xx | wc >> /tmp/z -l ; cd - && echo \"OK\""
 [940-END]
+
+[941]
+NAME="globbing | simple * + extension"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls *.c"
+[941-END]
+
+[942]
+NAME="globbing | relative path + filter + extension"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls ./tests/globbing/{a,b,c}.c"
+[942-END]
+
+[943]
+NAME="globbing | many stars + extension"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls ls */*/*.c"
+[943-END]
+echo "ls caca | rev && echo 'dont display'" 
+
+[944]
+NAME="conditions | simple || "
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls || echo 'dont display'"
+  echo "ls ./foo || echo 'display'"
+[944-END]
+
+[945]
+NAME="conditions | simple && "
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls && echo 'display'"
+  echo "ls ./foo && echo 'dont display'"
+[945-END]

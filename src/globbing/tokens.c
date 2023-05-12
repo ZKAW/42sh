@@ -23,7 +23,9 @@ int check_star(char** str, globber_t* globbing)
 {
     char* cpy = *str;
     if (!globbing->next) {
-        while (**str) (*str)++;
+        while (**str) {
+            (*str)++;
+        }
         return 1;
     }
     while (*cpy) {
@@ -31,9 +33,11 @@ int check_star(char** str, globber_t* globbing)
             *str = cpy;
             return 1;
         }
+        if (*cpy == '/' && globbing->next->type == GLOB_LITTERAL)
+            return 0;
         cpy++;
     }
-    return 1;
+    return 0;
 }
 
 int check_question(char** str, globber_t* globbing)

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** mini-shell2
 ** File description:
-** redirections.c
+** redirection.c
 */
 
 #include "mysh.h"
@@ -53,7 +53,6 @@ int set_input(cmd_t* cmd, shell_t* shell, int fd[2])
     if (cmd->input_type == PIPE) {
         prepare_pipe(cmd, shell, fd); return fd[0];
     }
-    return 0;
 }
 
 int set_output(cmd_t* cmd, int output_fd[2])
