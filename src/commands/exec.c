@@ -36,8 +36,14 @@ void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2])
     }
     if (cmd->output_type != NONE)
         set_output(cmd, output_fd);
+    if ((cmd->input_type == FILE_PATH) && !is_file_exist(cmd->input)) {
+        dprintf(2, "%s: No such file or directory.\n", cmd->input);
+        SHARED_STATUS = 1;
+        return;
+    }
     if (cmd->input_type != NONE)
         set_input(cmd, shell, input_fd);
+
     teach_child(path, cmd, shell);
 }
 

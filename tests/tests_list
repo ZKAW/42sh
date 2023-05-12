@@ -444,3 +444,11 @@ TESTS=
   echo "ls -l"
   echo "exit 45 | cat /etc/resolv.conf"
 [946-END]
+
+[947]
+NAME="Input rediction (<) with invalid file"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cat < /x/invalid_file"
+[947-END]
