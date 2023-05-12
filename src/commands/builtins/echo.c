@@ -99,5 +99,6 @@ void echo_builtin(char **cmd, shell_t *shell)
     }
     if (!strncmp(str, "echo", 4))
         core_echo(str + 5);
+    SHARED_STATUS = 0;
     return;
 }
