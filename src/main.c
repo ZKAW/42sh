@@ -13,7 +13,7 @@ void handle_command(list_t* list, shell_t* shell)
 {
     cmd_t* head;
     if (list == NULL) {
-        printf("Invalid null command.\n"); shell->state = 1;
+        shell->state = 1;
         SHARED_STATUS = shell->state;
     }
     while (list) {
