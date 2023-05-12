@@ -25,7 +25,6 @@ void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2])
 {
     int input_fd[2];
     cmd_is_alias(cmd, shell);
-    if (assign_variables(cmd, shell) == 1) return;
     char* path = get_full_path(cmd->argv[0], shell);
 
     if (!is_builtin(cmd->argv[0]) && not_existing(path, shell)) {

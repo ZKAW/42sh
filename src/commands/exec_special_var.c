@@ -30,6 +30,8 @@ void precmd_on_alias(cmd_t* cmd, shell_t* shell)
 
 char *get_local_var(shell_t *shell, char *key)
 {
+    if (shell->vars == NULL)
+        return NULL;
     for (int i = 0; shell->vars->next != NULL; i++) {
         if (my_strcmp(shell->vars->key, key) == 0)
             return shell->vars->value;
@@ -40,17 +42,30 @@ char *get_local_var(shell_t *shell, char *key)
     return NULL;
 }
 
-int assign_variables(cmd_t* cmd, shell_t* shell)
-{
-    for (int i = 0; cmd->argv[i] != NULL; i++) {
-        if (cmd->argv[i][0] == '$') {
-            char *var = get_local_var(shell, cmd->argv[i] + 1);
-            if (var == NULL) {
-                printf("%s: Undefined variable.\n", cmd->argv[i] + 1);
-                return 1;
-            }
-            cmd->argv[i] = var;
-        }
-    }
-    return 0;
-}
+// int assign_variables(cmd_t* cmd, shell_t* shell)
+// {
+//     // for (int i = 0; cmd->argv[i] != NULL; i++) {
+//         // if (cmd->argv[i][0] == '$') {
+//             char *var = get_local_var(shell, cmd->argv[i] + 1);
+//             if (var == NULL) {
+//                 printf("%s: Undefined variable.\n", cmd->argv[i] + 1);
+//                 return 1;
+//             }
+//             printf("%s\n", var);
+//             // cmd->argv[i] = var;
+//         // }
+//     // }
+//     return 0;
+// }
+
+// int assign_variables(cmd_t* cmd, shell_t* shell)
+// {
+//     if (cmd->argv[0][0] == '$') {
+//         char *var = get_local_var(shell, cmd->argv[0] + 1);
+//         if (var == NULL) {
+//             printf("%s: Undefined variable.\n", cmd->argv[0] + 1);
+//             return 1;
+//         }
+//         cmd->argv[0] = var;
+//     }
+// }

@@ -105,4 +105,7 @@ void update_cwd(shell_t* shell);
 int have_space(char *str);
 int assign_variables(cmd_t* cmd, shell_t* shell);
 void cmd_is_alias(cmd_t *cmd, shell_t* shell);
+char *get_local_var(shell_t *shell, char *key);
+void replace_str_to_array(char** array, char* str, int index, cmd_t* cmd);
+
 #endif
