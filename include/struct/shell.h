@@ -42,6 +42,7 @@ typedef struct shell {
     var_t* vars;
     alias_t* aliases;
     char *precmd;
+    char* cwdcmd;
     job_control_t *job_control;
 } shell_t;
 

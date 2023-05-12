@@ -108,4 +108,7 @@ void builtin_alias(char** cmd, shell_t *shell)
     char *precmd = get_precmd_var(shell, "precmd");
     if (precmd != NULL)
         shell->precmd = precmd;
+    char* cwdcmd = get_cwdcmd_var(shell, "cwdcmd");
+    if (cwdcmd != NULL)
+        shell->cwdcmd = cwdcmd;
 }

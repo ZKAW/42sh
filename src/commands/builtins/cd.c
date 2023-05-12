@@ -50,4 +50,8 @@ void builtin_cd(BUILTIN_PARAMS)
     }
     strcpy(shell->last_path, actual_path);
     update_cwd(shell);
+    if (shell->cwdcmd != NULL) {
+        list_t *list_cwdcmd = parse_command(shell->cwdcmd, shell);
+        handle_command(list_cwdcmd, shell);
+    }
 }
