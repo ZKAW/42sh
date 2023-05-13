@@ -37,7 +37,7 @@ void run_builtin(cmd_t* cmd, shell_t* shell)
     }
     for (int i = 0; builtin_cmds[i].name; i++) {
         if (strcmp(builtin_cmds[i].name, cmd->path) == 0) {
-            builtin_cmds[i].func(cmd->argv, shell);
+            builtin_cmds[i].func(cmd, shell);
             break;
         }
     }

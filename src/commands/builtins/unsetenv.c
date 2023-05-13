@@ -21,12 +21,12 @@ static char** unset_var(char* var_name, char** envp)
 void builtin_unsetenv(BUILTIN_PARAMS)
 {
     char **envp = shell->envp;
-    if (tablen(cmd) < 2) {
+    if (tablen(cmd->argv) < 2) {
         throw_error("unsetenv: Too few arguments.\n", shell, 1);
         return;
     }
-    for (int i = 1; cmd[i]; i++) {
-        envp = unset_var(cmd[i], envp);
+    for (int i = 1; cmd->argv[i]; i++) {
+        envp = unset_var(cmd->argv[i], envp);
     }
     shell->state = 0;
     shell->envp = envp;

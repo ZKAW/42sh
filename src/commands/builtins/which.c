@@ -53,20 +53,20 @@ static int which_core(char *cmd, char **arr)
     return 1;
 }
 
-void which_builtin(char **cmd, shell_t *shell)
+void builtin_which(BUILTIN_PARAMS)
 {
     char **arr = NULL;
-    int argc = arrlen(cmd);
+    int argc = arrlen(cmd->argv);
 
-    if (strcmp(cmd[0], "which"))
+    if (strcmp(cmd->argv[0], "which"))
         return;
     if (argc == 1) {
         my_putstr("which: Too few arguments.\n", 1);
         return;
     }
     arr = split_cmd(shell->envp);
-    for (int i = 1; cmd[i]; ++i)
-        which_core(cmd[i], arr);
+    for (int i = 1; cmd->argv[i]; ++i)
+        which_core(cmd->argv[i], arr);
     free_arr(arr);
     return;
 }

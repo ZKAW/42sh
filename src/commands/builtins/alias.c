@@ -87,10 +87,10 @@ void print_alias(alias_t *alias)
         printf("%s\t%s\n", tmp->alias, tmp->command);
 }
 
-void builtin_alias(char** cmd, shell_t *shell)
+void builtin_alias(BUILTIN_PARAMS)
 {
     int argc = 0;
-    for (int i = 0; cmd[i] != NULL; i++)
+    for (int i = 0; cmd->argv[i] != NULL; i++)
         argc++;
 
     if (argc == 1) {
@@ -99,9 +99,9 @@ void builtin_alias(char** cmd, shell_t *shell)
     }
 
     if (argc == 2) {
-        show_alias(shell->aliases, cmd);
+        show_alias(shell->aliases, cmd->argv);
         return;
     }
-    add_alias(cmd, shell->aliases);
+    add_alias(cmd->argv, shell->aliases);
     alias_special_var(shell);
 }

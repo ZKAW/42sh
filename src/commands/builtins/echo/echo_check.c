@@ -5,7 +5,7 @@
 ** aa
 */
 
-#include "../../../include/mysh.h"
+#include "mysh.h"
 
 extern int print_help(void)
 {

@@ -5,7 +5,7 @@
 ** aa
 */
 
-#include "../../../include/mysh.h"
+#include "mysh.h"
 
 static int event_back_backspaces(args_t *struc, int *i)
 {
@@ -85,9 +85,9 @@ static int core_echo(char *str)
     return free_data(str, struc);
 }
 
-void echo_builtin(char **cmd, shell_t *shell)
+void builtin_echo(BUILTIN_PARAMS)
 {
-    char *str = arr_to_str(cmd, ' ');
+    char *str = arr_to_str(cmd->argv, ' ');
 
     if (!strcmp(str, "echo --help")) {
         print_help();

@@ -43,7 +43,6 @@ void execute(cmd_t* cmd, shell_t* shell);
 int not_existing(char* path, shell_t* shell);
 int handle_status(int state);
 void run_builtin(cmd_t* cmd, shell_t* shell);
-char** get_env_paths(char** envp);
 int is_builtin(char* path);
 char* get_full_path(char* input, shell_t* shell);
 int set_input(cmd_t* cmd, shell_t* shell, int fd[2]);

@@ -32,7 +32,6 @@ shell_t* init_shell(char** envp)
     shell->root = malloc(sizeof(char) * 500);
     shell->root = getcwd(shell->root, 500);
     shell->envp = envp_cpy(envp);
-    shell->last_path = malloc(sizeof (char) * 500);
     shell->state = 0;
     shell->history.head = NULL;
     shell->history.tail = NULL;
