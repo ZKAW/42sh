@@ -78,10 +78,9 @@ char* del_after(char *str)
 void builtin_set(char** cmd, shell_t *shell)
 {
     char *key = NULL; char *value = NULL; int argc = 0; int equal = 0;
-    for (int i = 0; cmd[i] != NULL; i++) argc++; char* tmp = array_to_str(cmd);
-    if (argc == 1) {
-        print_set(shell->vars); return;
-    }
+    for (int i = 0; cmd[i] != NULL; i++) argc++;
+    char* tmp = array_to_str(cmd);
+    if (argc == 1) { print_set(shell->vars); return; }
     for (int i = 0; tmp[i] != '\0'; i++) {
         if (tmp[i] == '=') equal++;
     }
