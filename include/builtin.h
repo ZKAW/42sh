@@ -24,6 +24,7 @@ void where_builtin(BUILTIN_PARAMS);
 void echo_builtin(BUILTIN_PARAMS);
 void builtin_alias(BUILTIN_PARAMS);
 void builtin_unalias(BUILTIN_PARAMS);
+void builtin_foreach(BUILTIN_PARAMS);
 
 struct builtin_cmd {
     const char *name;
@@ -44,6 +45,7 @@ static const struct builtin_cmd builtin_cmds[] = {
     {"alias", builtin_alias},
     {"unalias", builtin_unalias},
     {"jobs", builtin_jobs},
+    {"foreach", builtin_foreach},
     // {"set", builtin_jobs},
     {NULL, NULL}
 };

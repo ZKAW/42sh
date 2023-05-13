@@ -61,7 +61,7 @@ char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     (void)shell;
     if (*cmd_str == '\0' || *(cmd_str - 1) != '$') {
-        add_arg((*command_array)->cmd, strdup("$"), SIMPLE);
+        add_arg(*command_array, strdup("$"), SIMPLE);
         return cmd_str;
     }
     cmd_t* cmd = (*command_array)->cmd;
@@ -73,6 +73,6 @@ char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
         set_status(shell, 1);
         return cmd_str;
     }
-    add_arg(cmd, strdup(var), SIMPLE);
+    add_arg(*command_array, strdup(var), SIMPLE);
     return cmd_str;
 }

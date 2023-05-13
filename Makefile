@@ -47,10 +47,10 @@ debug_run:
 	@clear
 	@valgrind ./$(NAME)
 
-sandbox:
+sandbox_run:
 	@make -C lib/my/ --no-print-directory
-	rm -f sandbox
-	@$(CC) sandbox.c -L ./lib/my -lmy -o sandbox -g
+	rm -f "sandbox"
+	@$(CC) sandbox.c -L ./lib/my -lmy -o sandbox
 
 tests_run:
 	@make re
@@ -76,4 +76,4 @@ cstyle:
 	@cstyle
 
 .PHONY:
-	all clean fclean re cstyle debug debug_run tests_run sandbox
+	all clean fclean re cstyle debug debug_run tests_run sandbox_run

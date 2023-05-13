@@ -31,6 +31,7 @@
 #include "struct/dir.h"
 #include "struct/echo.h"
 #include "struct/globbing.h"
+#include "struct/foreach.h"
 
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
@@ -60,7 +61,7 @@ char** envp_cpy(char** envp);
 void handle_child_error(char** argv);
 char *get_prompt_prefix(void);
 char *get_env_var(char **env, char *key);
-void add_arg(cmd_t* cmd, char* arg, int is_litteral);
+void add_arg(list_t* command_array, char* arg, int is_litteral);
 char *copy_until(char *dst, char *src, char *delim);
 void error(char *msg);
 void throw_error(char* const strerror, shell_t* shell, int ernum);

@@ -12,6 +12,8 @@ int replace_globber(globber_t* globbing, int index, cmd_t* cmd);
 
 void close_cmd(cmd_t* cmd)
 {
+    if (!cmd)
+        return;
     if (cmd->argv) {
         cmd->argv[cmd->argc] = NULL;
         cmd->path = cmd->argv[0];
