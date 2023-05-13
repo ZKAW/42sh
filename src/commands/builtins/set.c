@@ -42,7 +42,7 @@ char* array_to_str(char **cmd)
     return (tmp);
 }
 
-char* delete_before_equal(char *str)
+char* del_before(char *str)
 {
     char *tmp = malloc(sizeof(char) * (strlen(str) + 1));
     int i = 0;
@@ -60,7 +60,7 @@ char* delete_before_equal(char *str)
     return (tmp);
 }
 
-char* delete_after_equal(char *str)
+char* del_after(char *str)
 {
     char *tmp = malloc(sizeof(char) * (strlen(str) + 1));
     int i = 0;
@@ -75,56 +75,26 @@ char* delete_after_equal(char *str)
     return (tmp);
 }
 
-char* delete_quotes(char *str)
-{
-    char *tmp = malloc(sizeof(char) * (strlen(str) + 1));
-    int i = 0;
-    int j = 0;
-    for (; str[i] != '\0'; i++) {
-        if (str[i] == '"')
-            continue;
-        tmp[j] = str[i];
-        j++;
-    }
-    tmp[j] = '\0';
-    return (tmp);
-}
-
 void builtin_set(char** cmd, shell_t *shell)
 {
-    // SET KEY="VALUE" WITH VALUE HAVE MULTIPLE ARGS
-    char *key = NULL; char *value = NULL;
-    int argc = 0; int equal = 0;
-    for (int i = 0; cmd[i] != NULL; i++) argc++;
-
+    char *key = NULL; char *value = NULL; int argc = 0; int equal = 0;
+    for (int i = 0; cmd[i] != NULL; i++) argc++; char* tmp = array_to_str(cmd);
     if (argc == 1) {
-        print_set(shell->vars);
-        return;
+        print_set(shell->vars); return;
     }
-
-    char* tmp = array_to_str(cmd);
-
     for (int i = 0; tmp[i] != '\0'; i++) {
-        if (tmp[i] == '=')
-            equal++;
+        if (tmp[i] == '=') equal++;
     }
-
     if (argc == 4 && equal == 1) {
         if (strcmp(cmd[2], "=") == 0) {
-            key = strdup(cmd[1]);
-            value = strdup(cmd[3]);
+            key = strdup(cmd[1]); value = strdup(cmd[3]);
         }
     }
-
     if (argc == 2 && equal == 1) {
-        key = strdup(delete_after_equal(cmd[1]));
-        value = strdup(delete_before_equal(cmd[1]));
+        key = strdup(del_after(cmd[1])); value = strdup(del_before(cmd[1]));
     }
-
     if (argc == 2 && equal == 0) {
-        set_var(shell, cmd[1], "");
-        return;
+        set_var(shell, cmd[1], ""); return;
     }
-
     set_var(shell, key, value);
 }
