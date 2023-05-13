@@ -9,17 +9,18 @@
 
 char *get_alias(shell_t *shell, char *key)
 {
-    if (shell->aliases->alias == NULL)
+    alias_t *tmp = shell->aliases;
+    if (tmp->alias == NULL)
         return NULL;
     if (my_strcmp(key, "$") == 0)
         return NULL;
-    for (int i = 0; shell->aliases->next != NULL; i++) {
-        if (my_strcmp(shell->aliases->alias, key) == 0)
-            return shell->aliases->command;
-        shell->aliases = shell->aliases->next;
+    for (int i = 0; tmp->next != NULL; i++) {
+        if (my_strcmp(tmp->alias, key) == 0)
+            return tmp->command;
+        tmp = tmp->next;
     }
-    if (my_strcmp(shell->aliases->alias, key) == 0)
-        return shell->aliases->command;
+    if (my_strcmp(tmp->alias, key) == 0)
+        return tmp->command;
     return NULL;
 }
 
@@ -42,13 +43,14 @@ void replace_str_to_array(char** array, char* str, int index, cmd_t* cmd)
         cmd->argv[j] = splitted[j];
 }
 
-void cmd_is_alias(cmd_t* cmd, shell_t* shell)
+int cmd_is_alias(cmd_t* cmd, shell_t* shell)
 {
     for (int i = 0; cmd->argv[i] != NULL; i++) {
         char *alias = get_alias(shell, cmd->argv[i]);
         if (alias != NULL) {
             replace_arr_at_index(&cmd->argv, tokenize_string(alias, " "), i);
-            return;
+            return 1;
         }
     }
+    return 0;
 }
