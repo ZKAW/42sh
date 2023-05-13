@@ -10,7 +10,17 @@
 #include <string.h>
 #include "struct/globbing.h"
 
-char** get_recursive_files(char* root);
+char** get_recursive_files(const char* root);
+
+char* get_path_from_litteral(globber_t* globber)
+{
+    char new_path[4096] = {0};
+    char* str = strdup(globber->value);
+    char* start_ptr = str;
+    while (strchr(str, '/')) str++;
+    strncpy(new_path, globber->value, str - start_ptr);
+    return strdup(new_path);
+}
 
 char* get_globbing_path(globber_t** globbing)
 {
@@ -18,13 +28,7 @@ char* get_globbing_path(globber_t** globbing)
     char path[4096] = {0};
     if (globber->type != GLOB_LITTERAL)
         return strdup("./");
-    if (globber->value[0] == '/') {
-        *globbing = globber->next;
-        return strdup(globber->value);
-    }
-    strcat(path, "./");
-    strcat(path, globber->value);
-    return strdup(path);
+    return get_path_from_litteral(globber);
 }
 
 int match(char* str, globber_t* globbing)
@@ -48,8 +52,8 @@ char** get_matching_files(char** files, char* path, globber_t* globbing)
     char** matched = malloc(sizeof(char*) * (tablen(files) + 1));
     int position = 0;
     for (int i = 0; files[i]; i++)
-        if (match(files[i], globbing))
-            matched[position++] = files[i];
+        if (match(!strcmp(path, "./") ? &files[i][2] : files[i], globbing))
+            matched[position++] = !strcmp(path, "./") ? &files[i][2] : files[i];
     matched[position] = NULL;
     return matched;
 }

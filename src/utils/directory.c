@@ -49,12 +49,13 @@ char** get_recursive_files(const char* root)
     char** files = NULL, *path = NULL, **subfiles;
     int i = 0, j;
     if (dir == NULL) return NULL;
+    dprintf(2, "root: %s\n", root);
     while ((dirent = readdir(dir)) != NULL) {
         if (!strncmp(dirent->d_name, ".", 1) || !strcmp(dirent->d_name, ".."))
             continue;
         path = create_relative_path(root, dirent->d_name);
         files = realloc(files, sizeof(char*) * (i + 2));
-        files[i++] = strdup(&path[2]);
+        files[i++] = strdup(path);
         if (stat(path, &file_stat) == 0 && S_ISDIR(file_stat.st_mode))
             add_subfiles(path, &files, &i);
         free(path);
