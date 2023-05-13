@@ -32,9 +32,9 @@ void teach_child(char* path, cmd_t *cmd, shell_t* shell)
 void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2])
 {
     int input_fd[2];
-    char* path;
+    char* path; int alias;
     if (cmd->subshell != NULL) teach_child(NULL, cmd, shell);
-    cmd_is_alias(cmd, shell);
+    while (alias != 0) alias = cmd_is_alias(cmd, shell);
     path = get_full_path(cmd->argv[0], shell);
     if (!is_builtin(cmd->argv[0]) && not_existing(path, shell)) {
         set_status(shell, 1);
