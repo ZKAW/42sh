@@ -7,10 +7,17 @@
 
 #include "mysh.h"
 
+void dump_list(list_t* list);
+
 char* parse_parenthesis(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     (void)shell;
-    append_command(*command_array);
+    char buffer[4096] = {0};
+    cmd_t* cmd = (*command_array)->cmd;
+    cmd_str = copy_until(buffer, cmd_str, ")");
+    cmd->subshell = parse_command(buffer, shell);
+    cmd_str++;
+    close_cmd(cmd);
     return cmd_str;
 }
 

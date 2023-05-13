@@ -12,17 +12,13 @@ ssize_t my_getline(char **bufferptr, shell_t* shell);
 void handle_command(list_t* list, shell_t* shell)
 {
     cmd_t* head;
-    if (list == NULL) {
-        shell->state = 1;
-        set_status(shell, shell->state);
-    }
     while (list) {
         if ((list->condition == OR && SHARED_STATUS == 0)
         || (list->condition == AND && SHARED_STATUS != 0)) {
             list = list->next; continue;
         }
         head = list->cmd;
-        if (is_builtin(head->path)) run_builtin(head, shell);
+        if (!head->subshell && is_builtin(head->path)) run_builtin(head, shell);
         else
             execute(head, shell);
         list = list->next;

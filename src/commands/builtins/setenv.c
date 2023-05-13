@@ -10,7 +10,13 @@
 
 int check_env_name(char* name)
 {
-    for (int i = 0; name[i] != '\0'; i++) {
+    if ((name[0] > 'Z' || name[0] < 'A')
+    && (name[0] > 'z' || name[0] < 'a')) {
+        write(2, "setenv: Variable name must ", 27);
+        write(2, "begin with a letter.\n", 21);
+        return 1;
+    }
+    for (int i = 1; name[i] != '\0'; i++) {
         if ((name[i] >= 'A' && name[i] <= 'Z')
         || (name[i] >= 'a' && name[i] <= 'z')
         || (name[i] >= '0' && name[i] <= '9'))
