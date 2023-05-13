@@ -46,5 +46,4 @@ void builtin_unset(char** cmd, shell_t *shell)
         shell->vars = unset_last_elem(shell->vars);
         return;
     }
-    fputs("unset: No such unset.\n", 1);
 }
