@@ -33,7 +33,7 @@
 
         static char* tokens[] = {
             ">>", ">", "<<", "<", "&&", "&", "||" ,"|", ";", "`", \
-            "\'", "\"", "$", NULL
+            "\'", "\"", "$", "(", NULL
         };
 
         static char* (*parsers[]) (PARAMS) = {
@@ -49,7 +49,8 @@
             parse_backticks,
             parse_quotes,
             parse_quotes,
-            parse_var
+            parse_var,
+            parse_parenthesis,
         };
 
 #endif

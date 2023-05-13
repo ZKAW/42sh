@@ -45,7 +45,7 @@ char* parse_token(char* cmd_str, list_t** array, shell_t* shell)
 int check_cmd_integrity(cmd_t* cmd)
 {
     while (cmd) {
-        if (cmd->argc == 0) return 1;
+        if (cmd->argc == 0 && cmd->subshell == NULL) return 1;
         if (cmd->input_type == PIPE && cmd->next == NULL) return 1;
         if (cmd->output_type == PIPE && cmd->prev == NULL) return 1;
         cmd = cmd->next;

@@ -10,9 +10,14 @@
 
 void sigchld_handler(int signo);
 void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2]);
+void dump_cmd(cmd_t* cmd);
 
 void teach_child(char* path, cmd_t *cmd, shell_t* shell)
 {
+    if (cmd->subshell != NULL) {
+        handle_command(cmd->subshell, shell);
+        exit(shell->state);
+    }
     if (is_builtin(cmd->argv[0])) {
         run_builtin(cmd, shell);
     } else if (check_globbing(cmd, shell) == 1) {
@@ -27,10 +32,12 @@ void teach_child(char* path, cmd_t *cmd, shell_t* shell)
 void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2])
 {
     int input_fd[2];
+    char* path;
+    if (cmd->subshell != NULL) teach_child(NULL, cmd, shell);
     cmd_is_alias(cmd, shell);
-    char* path = get_full_path(cmd->argv[0], shell);
-
+    path = get_full_path(cmd->argv[0], shell);
     if (!is_builtin(cmd->argv[0]) && not_existing(path, shell)) {
+        set_status(shell, 1);
         exit(1);
         return;
     }
@@ -38,12 +45,11 @@ void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2])
         set_output(cmd, output_fd);
     if ((cmd->input_type == FILE_PATH) && !is_file_exist(cmd->input)) {
         dprintf(2, "%s: No such file or directory.\n", cmd->input);
-        SHARED_STATUS = 1;
+        set_status(shell, 1);
+        exit(1);
         return;
     }
-    if (cmd->input_type != NONE)
-        set_input(cmd, shell, input_fd);
-
+    if (cmd->input_type != NONE) set_input(cmd, shell, input_fd);
     teach_child(path, cmd, shell);
 }
 

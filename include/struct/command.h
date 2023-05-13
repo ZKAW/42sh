@@ -16,6 +16,8 @@
 
     #include "job.h"
 
+typedef struct command_array list_t;
+
 typedef enum {
     NONE,
     PIPE,
@@ -39,6 +41,7 @@ typedef struct command {
     fd_type input_type;
     fd_type output_type;
     int append;
+    list_t* subshell;
     struct command* next;
     struct command* prev;
     job_t* job;
