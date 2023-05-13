@@ -55,15 +55,13 @@ void show_alias(alias_t *alias, char **buffer)
         return;
     }
     for (tmp = alias; tmp != NULL; tmp = tmp->next) {
-        if (my_strcmp(tmp->alias, buffer[1]) == 0) {
-            my_putstr(tmp->command, 1);
-            my_putstr("\n", 1);
+        if (strcmp(tmp->alias, buffer[1]) == 0) {
+            printf("%s\n", tmp->command);
             return;
         }
     }
-    if (my_strcmp(tmp->alias, buffer[1]) == 0) {
-        my_putstr(tmp->command, 1);
-        my_putstr("\n", 1);
+    if (strcmp(tmp->alias, buffer[1]) == 0) {
+        printf("%s\n", tmp->command);
         return;
     }
     my_putstr("Alias not found\n", 1);

@@ -32,7 +32,6 @@ typedef struct shell {
     char* last_path;
     int state;
     int loop;
-    char** paths;
     pid_t sub;
     pid_t pgid;
     pid_t pid;
