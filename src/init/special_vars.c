@@ -31,6 +31,24 @@ void set_var(shell_t *shell, char *key, char *value)
     tmp->next->next = NULL;
 }
 
+void unset_var(shell_t *shell, char *key)
+{
+    var_t *tmp = shell->vars;
+    var_t *prev = NULL;
+    if (tmp != NULL && strcmp(tmp->key, key) == 0) {
+        shell->vars = tmp->next;
+        free(tmp);
+        return;
+    }
+    while (tmp != NULL && strcmp(tmp->key, key) != 0) {
+        prev = tmp;
+        tmp = tmp->next;
+    }
+    if (tmp == NULL) return;
+    prev->next = tmp->next;
+    free(tmp);
+}
+
 void init_special_vars(shell_t *shell)
 {
     char *cwd = malloc(sizeof(char) * 500);

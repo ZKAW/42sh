@@ -7,8 +7,6 @@
 
 #include "mysh.h"
 
-ssize_t my_getline(char **bufferptr, shell_t* shell);
-
 void handle_command(list_t* list, shell_t* shell)
 {
     cmd_t* head;
@@ -79,14 +77,12 @@ void exec_script(shell_t* shell, char* path)
 
 int main(int ac, char** av, char** envp)
 {
-    ssize_t size = 0;
-    char* line = "";
+    ssize_t size = 0; char* line = "";
     shell_t* shell = get_shell(init_shell(envp, av));
     if (exec_atty(shell))
         exit_detach_shm(shell);
     if (ac >= 2) {
-        exec_script(shell, av[1]);
-        exit_detach_shm(shell);
+        exec_script(shell, av[1]); exit_detach_shm(shell);
     }
     while (1) {
         my_putstr(get_prompt_prefix(), 1);

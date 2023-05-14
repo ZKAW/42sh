@@ -20,15 +20,6 @@ foreach_t* fill_foreach(char* foreach)
     foreach = copy_until(buffer, foreach, ")");
     foreach++;
     foreach_struct->values = tokenize_string(buffer, " \t\n");
-    foreach = copy_until(buffer, foreach, ";");
-    foreach++;
-    buffer[0] = '\0';
-    foreach = skip_whitespace(foreach);
-    while (*foreach && strncmp(foreach, "end", 3)) {
-        strncat(buffer, foreach, 1);
-        foreach++;
-    }
-    foreach_struct->cmd = strdup(buffer);
     return foreach_struct;
 }
 

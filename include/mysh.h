@@ -119,5 +119,7 @@ char* array_to_str(char **cmd);
 char* concatene_value(char **cmd);
 char* del_after(char *str);
 char* del_before(char *str);
+ssize_t my_getline(char **bufferptr, shell_t* shell);
+void unset_var(shell_t *shell, char *key);
 
 #endif
