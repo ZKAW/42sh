@@ -51,7 +51,6 @@ static void prompt_foreach_args(BUILTIN_PARAMS)
     exec_foreach_cmds(cmd, shell);
 }
 
-// TODO: yo la mémoire mec arrête d'enc*ler ta stack
 void builtin_foreach(BUILTIN_PARAMS)
 {
     if (handle_foreach_errors(cmd, shell)) return;
