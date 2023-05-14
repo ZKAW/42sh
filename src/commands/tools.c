@@ -57,8 +57,10 @@ void reverse_head(cmd_t** head)
     }
 }
 
-void add_arg(cmd_t* cmd, char* arg, int is_litteral)
+void add_arg(list_t* command_array, char* arg, int is_litteral)
 {
+    cmd_t* cmd = command_array->cmd ?
+    command_array->cmd : append_command(command_array);
     cmd->argv = realloc(cmd->argv, sizeof(char*) * (cmd->argc + 2));
     cmd->arg_type = realloc(cmd->arg_type, sizeof(int) * (cmd->argc + 2));
     cmd->argv[cmd->argc] = arg;

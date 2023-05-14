@@ -23,17 +23,6 @@ char** envp_cpy(char** envp)
     return copy;
 }
 
-char** get_env_paths(char** envp)
-{
-    int i;
-    char** paths;
-    for (i = 0; strncmp(envp[i], "PATH", 4); i++);
-    paths = tokenize_string(&envp[i][5], ":");
-    for (i = 0; paths[i] != NULL; i++)
-        paths[i] = str_append(paths[i], "/");
-    return paths;
-}
-
 char *get_env_var(char **env, char *key)
 {
     char *value = NULL;

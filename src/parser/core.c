@@ -21,7 +21,7 @@ char* parse_default_token(char* cmd_str, list_t** command_array, shell_t* shell)
     (void)shell;
     cmd_t* cmd = (*command_array)->cmd;
     cmd_str = copy_until(arg, cmd_str, ";><|& \t\n");
-    add_arg(cmd, strdup(arg), SIMPLE);
+    add_arg(*command_array, strdup(arg), SIMPLE);
     return cmd_str;
 }
 
@@ -56,6 +56,7 @@ int check_cmd_integrity(cmd_t* cmd)
 int check_command_integrity(list_t* list)
 {
     cmd_t* cmd;
+    //fix: if a command is empty, it will be skipped
     for (list_t* it = list; it; it = it->next) {
         cmd = it->cmd;
         if (check_cmd_integrity(cmd)) return 1;
@@ -66,14 +67,14 @@ int check_command_integrity(list_t* list)
 list_t* parse_command(char *cmd_str, shell_t* shell)
 {
     list_t* command_array = append_list(NULL);
-    append_command(command_array);
-    while (*cmd_str && command_array->cmd->argc < MAX_ARGS) {
+    while (*cmd_str) {
         cmd_str = skip_whitespace(cmd_str);
         if (*cmd_str == '\0')
             break;
         cmd_str = parse_token(cmd_str, &command_array, shell);
     }
-    close_cmd(command_array->cmd);
+    if (command_array->cmd)
+        close_cmd(command_array->cmd);
     if (check_command_integrity(command_array)) {
         dprintf(2, "Invalid null command.\n");
         set_status(shell, 1);

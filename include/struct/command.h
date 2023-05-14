@@ -13,10 +13,12 @@
     #define SIMPLE 0
     #define MAX_ARGS 256
     #define FD_STATUS 10
+    #define BUILTIN_ERROR -84
 
     #include "job.h"
 
 typedef struct command_array list_t;
+typedef struct foreach foreach_t;
 
 typedef enum {
     NONE,
@@ -42,6 +44,7 @@ typedef struct command {
     fd_type output_type;
     int append;
     list_t* subshell;
+    foreach_t* foreach;
     struct command* next;
     struct command* prev;
     job_t* job;

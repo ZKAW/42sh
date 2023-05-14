@@ -59,20 +59,19 @@ int check_dir(char **argv, char **arr)
     return ret;
 }
 
-void where_builtin(BUILTIN_PARAMS)
+void builtin_where(BUILTIN_PARAMS)
 {
-    char **cmd = command->argv;
-    int argc = arrlen(cmd);
+    int argc = arrlen(cmd->argv);
     char **arr = NULL;
 
-    if (strcmp(cmd[0], "where"))
+    if (strcmp(cmd->argv[0], "where"))
         return;
     if (argc == 1) {
         my_putstr("where: Too few arguments.\n", 1);
         return;
     }
     arr = split_cmd(shell->envp);
-    check_dir(cmd, arr);
+    check_dir(cmd->argv, arr);
     free_arr(arr);
     return;
 }

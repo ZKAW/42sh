@@ -18,8 +18,11 @@ void handle_command(list_t* list, shell_t* shell)
             list = list->next; continue;
         }
         head = list->cmd;
-        if (!head->subshell && is_builtin(head->path))
-            run_builtin(head, shell);
+        if (!head) {
+            list = list->next;
+            continue;
+        }
+        if (!head->subshell && is_builtin(head->path)) run_builtin(head, shell);
         else
             execute(head, shell);
         list = list->next;
@@ -43,10 +46,9 @@ int verify_pipe(shell_t* shell)
         size = getline(&line, &len, stdin);
         if (size == 1) continue;
         if (size == EOF) return 1;
-        status = SHARED_STATUS;
         handle_command(parse_command(line, shell), shell);
-        if (status == 1) {
-            shell->state = status;
+        if (SHARED_STATUS == BUILTIN_ERROR) {
+            set_status(shell, 1);
             return 1;
         }
     }
@@ -57,6 +59,8 @@ void exit_shm(shell_t* shell)
 {
     int status = *shell->shared_status.shared_var;
     detach_shm(shell->shared_status);
+    if (status == BUILTIN_ERROR)
+        exit(1);
     exit(status);
 }
 
@@ -79,5 +83,7 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
     }
     if (isatty(0)) write(1, "exit\n", 5);
     exit_shm(shell);
+    if (shell->state == BUILTIN_ERROR)
+        return (1);
     return (shell->state);
 }

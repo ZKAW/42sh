@@ -17,6 +17,7 @@ char* parse_file_name(char** cmd_str)
 char* parse_double_output(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     cmd_t* cmd = (*command_array)->cmd;
+    cmd = cmd ? cmd : append_command(*command_array);
     (void)shell;
     if (*cmd_str == '\0')
         error("Missing name for redirect.");
@@ -29,6 +30,7 @@ char* parse_double_output(char* cmd_str, list_t** command_array, shell_t* shell)
 char* parse_single_output(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     cmd_t* cmd = (*command_array)->cmd;
+    cmd = cmd ? cmd : append_command(*command_array);
     (void)shell;
     if (*cmd_str == '\0')
         error("Missing name for redirect.");
@@ -41,6 +43,7 @@ char* parse_single_output(char* cmd_str, list_t** command_array, shell_t* shell)
 char* parse_single_input(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     cmd_t* cmd = (*command_array)->cmd;
+    cmd = cmd ? cmd : append_command(*command_array);
     (void)shell;
     if (*cmd_str == '\0')
         error("Missing name for redirect.");
@@ -52,6 +55,7 @@ char* parse_single_input(char* cmd_str, list_t** command_array, shell_t* shell)
 char* parse_double_input(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     cmd_t* cmd = (*command_array)->cmd;
+    cmd = cmd ? cmd : append_command(*command_array);
     (void)shell;
     if (*cmd_str == '\0')
         error("Missing name for redirect.");
