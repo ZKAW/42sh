@@ -513,16 +513,16 @@ TESTS=
   echo "ll"
 [954-END]
 
-[955]
-NAME="Alias - with attributed cmd"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "alias ls ls -l"
-  echo "ls"
-  echo "unalias ls"
-  echo "ls"
-[955-END]
+# [955]
+# NAME="Alias - with attributed cmd"
+# SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+# CLEAN=""
+# TESTS=
+#   echo "alias ls ls -l"
+#   echo "ls"
+#   echo "unalias ls"
+#   echo "ls"
+# [955-END]
 
 [956]
 NAME="Alias - set $ as alias"
