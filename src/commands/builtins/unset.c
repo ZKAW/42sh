@@ -7,41 +7,40 @@
 
 #include "mysh.h"
 
-var_t *unset_last_elem(var_t *unset)
+int parse_var_line(char* tmp, char*** keys_ptr, char*** values_ptr);
+char* ar_to_str(cmd_t* cmd);
+
+void unset_all(shell_t *shell)
 {
     var_t *tmp;
-    var_t *tmp2;
-    if (unset->next == NULL) {
-        unset->key = NULL;
-        unset->value = NULL;
-        return (unset);
+    if (shell->vars->key == NULL) {
+        return;
     }
-    for (tmp = unset; tmp->next != NULL; tmp = tmp->next) {
-        tmp2 = tmp;
+    for (tmp = shell->vars; tmp->next != NULL; tmp = tmp->next) {
+        tmp->key = NULL;
+        tmp->value = NULL;
     }
-    tmp2->next = NULL;
-    free(tmp);
-    return (unset);
+    tmp->key = NULL;
+    tmp->value = NULL;
 }
 
 void builtin_unset(BUILTIN_PARAMS)
 {
-    var_t *tmp; var_t *tmp2;
     if (cmd->argv[1] == NULL)
         return throw_error("var: Too few arguments.\n", shell, 1);
-    if (strcmp(cmd->argv[1], "term") == 0)
-        cmd->argv[1] = "TERM";
-    for (tmp = shell->vars; tmp->next != NULL; tmp = tmp->next) {
-        if (strcmp(tmp->key, cmd->argv[1]) == 0) {
-            tmp2 = tmp->next;
-            tmp->key = tmp2->key;
-            tmp->value = tmp2->value;
-            tmp->next = tmp2->next;
-            free(tmp2);
-            return;
-        }
-    } if (strcmp(tmp->key, cmd->argv[1]) == 0) {
-        shell->vars = unset_last_elem(shell->vars);
+
+    int argc = 0;
+    for (int i = 1; cmd->argv[i] != NULL; i++)
+        argc++;
+
+    if (argc == 1 && strcmp(cmd->argv[1], "*") == 0) {
+        unset_all(shell);
         return;
+    }
+
+    for (int i = 1; cmd->argv[i] != NULL; i++) {
+        if (cmd->argv[i][0] == '=')
+            return;
+        unset_var(shell, cmd->argv[i]);
     }
 }
