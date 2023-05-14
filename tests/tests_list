@@ -594,3 +594,27 @@ CLEAN=""
 TESTS=
   echo "./tests/scripting/no_shebang.sh"
 [962-END]
+
+[963]
+NAME="Set - basics"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "set lol = oui" #work
+  echo "set lol=non" #work
+  echo "set lol= oui" #work
+  echo "set lol =non" #don't work
+  echo 'set'
+[963-END]
+
+[964]
+NAME="Set - multipe args"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set lol = "oui oui"' #work
+  echo 'set lol="non non"' #work
+  echo 'set lol= "oui oui"' #don't work
+  echo 'set lol ="non non"' #don't work
+  echo 'set'
+[964-END]

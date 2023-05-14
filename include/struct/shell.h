@@ -14,6 +14,18 @@
     #include "memory.h"
     #include "job.h"
 
+    typedef enum {
+        ALL_GOOD,
+        NAME,
+        START,
+    } error_type_t;
+
+    typedef struct str_var_s {
+    int equal;
+    int ws_before;
+    int ws_after;
+} str_var_t;
+
 typedef struct alias_s {
     char *alias;
     char *command;
