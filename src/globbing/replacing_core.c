@@ -63,6 +63,11 @@ int replace_globber(globber_t* globbing, int index, cmd_t* cmd)
     shell_t* shell = get_shell(NULL);
     char* path = get_globbing_path(&globbing);
     char** files = get_recursive_files(path);
+    if (files == NULL) {
+        dprintf(2, "%s\n", strerror(errno));
+        set_status(shell, 1);
+        exit(1);
+    }
     char** matched = get_matching_files(files, path, globbing);
     replace_arr_at_index(&cmd->argv, matched, index);
     if (tablen(matched) == 0) {

@@ -56,14 +56,12 @@ void show_alias(alias_t *alias, char **buffer)
     }
     for (tmp = alias; tmp != NULL; tmp = tmp->next) {
         if (strcmp(tmp->alias, buffer[1]) == 0) {
-            my_putstr(tmp->command, 1);
-            my_putstr("\n", 1);
+            printf("%s\n", tmp->command);
             return;
         }
     }
     if (strcmp(tmp->alias, buffer[1]) == 0) {
-        my_putstr(tmp->command, 1);
-        my_putstr("\n", 1);
+        printf("%s\n", tmp->command);
         return;
     }
 }

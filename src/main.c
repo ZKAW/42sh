@@ -33,7 +33,7 @@ void handle_command(list_t* list, shell_t* shell)
     }
 }
 
-int verify_pipe(shell_t* shell)
+int exec_atty(shell_t* shell)
 {
     ssize_t size = 0;
     size_t len = 0;
@@ -55,22 +55,39 @@ int verify_pipe(shell_t* shell)
     return 1;
 }
 
-void exit_shm(shell_t* shell)
+void exec_script(shell_t* shell, char* path)
 {
-    int status = *shell->shared_status.shared_var;
-    detach_shm(shell->shared_status);
-    if (status == BUILTIN_ERROR)
-        exit(1);
-    exit(status);
+    FILE* file = fopen(path, "r");
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t size = 0;
+    if (file == NULL) {
+        perror(path);
+        exit(84);
+    }
+    while ((size = getline(&line, &len, file)) != -1) {
+        if (size == 1) continue;
+        if (size == EOF) break;
+        if (clean_str(line)[0] == '#') {
+            printf("comment\n");
+            continue;
+        }
+        handle_command(parse_command(line, shell), shell);
+    }
+    fclose(file);
 }
 
-int main(int ac UNUSED, char** av UNUSED, char** envp)
+int main(int ac, char** av, char** envp)
 {
     ssize_t size = 0;
     char* line = "";
-    shell_t* shell = get_shell(init_shell(envp));
-    if (verify_pipe(shell))
-        exit_shm(shell);
+    shell_t* shell = get_shell(init_shell(envp, av));
+    if (exec_atty(shell))
+        exit_detach_shm(shell);
+    if (ac >= 2) {
+        exec_script(shell, av[1]);
+        exit_detach_shm(shell);
+    }
     while (1) {
         my_putstr(get_prompt_prefix(), 1);
         size = my_getline(&line, shell);
@@ -82,8 +99,6 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
         set_var(shell, "_", line);
     }
     if (isatty(0)) write(1, "exit\n", 5);
-    exit_shm(shell);
-    if (shell->state == BUILTIN_ERROR)
-        return (1);
+    exit_detach_shm(shell);
     return (shell->state);
 }

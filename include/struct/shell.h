@@ -29,9 +29,9 @@ typedef struct var {
 typedef struct shell {
     char* root;
     char** envp;
+    char* binary_name;
     int state;
     int loop;
-    char** paths;
     pid_t sub;
     pid_t pgid;
     pid_t pid;

@@ -26,12 +26,13 @@ static void init_aliases(shell_t* shell)
     shell->aliases->next = NULL;
 }
 
-shell_t* init_shell(char** envp)
+shell_t* init_shell(char** envp, char** av)
 {
     shell_t* shell = malloc(sizeof(shell_t));
     shell->root = malloc(sizeof(char) * 500);
     shell->root = getcwd(shell->root, 500);
     shell->envp = envp_cpy(envp);
+    shell->binary_name = av[0];
     shell->state = 0;
     shell->history.head = NULL;
     shell->history.tail = NULL;
