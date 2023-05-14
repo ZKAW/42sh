@@ -12,6 +12,7 @@ void close_cmd(cmd_t* cmd);
 cmd_t* append_command(list_t* array);
 list_t* append_list(list_t* array);
 char* parse_file_name(char** cmd_str);
+char* parse_var_name(char** cmd_str);
 
 int is_delim(char c, char* delims)
 {
@@ -80,7 +81,7 @@ char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
         return cmd_str;
     }
     cmd_t* cmd = (*command_array)->cmd;
-    char* var_name = parse_file_name(&cmd_str);
+    char* var_name = parse_var_name(&cmd_str);
     char *var = get_local_var(shell, var_name);
     if (var == NULL) var = get_env_var(shell->envp, var_name);
     if (var == NULL) {
