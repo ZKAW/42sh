@@ -7,7 +7,7 @@
 
 int my_strlen(char const *str);
 
-char * my_strncat( char* dest , char* const src, int nb)
+char *my_strncat( char* dest , char* const src, int nb)
 {
     int i;
     int size = my_strlen(dest);
