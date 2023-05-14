@@ -31,14 +31,16 @@
         char* parse_var(PARAMS);
         char *parse_bg(PARAMS);
         char* parse_foreach(PARAMS);
+        char* parse_if(PARAMS);
 
         static char* tokens[] = {
-            "foreach", ">>", ">", "<<", "<", "&&", "&", "||" ,"|", ";", "`", \
-            "\'", "\"", "$", "(", NULL
+            "foreach", "if" ,">>", ">", "<<", "<", "&&", "&", "||" ,"|", \
+            ";", "`", "\'", "\"", "$", "(", NULL
         };
 
         static char* (*parsers[]) (PARAMS) = {
             parse_foreach,
+            parse_if,
             parse_double_output,
             parse_single_output,
             parse_double_input,

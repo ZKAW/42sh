@@ -9,7 +9,7 @@ NAME	=	42sh
 CC	= gcc
 SRC_DIR = src
 SRC = $(wildcard $(SRC_DIR)/*.c $(SRC_DIR)/*/*.c $(SRC_DIR)/*/*/*.c \
-	$(SRC_DIR)/*/*/*/*.c $(SRC_DIR)/*/*/*/*/*.c)
+	$(SRC_DIR)/*/*/*/*.c $(SRC_DIR)/*/*/*/*/*.c $(SRC_DIR)/*/*/*/*/*/*.c)
 
 CC_GREEN = \033[0;32m
 CC_RED = \033[0;31m

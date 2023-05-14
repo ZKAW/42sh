@@ -10,53 +10,27 @@
 
 char *skip_whitespace(char *str);
 
-// typedef struct if_s {
-//     char **values;
-//     char *cmd;
-// } if_t;
-
-/*
-foreach_t* fill_foreach(char* foreach)
+if_t* fill_if(char* if_statement, shell_t *shell)
 {
     char buffer[4096] = {0};
-    foreach_t* foreach_struct = malloc(sizeof(foreach_t));
-    foreach = copy_until(foreach_struct->var_name, foreach, " \t\n");
-    foreach = skip_whitespace(foreach);
-    foreach++;
-    foreach = copy_until(buffer, foreach, ")");
-    foreach++;
-    foreach_struct->values = tokenize_string(buffer, " \t\n");
-    return foreach_struct;
-}
-
-char* parse_foreach(char* cmd_str, list_t** command_array, shell_t* shell)
-{
-    foreach_t* foreach;
-    char buffer[4096] = {0};
-    while (*cmd_str && strncmp(cmd_str, "end", 3)) {
-        strncat(buffer, cmd_str++, 1);
-    }
-    strncat(buffer, cmd_str, 3);
-    cmd_str += 3;
-    add_arg(*command_array, strdup("foreach"), SIMPLE);
-    (*command_array)->cmd->foreach = fill_foreach(buffer);
-    return cmd_str;
-}
-*/
-
-/*
-if ( 10 == 10 ) then ; echo "x is equal to 10" ; endif
-*/
-
-if_t* fill_if(char* if_statement)
-{
-    char buffer[4096] = {0};
+    char cmd[4096] = {0};
+    char parentheses[4096] = {0};
     if_t* if_struct = malloc(sizeof(if_t));
-    if_statement = skip_whitespace(if_statement);
+    if_statement = copy_until(buffer, if_statement, "(");
     if_statement++;
-    if_statement = copy_until(buffer, if_statement, ")");
-    if_statement++;
-    if_struct->values = tokenize_string(buffer, " \t\n");
+    if_statement = copy_until(parentheses, if_statement, ")");
+    while (*if_statement && strncmp(if_statement, "then", 4)) if_statement++;
+    if (*if_statement != '\0') {
+        if_statement += 4;
+    } else {
+        throw_error("if: Empty if.\n", shell, 1); return NULL;
+    }
+    if_statement = copy_until(buffer, if_statement, ";");
+    if (*if_statement != '\0') if_statement++;
+    while (*if_statement && strncmp(if_statement, "endif", 5))
+        strncat(cmd, if_statement++, 1);
+    if_struct->cmd = strdup(cmd);
+    if_struct->conditions = tokenize_string(parentheses, " \t\n");
     return if_struct;
 }
 
@@ -67,9 +41,11 @@ char* parse_if(char* cmd_str, list_t** command_array, shell_t* shell)
     while (*cmd_str && strncmp(cmd_str, "endif", 5)) {
         strncat(buffer, cmd_str++, 1);
     }
-    strncat(buffer, cmd_str, 5);
-    cmd_str += 5;
+    if (*cmd_str != '\0') {
+        strncat(buffer, cmd_str, 5);
+        cmd_str += 5;
+    }
     add_arg(*command_array, strdup("if"), SIMPLE);
-    (*command_array)->cmd->if_statement = fill_if(buffer);
+    (*command_array)->cmd->if_statement = fill_if(buffer, shell);
     return cmd_str;
 }
