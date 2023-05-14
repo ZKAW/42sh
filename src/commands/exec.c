@@ -14,12 +14,11 @@ void dump_cmd(cmd_t* cmd);
 
 void teach_child(cmd_t *cmd, shell_t* shell)
 {
-    char* path;
     if (cmd->subshell != NULL) {
         handle_command(cmd->subshell, shell);
         exit(shell->state);
     }
-    path = get_full_path(cmd->argv[0], shell);
+    char *path = get_full_path(cmd->argv[0], shell);
     if (!is_builtin(cmd->argv[0]) && not_existing(path, shell)) {
         set_status(shell, 1);
         exit(1);
