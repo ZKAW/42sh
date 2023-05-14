@@ -54,9 +54,6 @@ static void prompt_foreach_args(BUILTIN_PARAMS)
 // TODO: yo la mémoire mec arrête d'enc*ler ta stack
 void builtin_foreach(BUILTIN_PARAMS)
 {
-    size_t i = 0;
-    ssize_t size = 0;
-    char* line = "";
     if (handle_foreach_errors(cmd, shell)) return;
 
     arraydup(cmd->argv, cmd->foreach->values);

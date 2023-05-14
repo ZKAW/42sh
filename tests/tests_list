@@ -637,3 +637,39 @@ CLEAN=""
 TESTS=
   echo 'setenv lol oui; (unsetenv lol; env | grep "lol" || echo "see, no lol"); env | grep lol'
 [966-END]
+
+[967]
+NAME=If zebi"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "if ( 10 == 10 ) then ; echo "x is equal to 10" ; endif"
+[967-END]
+
+[968]
+NAME="setenv PATH / and bin cmd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls"
+  echo "setenv PATH /"
+  echo "ls"
+[968-END]
+
+[969]
+NAME="No PATH and bin cmd"
+SETUP="export TERM=xterm ; PATH=''"
+CLEAN=""
+TESTS=
+  echo "ls"
+[969-END]
+
+[970]
+NAME="unsetenv PATH and bin cmd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "unsetenv PATH"
+  echo "echo \$PATH"
+  echo "echo \$path"
+[970-END]
