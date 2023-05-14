@@ -7,25 +7,6 @@
 
 #include "mysh.h"
 
-char* get_full_path(char* cmd, shell_t* shell)
-{
-    char **path_dirs = shell->paths;
-    if (path_dirs == NULL) return cmd;
-    char *abs_path = NULL;
-
-    for (int i = 0; path_dirs[i] != NULL; i++) {
-        if (path_dirs[i][strlen(path_dirs[i]) - 1] == '\n') {
-            path_dirs[i][strlen(path_dirs[i]) - 1] = '\0';
-        }
-        abs_path = concat_path(path_dirs[i], cmd);
-        if (access(abs_path, F_OK) != -1) {
-            return (abs_path);
-        }
-        free(abs_path);
-    }
-    return cmd;
-}
-
 list_t* reverse_cmd(list_t* head)
 {
     list_t *current = head, *prev = NULL, *next = NULL;

@@ -77,7 +77,7 @@ typedef struct if_s {
 // IF
 void builtin_if(BUILTIN_PARAMS)
 {
-    printf("if->condition: %s\n", cmd->if_statement->condition);
+    printf("yo\n");
     printf("if->cmd: %s\n", cmd->if_statement->cmd);
     printf("if->else_cmd: %s\n", cmd->if_statement->else_cmd);
 }

@@ -602,3 +602,31 @@ CLEAN=""
 TESTS=
   echo "if ( 10 == 10 ) then ; echo "x is equal to 10" ; endif"
 [963-END]
+
+[964]
+NAME="setenv PATH / and bin cmd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls"
+  echo "setenv PATH /"
+  echo "ls"
+[964-END]
+
+[965]
+NAME="No PATH and bin cmd"
+SETUP="export TERM=xterm ; PATH=''"
+CLEAN=""
+TESTS=
+  echo "ls"
+[965-END]
+
+[966]
+NAME="unsetenv PATH and bin cmd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "unsetenv PATH"
+  echo "echo \$PATH"
+  echo "echo \$path"
+[966-END]

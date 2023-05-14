@@ -9,7 +9,7 @@
     #define IF_H_
 
 typedef struct if_s {
-    char *condition;
+    char **values;
     char *cmd;
     char *else_cmd;
 } if_t;
