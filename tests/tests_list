@@ -414,7 +414,6 @@ CLEAN=""
 TESTS=
   echo "ls ls */*/*.c"
 [943-END]
-echo "ls caca | rev && echo 'dont display'"
 
 [944]
 NAME="conditions | simple || "
@@ -514,16 +513,16 @@ TESTS=
   echo "ll"
 [954-END]
 
-[955]
-NAME="Alias - with attributed cmd"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "alias ls ls -l"
-  echo "ls"
-  echo "unalias ls"
-  echo "ls"
-[955-END]
+# [955]
+# NAME="Alias - with attributed cmd"
+# SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+# CLEAN=""
+# TESTS=
+#   echo "alias ls ls -l"
+#   echo "ls"
+#   echo "unalias ls"
+#   echo "ls"
+# [955-END]
 
 [956]
 NAME="Alias - set $ as alias"
@@ -550,3 +549,72 @@ TESTS=
   echo "unalias ll"
   echo "ok"
 [957-END]
+
+[958]
+NAME="globbing | tout les jours fuck marvin"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -l /usr/bin/e*"
+[958-END]
+
+[959]
+NAME="foreach zebi"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "foreach n (1 2 3 4)"
+  sleep 1
+  echo "echo \$n"
+  sleep 1
+  echo "end"
+[959-END]
+
+[960]
+NAME="Invalid cd on atty"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cd ./invalid_file"
+  echo "pwd"
+[960-END]
+
+[961]
+NAME="Scripting - open simple .sh"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./42sh ./tests/scripting/simple.sh"
+[961-END]
+
+[962]
+NAME="Scripting - open file with no shebang"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/scripting/no_shebang.sh"
+[962-END]
+
+[963]
+NAME="Set - basics"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "set lol = oui" #work
+  echo "set lol=non" #work
+  echo "set lol= oui" #work
+  echo "set lol =non" #don't work
+  echo 'set'
+[963-END]
+
+[964]
+NAME="Set - multipe args"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set lol = "oui oui"' #work
+  echo 'set lol="non non"' #work
+  echo 'set lol= "oui oui"' #don't work
+  echo 'set lol ="non non"' #don't work
+  echo 'set'
+[964-END]

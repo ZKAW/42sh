@@ -38,7 +38,7 @@ char* get_var_name(char** cmd, shell_t* shell)
         return NULL;
     }
     if (tablen(cmd) > 3) {
-        throw_error("setenv: Too many arguments.\n", shell, 1);
+        throw_error("setenv: Too many arguments.\n", shell, BUILTIN_ERROR);
         return NULL;
     }
     env_n = cmd[1];
@@ -51,19 +51,19 @@ void builtin_setenv(BUILTIN_PARAMS)
 {
     int i = 0, size = 0;
     char* new_env, **envp = shell->envp, *env_n;
-    env_n = get_var_name(cmd, shell);
+    env_n = get_var_name(cmd->argv, shell);
 
     if (env_n == NULL)
         return;
     for (; envp[i] && strncmp(envp[i], env_n, strlen(env_n)); i++);
     if (envp[i])
         envp = array_remove(i, envp);
-    size = strlen(cmd[1]) + 1;
-    size += tablen(cmd) == 3 ? strlen(cmd[2]) : 0;
+    size = strlen(cmd->argv[1]) + 1;
+    size += tablen(cmd->argv) == 3 ? strlen(cmd->argv[2]) : 0;
     new_env = malloc(sizeof(char) * (size + 1));
-    strcpy(new_env, cmd[1]);
+    strcpy(new_env, cmd->argv[1]);
     strcat(new_env, "=");
-    if (tablen(cmd) == 3)
-        strcat(new_env, cmd[2]);
+    if (tablen(cmd->argv) == 3)
+        strcat(new_env, cmd->argv[2]);
     shell->envp = array_append(envp, new_env);
 }

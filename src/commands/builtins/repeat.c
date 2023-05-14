@@ -46,23 +46,23 @@ static char *concat_arr(char **arr, char delim)
     return str;
 }
 
-void repeat_builtin(char **cmd, shell_t *shell)
+void builtin_repeat(BUILTIN_PARAMS)
 {
     char *str = NULL;
     list_t *list = NULL;
-    if (strcmp(cmd[0], "repeat"))
+    if (strcmp(cmd->argv[0], "repeat"))
         return;
-    if (arrlen(cmd) < 3) {
-        throw_error("repeat: Too few arguments.\n", shell, 1);
-        return;
-    }
-    if (check_alph(cmd[1])) {
-        throw_error("repeat: Badly formed number.\n", shell, 1);
+    if (arrlen(cmd->argv) < 3) {
+        throw_error("repeat: Too few arguments.\n", shell, BUILTIN_ERROR);
         return;
     }
-    str = concat_arr(cmd + 2, ' ');
+    if (check_alph(cmd->argv[1])) {
+        throw_error("repeat: Badly formed number.\n", shell, BUILTIN_ERROR);
+        return;
+    }
+    str = concat_arr(cmd->argv + 2, ' ');
     list = parse_command(str, shell);
-    for (int i = atoi(cmd[1]); i != 0; --i)
+    for (int i = atoi(cmd->argv[1]); i != 0; --i)
         handle_command(list, shell);
     free(str);
     return;

@@ -59,20 +59,21 @@ char* clear_str(char* str)
 
 char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
 {
-    (void)shell;
     if (*cmd_str == '\0' || *(cmd_str - 1) != '$') {
-        add_arg((*command_array)->cmd, strdup("$"), SIMPLE);
+        add_arg(*command_array, strdup("$"), SIMPLE);
         return cmd_str;
     }
     cmd_t* cmd = (*command_array)->cmd;
-    shell_t* saved_shell = get_shell(NULL);
     char* var_name = parse_file_name(&cmd_str);
-    char *var = get_local_var(saved_shell, var_name);
+    char *var = get_local_var(shell, var_name);
     if (var == NULL) {
-        printf("%s: Undefined variable.\n", cmd_str);
+        var = get_env_var(shell->envp, var_name);
+    }
+    if (var == NULL) {
+        printf("%s: Undefined variable.\n", var_name);
         set_status(shell, 1);
         return cmd_str;
     }
-    add_arg(cmd, strdup(var), SIMPLE);
+    add_arg(*command_array, strdup(var), SIMPLE);
     return cmd_str;
 }

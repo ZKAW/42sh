@@ -54,7 +54,7 @@ char** get_recursive_files(const char* root)
             continue;
         path = create_relative_path(root, dirent->d_name);
         files = realloc(files, sizeof(char*) * (i + 2));
-        files[i++] = strdup(&path[2]);
+        files[i++] = strdup(path);
         if (stat(path, &file_stat) == 0 && S_ISDIR(file_stat.st_mode))
             add_subfiles(path, &files, &i);
         free(path);

@@ -57,6 +57,6 @@ char* parse_backticks(char* cmd_str, list_t** command_array, shell_t* shell)
     content = render_backtick(command, shell);
     args = tokenize_string(content, " \t\n");
     for (int i = 0; args[i]; i++)
-        add_arg(cmd, args[i], BACKTICKS);
+        add_arg(*command_array, args[i], BACKTICKS);
     return cmd_str;
 }

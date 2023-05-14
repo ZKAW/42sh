@@ -53,5 +53,4 @@ void insert_arr_at_index(char ***main_arr_ptr, char **sub_arr, int index);
 int is_alpha(char c);
 int is_str_alpha(char *str);
 char *my_strncat( char* dest , char* const src, int nb);
-
 #endif

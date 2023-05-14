@@ -31,36 +31,31 @@
 #include "struct/dir.h"
 #include "struct/echo.h"
 #include "struct/globbing.h"
+#include "struct/foreach.h"
 
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
 
     #define _XOPEN_SOURCE 700
 
-shell_t* init_shell(char** envp);
+shell_t* init_shell(char** envp, char** av);
 void execute(cmd_t* cmd, shell_t* shell);
 int not_existing(char* path, shell_t* shell);
 int handle_status(int state);
 void run_builtin(cmd_t* cmd, shell_t* shell);
-char** get_env_paths(char** envp);
 int is_builtin(char* path);
 char* get_full_path(char* input, shell_t* shell);
 int set_input(cmd_t* cmd, shell_t* shell, int fd[2]);
 char **tokenize_string(char *input, char *sep);
 void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2]);
 list_t* parse_command(char *cmd_str, shell_t* shell);
-list_t* split_pipes(char* input, list_t* next);
-list_t* get_command(char * str);
-void parse_output(cmd_t* command);
-void parse_input(cmd_t* command);
-char** get_files(char *path);
 int set_output(cmd_t* cmd, int input_fd[2]);
 list_t* reverse_cmd(list_t* head);
 char** envp_cpy(char** envp);
 void handle_child_error(char** argv);
 char *get_prompt_prefix(void);
 char *get_env_var(char **env, char *key);
-void add_arg(cmd_t* cmd, char* arg, int is_litteral);
+void add_arg(list_t* command_array, char* arg, int is_litteral);
 char *copy_until(char *dst, char *src, char *delim);
 void error(char *msg);
 void throw_error(char* const strerror, shell_t* shell, int ernum);
@@ -90,21 +85,12 @@ extern int completion(char *cmd, char **envp);
 extern int arrlen(char **arr);
 extern char *concat_str(char *dest, char *src);
 extern char* arr_to_str(char** arr, char delim);
-extern char *parse_string(char *str);
-extern char *parse_args(char **str, args_t *struc);
-extern int in_string(char *str, char c);
-extern int search_char(char *str, char c);
-extern int check_back_backspaces(char *str, args_t *struc);
-extern int handle_basicdisplay(char *str, args_t *struc);
-extern int free_data(char *str, args_t *struc);
-extern int check_interpretation(int *interpret, char *args);
-extern int print_help(void);
+extern int interpreter(char *str, int i);
 void init_vars(shell_t* shell);
 void init_special_vars(shell_t* shell);
 void set_var(shell_t* shell, char* key, char* value);
 void update_cwd(shell_t* shell);
 int have_space(char *str);
-int assign_variables(cmd_t* cmd, shell_t* shell);
 int cmd_is_alias(cmd_t *cmd, shell_t* shell);
 int check_globbing(cmd_t* cmd, shell_t* shell);
 char *get_local_var(shell_t *shell, char *key);
@@ -116,5 +102,15 @@ void handle_command(list_t* list, shell_t* shell);
 int replace_globber(globber_t* globbing, int index, cmd_t* cmd);
 void alias_special_var(shell_t *shell);
 void set_status(shell_t* shell, int ret);
+void exit_detach_shm(shell_t* shell);
+void safe_free(void *ptr);
+char *get_shebang(char *path);
+int my_execve(char* path, char **argv, char **envp);
+char* array_to_str(char **cmd);
+char* concatene_value(char **cmd);
+char* del_after(char *str);
+char* del_before(char *str);
+ssize_t my_getline(char **bufferptr, shell_t* shell);
+void unset_var(shell_t *shell, char *key);
 
 #endif

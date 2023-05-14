@@ -14,6 +14,18 @@
     #include "memory.h"
     #include "job.h"
 
+    typedef enum {
+        ALL_GOOD,
+        NAME,
+        START,
+    } error_type_t;
+
+    typedef struct str_var_s {
+    int equal;
+    int ws_before;
+    int ws_after;
+} str_var_t;
+
 typedef struct alias_s {
     char *alias;
     char *command;
@@ -29,10 +41,9 @@ typedef struct var {
 typedef struct shell {
     char* root;
     char** envp;
-    char* last_path;
+    char* binary_name;
     int state;
     int loop;
-    char** paths;
     pid_t sub;
     pid_t pgid;
     pid_t pid;
