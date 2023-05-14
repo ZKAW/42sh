@@ -27,6 +27,7 @@ void teach_child(cmd_t *cmd, shell_t* shell)
     }
     if (is_builtin(cmd->argv[0])) {
         run_builtin(cmd, shell);
+        exit(shell->state);
     } else if (check_globbing(cmd, shell) == 1) {
         set_status(shell, 1);
         exit(1);
