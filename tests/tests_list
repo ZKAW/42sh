@@ -547,3 +547,11 @@ CLEAN=""
 TESTS=
   echo "./42sh ./tests/scripting/simple.sh"
 [958-END]
+
+[959]
+NAME="Scripting - open file with no shebang"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/scripting/no_shebang.sh"
+[959-END]

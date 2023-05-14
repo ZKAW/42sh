@@ -29,6 +29,7 @@ typedef struct var {
 typedef struct shell {
     char* root;
     char** envp;
+    char* binary_name;
     char* last_path;
     int state;
     int loop;

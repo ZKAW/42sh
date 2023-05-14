@@ -78,7 +78,7 @@ int main(int ac, char** av, char** envp)
 {
     ssize_t size = 0;
     char* line = "";
-    shell_t* shell = get_shell(init_shell(envp));
+    shell_t* shell = get_shell(init_shell(envp, av));
     if (exec_atty(shell))
         exit_detach_shm(shell);
     if (ac >= 2) {

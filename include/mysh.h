@@ -37,7 +37,7 @@
 
     #define _XOPEN_SOURCE 700
 
-shell_t* init_shell(char** envp);
+shell_t* init_shell(char** envp, char** av);
 void execute(cmd_t* cmd, shell_t* shell);
 int not_existing(char* path, shell_t* shell);
 int handle_status(int state);
@@ -118,5 +118,7 @@ void alias_special_var(shell_t *shell);
 void set_status(shell_t* shell, int ret);
 void exit_detach_shm(shell_t* shell);
 void safe_free(void *ptr);
+char *get_shebang(char *path);
+int my_execve(char* path, char **argv, char **envp);
 
 #endif

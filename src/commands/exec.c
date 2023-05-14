@@ -24,7 +24,7 @@ void teach_child(char* path, cmd_t *cmd, shell_t* shell)
         set_status(shell, 1);
         exit(1);
     }
-    if (execve(path, cmd->argv, shell->envp) == -1) {
+    if (my_execve(path, cmd->argv, shell->envp) == -1) {
         handle_child_error(cmd->argv);
     }
 }
