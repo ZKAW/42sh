@@ -21,7 +21,8 @@ extern int error_handling_set(shell_t *shell, cmd_t *cmd)
         return 1;
     }
     if (!is_str_alphanum(parsed[0])) {
-        throw_error("set: Variable name must contain alphanumeric characters.\n", shell, 1);
+        throw_error("set: Variable name must contain alphanumeric characters.\n"
+        , shell, 1);
         return 1;
     }
     return 0;

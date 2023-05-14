@@ -67,7 +67,7 @@ int check_command_integrity(list_t* list)
 list_t* parse_command(char *cmd_str, shell_t* shell)
 {
     list_t* command_array = append_list(NULL);
-    while (*cmd_str) {
+    while (*cmd_str != '\0') {
         cmd_str = skip_whitespace(cmd_str);
         if (*cmd_str == '\0')
             break;

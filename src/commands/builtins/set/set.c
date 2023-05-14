@@ -62,27 +62,12 @@ char* del_after(char *str)
 
 void builtin_set(BUILTIN_PARAMS)
 {
-<<<<<<< HEAD:src/commands/builtins/set/set.c
-    if (error_handling_set(shell, cmd) == 1)
-        return;
-    char *key = NULL; char *value = NULL; int argc = 0; int equal = 0;
-    for (int i = 0; cmd->argv[i] != NULL; i++) argc++;
-    char* tmp = array_to_str(cmd->argv);
-    if (argc == 1) { print_set(shell->vars); return; }
-    for (int i = 0; tmp[i] != '\0'; i++) {
-        if (tmp[i] == '=') equal++;
-    }
-    if (argc == 2 && equal == 1) {
-        key = strdup(del_after(cmd->argv[1]));
-        value = strdup(del_before(cmd->argv[1]));
-=======
     char buffer[5000];
     int argc = cmd->argc; char quote = '\0';
     char** keys = NULL, **value = NULL; int position = 0;
     if (argc == 1) {
         print_set(shell->vars);
         return;
->>>>>>> special_variables:src/commands/builtins/set.c
     }
     char* tmp = ar_to_str(cmd);
     int res = parse_var_line(tmp, &keys, &value);

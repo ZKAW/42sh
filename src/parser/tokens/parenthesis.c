@@ -13,7 +13,8 @@ char* parse_parenthesis(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     (void)shell;
     char buffer[4096] = {0};
-    cmd_t* cmd = (*command_array)->cmd;
+    cmd_t* cmd = (*command_array)->cmd ?
+    (*command_array)->cmd : append_command(*command_array);
     cmd_str = copy_until(buffer, cmd_str, ")");
     cmd->subshell = parse_command(buffer, shell);
     cmd_str++;

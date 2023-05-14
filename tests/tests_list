@@ -618,3 +618,22 @@ TESTS=
   echo 'set lol ="non non"' #don't work
   echo 'set'
 [964-END]
+
+ [965]
+NAME="parenthesis - multipe args"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls -l | cat -e) >> .outputfile'
+  echo 'cat .outputfile'
+  echo '(ls | rev) cat -e'
+  echo 'rm .outputfile'
+[965-END]
+
+[966]
+NAME="parenthesis - modify env in subshell"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'setenv lol oui; (unsetenv lol; env | grep "lol" || echo "see, no lol"); env | grep lol'
+[966-END]
