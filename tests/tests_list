@@ -673,3 +673,12 @@ TESTS=
   echo "echo \$PATH"
   echo "echo \$path"
 [970-END]
+
+[971]
+NAME="Set - multipe args"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set lol = "oui oui" feur="non non"'
+  echo 'set'
+[971-END]
