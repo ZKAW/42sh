@@ -75,6 +75,8 @@ char* delete_quotes(char *str)
 
 void builtin_set(BUILTIN_PARAMS)
 {
+    if (error_handling_set(shell, cmd) == 1)
+        return;
     char *key = NULL; char *value = NULL; int argc = 0; int equal = 0;
     for (int i = 0; cmd->argv[i] != NULL; i++) argc++;
     char* tmp = array_to_str(cmd->argv);
