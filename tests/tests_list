@@ -578,3 +578,19 @@ TESTS=
   echo "cd ./invalid_file"
   echo "pwd"
 [960-END]
+
+[961]
+NAME="Scripting - open simple .sh"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./42sh ./tests/scripting/simple.sh"
+[961-END]
+
+[962]
+NAME="Scripting - open file with no shebang"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./tests/scripting/no_shebang.sh"
+[962-END]

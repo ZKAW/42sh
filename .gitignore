@@ -11,4 +11,4 @@ sandbox.c
 TODO
 todo
 /model
-tests/bin
+!/tests/data.txt
