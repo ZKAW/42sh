@@ -74,6 +74,8 @@ int main(int ac UNUSED, char** av UNUSED, char** envp)
         if (size == EOF) break;
         shell->loop = 0;
         handle_command(parse_command(line, shell), shell);
+        line[size - 1] = '\0';
+        set_var(shell, "_", line);
     }
     if (isatty(0)) write(1, "exit\n", 5);
     exit_shm(shell);

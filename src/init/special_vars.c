@@ -38,4 +38,5 @@ void init_special_vars(shell_t *shell)
     set_var(shell, "TERM", get_env_var(shell->envp, "TERM"));
     set_var(shell, "cwd", cwd);
     set_var(shell, "?", "0");
+    set_var(shell, "_", "");
 }
