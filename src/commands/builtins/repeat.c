@@ -48,7 +48,6 @@ static char *concat_arr(char **arr, char delim)
 
 void builtin_repeat(BUILTIN_PARAMS)
 {
-    char** cmd = command->argv;
     char *str = NULL;
     list_t *list = NULL;
     if (strcmp(cmd->argv[0], "repeat"))

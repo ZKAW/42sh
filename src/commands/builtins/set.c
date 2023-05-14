@@ -75,23 +75,23 @@ char* delete_quotes(char *str)
 
 void builtin_set(BUILTIN_PARAMS)
 {
-    char** cmd = command->argv;
     char *key = NULL; char *value = NULL; int argc = 0; int equal = 0;
-    for (int i = 0; cmd[i] != NULL; i++) argc++;
-    char* tmp = array_to_str(cmd);
+    for (int i = 0; cmd->argv[i] != NULL; i++) argc++;
+    char* tmp = array_to_str(cmd->argv);
     if (argc == 1) { print_set(shell->vars); return; }
     for (int i = 0; tmp[i] != '\0'; i++) {
         if (tmp[i] == '=') equal++;
     }
     if (argc == 2 && equal == 1) {
-        key = strdup(del_after(cmd[1])); value = strdup(del_before(cmd[1]));
+        key = strdup(del_after(cmd->argv[1]));
+        value = strdup(del_before(cmd->argv[1]));
     }
     if (argc == 2 && equal == 0) {
-        set_var(shell, cmd[1], ""); return;
+        set_var(shell, cmd->argv[1], ""); return;
     }
     if ((argc == 3 || argc >= 4) && equal == 1) {
-        key = strdup(del_after(cmd[1]));
-        value = strdup(del_before(delete_quotes(concatene_value(cmd))));
+        key = strdup(del_after(cmd->argv[1]));
+        value = strdup(del_before(delete_quotes(concatene_value(cmd->argv))));
     }
     if (equal == 1) set_var(shell, key, value);
 }

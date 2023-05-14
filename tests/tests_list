@@ -558,7 +558,7 @@ TESTS=
   echo "ls -l /usr/bin/e*"
 [958-END]
 
-[960]
+[959]
 NAME="foreach zebi"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
@@ -568,13 +568,13 @@ TESTS=
   echo "echo \$n"
   sleep 1
   echo "end"
-[960-END]
+[959-END]
 
-[958]
+[960]
 NAME="Invalid cd on atty"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
   echo "cd ./invalid_file"
   echo "pwd"
-[958-END]
+[960-END]

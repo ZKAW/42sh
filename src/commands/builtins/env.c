@@ -9,7 +9,7 @@
 
 void builtin_env(BUILTIN_PARAMS)
 {
-    (void)command;
+    (void)cmd;
     print_array(shell->envp);
 }
 
