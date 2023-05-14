@@ -7,7 +7,7 @@
 
 #include "mysh.h"
 
-static char** unset_var(char* var_name, char** envp)
+static char** unset_env(char* var_name, char** envp)
 {
     for (int i = 0; envp[i]; i++) {
         if (!strncmp(envp[i], var_name, strlen(var_name))) {
@@ -26,7 +26,7 @@ void builtin_unsetenv(BUILTIN_PARAMS)
         return;
     }
     for (int i = 1; cmd->argv[i]; i++) {
-        envp = unset_var(cmd->argv[i], envp);
+        envp = unset_env(cmd->argv[i], envp);
     }
     shell->state = 0;
     shell->envp = envp;

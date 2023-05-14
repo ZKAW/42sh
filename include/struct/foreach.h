@@ -10,7 +10,7 @@
 
 typedef struct foreach {
     char var_name[256];
-    char** values;
+    char **values;
     char *cmd;
 } foreach_t;
 
