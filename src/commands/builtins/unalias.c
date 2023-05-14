@@ -35,6 +35,9 @@ void unalias_special_var(shell_t *shell)
     char* fignore = get_fignore_var(shell);
     if (fignore == NULL)
         shell->fignore = NULL;
+    char* postcmd = get_postcmd_var(shell);
+    if (postcmd == NULL)
+        shell->postcmd = NULL;
 }
 
 void unalias_all(shell_t *shell)

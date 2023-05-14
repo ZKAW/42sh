@@ -20,6 +20,9 @@ void alias_special_var(shell_t *shell)
     char* fignore = get_fignore_var(shell);
     if (fignore != NULL)
         shell->fignore = fignore;
+    char* postcmd = get_postcmd_var(shell);
+    if (postcmd != NULL)
+        shell->postcmd = postcmd;
 }
 
 char* get_fignore_var(shell_t* shell)

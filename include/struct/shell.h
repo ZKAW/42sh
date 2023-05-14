@@ -45,6 +45,7 @@ typedef struct shell {
     char* binary_name;
     int state;
     int loop;
+    int loop_postcmd;
     pid_t sub;
     pid_t pgid;
     pid_t pid;
@@ -55,6 +56,7 @@ typedef struct shell {
     var_t* vars;
     alias_t* aliases;
     char *precmd;
+    char* postcmd;
     char* cwdcmd;
     char* fignore;
     job_control_t *job_control;

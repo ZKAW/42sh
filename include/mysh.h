@@ -99,6 +99,7 @@ void replace_str_to_array(char** array, char* str, int index, cmd_t* cmd);
 char* get_precmd_var(shell_t* shell);
 char* get_cwdcmd_var(shell_t* shell);
 char* get_fignore_var(shell_t* shell);
+char* get_postcmd_var(shell_t* shell);
 void handle_command(list_t* list, shell_t* shell);
 int replace_globber(globber_t* globbing, int index, cmd_t* cmd);
 void alias_special_var(shell_t *shell);
@@ -115,5 +116,7 @@ ssize_t my_getline(char **bufferptr, shell_t* shell);
 void unset_var(shell_t *shell, char *key);
 extern int error_handling_set(shell_t *shell, cmd_t *cmd);
 char *parse_if(char *cmd_str, list_t **command_array, shell_t *shell);
+void postcmd(shell_t* shell);
+void precmd(shell_t* shell);
 
 #endif
