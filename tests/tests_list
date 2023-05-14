@@ -692,3 +692,12 @@ TESTS=
   echo "ls"
   echo "endif"
 [972-END]
+
+[973]
+NAME="Set - multipe args"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'set lol = "oui oui" feur="non non"'
+  echo 'set'
+[973-END]

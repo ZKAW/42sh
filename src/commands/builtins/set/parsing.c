@@ -69,24 +69,24 @@ char** append_var(char** array, char* var,int position)
 
 int parse_var_line(char* tmp, char*** keys_ptr, char*** values_ptr)
 {
-    str_var_t var = {0};
-    int position = 0;
+    str_var_t var = {0}; int position = 0, k_pos = 0, v_pos = 0;
     char buffer[4096] = {0}, **keys = *keys_ptr, **values = *values_ptr;
     while (*tmp != '\0' && *tmp) {
         if (check_equal(&tmp, &var)) continue;
         if (*tmp == '\0') break;
         tmp = get_next_word(tmp, buffer, &var);
         if (tmp == NULL) return NAME;
-        if (var.equal == 0 && keys && keys[position] != NULL) return START;
-        if (var.equal == 0) keys = append_var(keys, buffer, position);
+        if (var.equal == 0 && keys && k_pos < v_pos) {
+            return START;
+        }
+        if (var.equal == 0) keys = append_var(keys, buffer, k_pos++);
         else {
-            values = append_var(values, buffer, position++);
-            var.equal--;
-            tmp = skip_whitespace(tmp);
+            values = append_var(values, buffer, v_pos++);
+            var = (str_var_t){0}; tmp = skip_whitespace(tmp);
         }
     }
-    if (keys) keys[position] = NULL;
-    if (values) values[position] = NULL;
+    if (keys) keys[k_pos] = NULL;
+    if (values) values[v_pos] = NULL;
     *keys_ptr = keys; *values_ptr = values;
     return ALL_GOOD;
 }
