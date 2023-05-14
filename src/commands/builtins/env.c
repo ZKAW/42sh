@@ -35,6 +35,5 @@ char *get_env_var(char **env, char *key)
     }
     if (value != NULL && value[0] == '=') value++;
     if (value != NULL) value[strlen(value)] = '\0';
-
     return value;
 }

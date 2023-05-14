@@ -665,11 +665,19 @@ TESTS=
 [969-END]
 
 [970]
-NAME="unsetenv PATH and disp path var"
+NAME="unsetenv PATH"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
   echo "unsetenv PATH"
-  echo "echo \$PATH"
-  echo "echo \$path"
+  echo "ls -l"
 [970-END]
+
+[971]
+NAME="weird PATH"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "setenv PATH /"
+  echo "ls -l"
+[971-END]
