@@ -56,7 +56,7 @@ int check_cmd_integrity(cmd_t* cmd)
 int check_command_integrity(list_t* list)
 {
     cmd_t* cmd;
-    //fix: if a command is empty, it will be skipped
+
     for (list_t* it = list; it; it = it->next) {
         cmd = it->cmd;
         if (check_cmd_integrity(cmd)) return 1;

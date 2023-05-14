@@ -5,7 +5,7 @@
 ** aa
 */
 
-#include "../../../include/mysh.h"
+#include "../../../../include/mysh.h"
 
 static bool is_flag(char c)
 {
