@@ -49,7 +49,6 @@ char** get_recursive_files(const char* root)
     char** files = NULL, *path = NULL, **subfiles;
     int i = 0, j;
     if (dir == NULL) return NULL;
-    dprintf(2, "root: %s\n", root);
     while ((dirent = readdir(dir)) != NULL) {
         if (!strncmp(dirent->d_name, ".", 1) || !strcmp(dirent->d_name, ".."))
             continue;

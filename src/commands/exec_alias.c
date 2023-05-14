@@ -10,10 +10,8 @@
 char *get_alias(shell_t *shell, char *key)
 {
     alias_t *tmp = shell->aliases;
-    if (tmp->alias == NULL)
-        return NULL;
-    if (my_strcmp(key, "$") == 0)
-        return NULL;
+    if (tmp->alias == NULL) return NULL;
+    if (my_strcmp(key, "$") == 0) return NULL;
     for (int i = 0; tmp->next != NULL; i++) {
         if (my_strcmp(tmp->alias, key) == 0)
             return tmp->command;
@@ -45,6 +43,7 @@ void replace_str_to_array(char** array, char* str, int index, cmd_t* cmd)
 
 int cmd_is_alias(cmd_t* cmd, shell_t* shell)
 {
+    if (cmd->argv == NULL) return 0;
     for (int i = 0; cmd->argv[i] != NULL; i++) {
         char *alias = get_alias(shell, cmd->argv[i]);
         if (alias != NULL) {

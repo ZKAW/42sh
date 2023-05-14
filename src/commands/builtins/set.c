@@ -75,8 +75,9 @@ char* del_after(char *str)
     return (tmp);
 }
 
-void builtin_set(char** cmd, shell_t *shell)
+void builtin_set(BUILTIN_PARAMS)
 {
+    char** cmd = command->argv;
     char *key = NULL; char *value = NULL; int argc = 0; int equal = 0;
     for (int i = 0; cmd[i] != NULL; i++) argc++;
     char* tmp = array_to_str(cmd);

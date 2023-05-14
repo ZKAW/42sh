@@ -30,6 +30,7 @@ void handle_cd_error(char* dir, shell_t* shell)
 
 void builtin_cd(BUILTIN_PARAMS)
 {
+    char** cmd = command->argv;
     char actual_path[500], **var_env = shell->envp, *dir, *var;
     if (tablen(cmd) > 2) {
         throw_error("cd: Too many arguments.\n", shell, 1); return;

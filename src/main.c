@@ -18,7 +18,8 @@ void handle_command(list_t* list, shell_t* shell)
             list = list->next; continue;
         }
         head = list->cmd;
-        if (!head->subshell && is_builtin(head->path)) run_builtin(head, shell);
+        if (!head->subshell && is_builtin(head->path))
+            run_builtin(head, shell);
         else
             execute(head, shell);
         list = list->next;

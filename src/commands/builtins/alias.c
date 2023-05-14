@@ -87,8 +87,9 @@ void print_alias(alias_t *alias)
         printf("%s\t%s\n", tmp->alias, tmp->command);
 }
 
-void builtin_alias(char** cmd, shell_t *shell)
+void builtin_alias(cmd_t* command, shell_t *shell)
 {
+    char** cmd = command->argv;
     int argc = 0;
     for (int i = 0; cmd[i] != NULL; i++)
         argc++;

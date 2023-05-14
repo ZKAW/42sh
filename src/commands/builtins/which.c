@@ -53,9 +53,10 @@ static int which_core(char *cmd, char **arr)
     return 1;
 }
 
-void which_builtin(char **cmd, shell_t *shell)
+void which_builtin(BUILTIN_PARAMS)
 {
     char **arr = NULL;
+    char **cmd = command->argv;
     int argc = arrlen(cmd);
 
     if (strcmp(cmd[0], "which"))

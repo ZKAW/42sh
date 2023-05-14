@@ -24,15 +24,14 @@ var_t *unset_last_elem(var_t *unset)
     return (unset);
 }
 
-void builtin_unset(char** cmd, shell_t *shell)
+void builtin_unset(BUILTIN_PARAMS)
 {
+    char** cmd = command->argv;
     var_t *tmp; var_t *tmp2;
     if (cmd[1] == NULL)
         return throw_error("var: Too few arguments.\n", shell, 1);
-
     if (strcmp(cmd[1], "term") == 0)
         cmd[1] = "TERM";
-
     for (tmp = shell->vars; tmp->next != NULL; tmp = tmp->next) {
         if (strcmp(tmp->key, cmd[1]) == 0) {
             tmp2 = tmp->next;

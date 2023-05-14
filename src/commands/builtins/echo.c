@@ -85,8 +85,9 @@ static int core_echo(char *str)
     return free_data(str, struc);
 }
 
-void echo_builtin(char **cmd, shell_t *shell)
+void echo_builtin(BUILTIN_PARAMS)
 {
+    char** cmd = command->argv;
     char *str = arr_to_str(cmd, ' ');
 
     if (!strcmp(str, "echo --help")) {
