@@ -24,7 +24,7 @@ int is_char_whitespace(char c)
 
 char *skip_whitespace(char *str)
 {
-    while (is_char_whitespace(*str))
+    while (*str && is_char_whitespace(*str))
         str++;
     return str;
 }
