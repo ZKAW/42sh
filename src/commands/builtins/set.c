@@ -93,5 +93,5 @@ void builtin_set(BUILTIN_PARAMS)
         key = strdup(del_after(cmd[1]));
         value = strdup(del_before(delete_quotes(concatene_value(cmd))));
     }
-    set_var(shell, key, value);
+    if (equal == 1) set_var(shell, key, value);
 }
