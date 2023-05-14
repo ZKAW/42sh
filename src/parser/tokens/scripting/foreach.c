@@ -27,11 +27,13 @@ char* parse_foreach(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     foreach_t* foreach;
     char buffer[4096] = {0};
-    while (*cmd_str && strncmp(cmd_str, "end", 3)) {
+    while (*cmd_str != '\0' && strncmp(cmd_str, "end", 3)) {
         strncat(buffer, cmd_str++, 1);
     }
     strncat(buffer, cmd_str, 3);
-    cmd_str += 3;
+    if (*cmd_str != '\0') {
+        cmd_str += 3;
+    }
     add_arg(*command_array, strdup("foreach"), SIMPLE);
     (*command_array)->cmd->foreach = fill_foreach(buffer);
     return cmd_str;

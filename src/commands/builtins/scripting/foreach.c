@@ -55,7 +55,9 @@ static void prompt_foreach_args(BUILTIN_PARAMS)
 void builtin_foreach(BUILTIN_PARAMS)
 {
     if (handle_foreach_errors(cmd, shell)) return;
-
+    size_t new_size = tablen(cmd->foreach->values) + 1;
+    cmd->argv = realloc(cmd->argv, sizeof(char *) * new_size);
+    cmd->arg_type = calloc(new_size, sizeof(int));
     arraydup(cmd->argv, cmd->foreach->values);
     check_globbing(cmd, shell);
     arraydup(cmd->foreach->values, cmd->argv);
