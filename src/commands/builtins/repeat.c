@@ -53,11 +53,11 @@ void builtin_repeat(BUILTIN_PARAMS)
     if (strcmp(cmd->argv[0], "repeat"))
         return;
     if (arrlen(cmd->argv) < 3) {
-        throw_error("repeat: Too few arguments.\n", shell, 1);
+        throw_error("repeat: Too few arguments.\n", shell, BUILTIN_ERROR);
         return;
     }
     if (check_alph(cmd->argv[1])) {
-        throw_error("repeat: Badly formed number.\n", shell, 1);
+        throw_error("repeat: Badly formed number.\n", shell, BUILTIN_ERROR);
         return;
     }
     str = concat_arr(cmd->argv + 2, ' ');

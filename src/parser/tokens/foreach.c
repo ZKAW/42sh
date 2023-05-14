@@ -10,7 +10,8 @@
 
 char *skip_whitespace(char *str);
 
-foreach_t* fill_foreach(char* foreach) {
+foreach_t* fill_foreach(char* foreach)
+{
     char buffer[4096] = {0};
     foreach_t* foreach_struct = malloc(sizeof(foreach_t));
     foreach = copy_until(foreach_struct->var_name, foreach, " \t\n");

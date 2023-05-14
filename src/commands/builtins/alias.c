@@ -32,13 +32,13 @@ alias_t* add_alias(char **buffer, alias_t *alias)
         alias->next = NULL; return (alias);
     }
     for (tmp = alias; tmp->next != NULL; tmp = tmp->next) {
-        if (my_strcmp(tmp->alias, buffer[1]) == 0) {
+        if (strcmp(tmp->alias, buffer[1]) == 0) {
             tmp->command = NULL;
             tmp->command = tmp2;
             return (alias);
         }
     }
-    if (my_strcmp(tmp->alias, buffer[1]) == 0) {
+    if (strcmp(tmp->alias, buffer[1]) == 0) {
         tmp->command = NULL;
         tmp->command = tmp2;
         return (alias);
@@ -55,18 +55,17 @@ void show_alias(alias_t *alias, char **buffer)
         return;
     }
     for (tmp = alias; tmp != NULL; tmp = tmp->next) {
-        if (my_strcmp(tmp->alias, buffer[1]) == 0) {
+        if (strcmp(tmp->alias, buffer[1]) == 0) {
             my_putstr(tmp->command, 1);
             my_putstr("\n", 1);
             return;
         }
     }
-    if (my_strcmp(tmp->alias, buffer[1]) == 0) {
+    if (strcmp(tmp->alias, buffer[1]) == 0) {
         my_putstr(tmp->command, 1);
         my_putstr("\n", 1);
         return;
     }
-    my_putstr("Alias not found\n", 1);
 }
 
 void print_alias(alias_t *alias)
@@ -93,6 +92,7 @@ void builtin_alias(BUILTIN_PARAMS)
     for (int i = 0; cmd->argv[i] != NULL; i++)
         argc++;
 
+    set_status(shell, 0);
     if (argc == 1) {
         print_alias(shell->aliases);
         return;

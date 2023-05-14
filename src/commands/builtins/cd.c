@@ -11,7 +11,7 @@ static void handle_cd_error(char* dir, shell_t* shell)
 {
     char* error = strerror(errno);
     dprintf(2, "%s: %s.\n", dir, error);
-    shell->state = 1;
+    shell->state = BUILTIN_ERROR;
     set_status(shell, shell->state);
 }
 
@@ -27,7 +27,9 @@ static void change_dir(char *path, shell_t *shell)
 {
     if (chdir(path) < 0) {
         handle_cd_error(path, shell);
+        return;
     }
+    set_status(shell, 0);
     exec_cwdcmd(shell);
 }
 
@@ -50,10 +52,10 @@ void builtin_cd(BUILTIN_PARAMS)
     static char *old_pwd = NULL;
 
     if (tablen(cmd->argv) > 2) {
-        throw_error("cd: Too many arguments.\n", shell, 1);
+        throw_error("cd: Too many arguments.\n", shell, BUILTIN_ERROR);
         return;
     }
-    if (old_pwd == NULL) old_pwd = getcwd(NULL, 0);
+    if (old_pwd == NULL) old_pwd = strdup("");
     char *path = get_path(cmd, shell, old_pwd);
     old_pwd = getcwd(NULL, 0);
     change_dir(path, shell);

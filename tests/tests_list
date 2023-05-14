@@ -550,3 +550,12 @@ TESTS=
   echo "unalias ll"
   echo "ok"
 [957-END]
+
+[958]
+NAME="Invalid cd on atty"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cd ./invalid_file"
+  echo "pwd"
+[958-END]

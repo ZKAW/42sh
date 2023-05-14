@@ -38,7 +38,7 @@ char* get_var_name(char** cmd, shell_t* shell)
         return NULL;
     }
     if (tablen(cmd) > 3) {
-        throw_error("setenv: Too many arguments.\n", shell, 1);
+        throw_error("setenv: Too many arguments.\n", shell, BUILTIN_ERROR);
         return NULL;
     }
     env_n = cmd[1];

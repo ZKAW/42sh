@@ -12,11 +12,11 @@ static int handle_foreach_errors(BUILTIN_PARAMS)
 {
     if (!is_alpha(cmd->foreach->var_name[0])) {
         throw_error("foreach: Variable name must begin with a letter.\n",
-        shell, 1);
+        shell, BUILTIN_ERROR);
         return (0);
     }
     if (tablen(cmd->argv) > 1) {
-        throw_error("foreach: Too few arguments.\n", shell, 1);
+        throw_error("foreach: Too few arguments.\n", shell, BUILTIN_ERROR);
         return (0);
     }
     return (0);

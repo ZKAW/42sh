@@ -55,22 +55,22 @@ void builtin_unalias(BUILTIN_PARAMS)
 {
     alias_t *tmp; alias_t *tmp2;
     if (cmd->argv[1] == NULL)
-        return throw_error("unalias: Too few arguments.\n", shell, 1);
-    if (my_strcmp(cmd->argv[1], "*") == 0)
+        return throw_error("unalias: Too few arguments.\n", shell,
+                        BUILTIN_ERROR);
+    if (strcmp(cmd->argv[1], "*") == 0)
         return unalias_all(shell);
     for (tmp = shell->aliases; tmp->next != NULL; tmp = tmp->next) {
-        if (my_strcmp(tmp->alias, cmd->argv[1]) == 0) {
-            tmp2 = tmp->next;
-            tmp->alias = tmp2->alias;
+        if (strcmp(tmp->alias, cmd->argv[1]) == 0) {
+            tmp2 = tmp->next; tmp->alias = tmp2->alias;
             tmp->command = tmp2->command;
             tmp->next = tmp2->next;
-            free(tmp2);
-            unalias_special_var(shell);
+            free(tmp2); unalias_special_var(shell);
             return;
         }
-    } if (my_strcmp(tmp->alias, cmd->argv[1]) == 0) {
+    }
+    if (tmp->alias == NULL) return;
+    if (strcmp(tmp->alias, cmd->argv[1]) == 0) {
         shell->aliases = delete_last_element(shell->aliases);
         unalias_special_var(shell); return;
     }
-    my_putstr("unalias: No such alias.\n", 1);
 }

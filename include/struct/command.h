@@ -13,6 +13,7 @@
     #define SIMPLE 0
     #define MAX_ARGS 256
     #define FD_STATUS 10
+    #define BUILTIN_ERROR -84
 
     #include "job.h"
 

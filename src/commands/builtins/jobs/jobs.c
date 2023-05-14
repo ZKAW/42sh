@@ -25,7 +25,7 @@ void builtin_jobs(BUILTIN_PARAMS)
     int cmd_len = tablen(cmd->argv);
 
     if (raise_jobs_errors(cmd->argv, cmd_len)) {
-        shell->state = 1;
+        shell->state = BUILTIN_ERROR;
         set_status(shell, shell->state);
         return;
     }
