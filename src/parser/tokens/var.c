@@ -70,7 +70,7 @@ char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
         var = get_env_var(shell->envp, var_name);
     }
     if (var == NULL) {
-        printf("%s: Undefined variable.\n", var_name);
+        printf("%s: Undefined variable.", var_name);
         set_status(shell, 1);
         return cmd_str;
     }
