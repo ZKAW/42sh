@@ -10,6 +10,7 @@
 void handle_command(list_t* list, shell_t* shell)
 {
     cmd_t* head;
+    if (shell->postcmd != NULL && shell->loop_postcmd == 0) postcwd(shell);
     while (list) {
         if ((list->condition == OR && SHARED_STATUS == 0)
         || (list->condition == AND && SHARED_STATUS != 0)) {
@@ -17,18 +18,14 @@ void handle_command(list_t* list, shell_t* shell)
         }
         head = list->cmd;
         if (!head) {
-            list = list->next;
-            continue;
+            list = list->next; continue;
         }
         if (!head->subshell && is_builtin(head->path)) run_builtin(head, shell);
         else
             execute(head, shell);
         list = list->next;
     }
-    if (shell->precmd != NULL && shell->loop == 0) {
-        list_t *list_precmd = parse_command(shell->precmd, shell);
-        shell->loop = 1; handle_command(list_precmd, shell);
-    }
+    if (shell->precmd != NULL && shell->loop == 0) precmd(shell);
 }
 
 int exec_atty(shell_t* shell)
@@ -89,7 +86,7 @@ int main(int ac, char** av, char** envp)
         size = my_getline(&line, shell);
         if (size == 1) continue;
         if (size == EOF) break;
-        shell->loop = 0;
+        shell->loop = 0; shell->loop_postcmd = 0;
         handle_command(parse_command(line, shell), shell);
         line[size - 1] = '\0';
         set_var(shell, "_", line);
