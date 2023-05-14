@@ -17,7 +17,7 @@ char* parse_var_name(char** cmd_str)
         var_name = get_next_token(*cmd_str, "}");
         (*cmd_str) += strlen(var_name) + 1;
     } else {
-        var_name = get_next_token(*cmd_str, " \t\n");
+        var_name = get_next_token(*cmd_str, " \t\n;|&<>");
         (*cmd_str) += strlen(var_name);
     }
     return var_name;
