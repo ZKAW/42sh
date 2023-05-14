@@ -25,23 +25,6 @@ void print_set(var_t *set)
             printf("%s\t%s\n", tmp->key, tmp->value);
 }
 
-char* array_to_str(char **cmd)
-{
-    char *tmp = malloc(sizeof(char) * 500);
-    int i = 0;
-    int j = 0;
-    for (; cmd[i] != NULL; i++) {
-        for (int k = 0; cmd[i][k] != '\0'; k++) {
-            tmp[j] = cmd[i][k];
-            j++;
-        }
-        tmp[j] = ' ';
-        j++;
-    }
-    tmp[j] = '\0';
-    return (tmp);
-}
-
 char* del_before(char *str)
 {
     char *tmp = malloc(sizeof(char) * (strlen(str) + 1));
@@ -75,6 +58,21 @@ char* del_after(char *str)
     return (tmp);
 }
 
+char* delete_quotes(char *str)
+{
+    char *tmp = malloc(sizeof(char) * (strlen(str) + 1));
+    int i = 0;
+    int j = 0;
+    for (; str[i] != '\0'; i++) {
+        if (str[i] == '"')
+            continue;
+        tmp[j] = str[i];
+        j++;
+    }
+    tmp[j] = '\0';
+    return (tmp);
+}
+
 void builtin_set(char** cmd, shell_t *shell)
 {
     char *key = NULL; char *value = NULL; int argc = 0; int equal = 0;
@@ -84,16 +82,15 @@ void builtin_set(char** cmd, shell_t *shell)
     for (int i = 0; tmp[i] != '\0'; i++) {
         if (tmp[i] == '=') equal++;
     }
-    if (argc == 4 && equal == 1) {
-        if (strcmp(cmd[2], "=") == 0) {
-            key = strdup(cmd[1]); value = strdup(cmd[3]);
-        }
-    }
     if (argc == 2 && equal == 1) {
         key = strdup(del_after(cmd[1])); value = strdup(del_before(cmd[1]));
     }
     if (argc == 2 && equal == 0) {
         set_var(shell, cmd[1], ""); return;
+    }
+    if ((argc == 3 || argc >= 4) && equal == 1) {
+        key = strdup(del_after(cmd[1]));
+        value = strdup(del_before(delete_quotes(concatene_value(cmd))));
     }
     set_var(shell, key, value);
 }
