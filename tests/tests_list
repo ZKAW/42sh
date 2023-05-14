@@ -673,3 +673,14 @@ TESTS=
   echo "echo \$PATH"
   echo "echo \$path"
 [970-END]
+
+[971]
+NAME="if statement prompt"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "if ( 10 == 10 ) then;"
+  echo "echo OK"
+  echo "ls"
+  echo "endif"
+[971-END]
