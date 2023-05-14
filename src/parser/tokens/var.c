@@ -57,6 +57,22 @@ char* clear_str(char* str)
     return new_str;
 }
 
+char* translate_min_on_maj(char* str)
+{
+    int i = 0;
+    int len = strlen(str);
+    char* new_str = malloc(sizeof(char) * (len + 1));
+
+    for (; i < len; i++) {
+        if (str[i] >= 'a' && str[i] <= 'z')
+            new_str[i] = str[i] - 32;
+        else
+            new_str[i] = str[i];
+    }
+    new_str[i] = '\0';
+    return new_str;
+}
+
 char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
 {
     if (*cmd_str == '\0' || *(cmd_str - 1) != '$') {
@@ -66,8 +82,10 @@ char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
     cmd_t* cmd = (*command_array)->cmd;
     char* var_name = parse_file_name(&cmd_str);
     char *var = get_local_var(shell, var_name);
+    if (var == NULL) var = get_env_var(shell->envp, var_name);
     if (var == NULL) {
-        var = get_env_var(shell->envp, var_name);
+        char* copy = strdup(translate_min_on_maj(var_name));
+        var = get_env_var(shell->envp, copy);
     }
     if (var == NULL) {
         printf("%s: Undefined variable.", var_name);
