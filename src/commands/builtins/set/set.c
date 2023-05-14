@@ -62,15 +62,12 @@ char* del_after(char *str)
 
 void builtin_set(BUILTIN_PARAMS)
 {
-    char buffer[5000];
-    int argc = cmd->argc; char quote = '\0';
+    char buffer[5000]; int argc = cmd->argc; char quote = '\0';
     char** keys = NULL, **value = NULL; int position = 0;
     if (argc == 1) {
-        print_set(shell->vars);
-        return;
+        print_set(shell->vars); return;
     }
-    char* tmp = ar_to_str(cmd);
-    int res = parse_var_line(tmp, &keys, &value);
+    char* tmp = ar_to_str(cmd); int res = parse_var_line(tmp, &keys, &value);
     if (res == NAME) {
         return throw_error("set: Variable name must begin with a letter.\n",
             shell, 1);
@@ -79,6 +76,10 @@ void builtin_set(BUILTIN_PARAMS)
             shell, 1);
     }
     for (int i = 0; keys[i] != NULL; i++) {
+        if (strcmp(keys[i], "?") == 0 || strcmp(keys[i], "$") == 0) {
+            return throw_error("set: Variable name must begin with a letter.\n",
+                shell, 1);
+        }
         set_var(shell, keys[i], value[i]);
     }
 }

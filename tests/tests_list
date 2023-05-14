@@ -681,3 +681,14 @@ TESTS=
   echo "setenv PATH /"
   echo "ls -l"
 [971-END]
+  
+[972]
+NAME="if statement prompt"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "if ( 10 == 10 ) then;"
+  echo "echo OK"
+  echo "ls"
+  echo "endif"
+[972-END]
