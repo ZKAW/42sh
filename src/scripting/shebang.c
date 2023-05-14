@@ -19,20 +19,16 @@ char *get_shebang(char *path)
     size = getline(&line, &len, file);
     if (size == -1)
         return NULL;
-    printf("line: %s\n", line);
     if (strncmp(line, "#!", 2) != 0)
         return NULL;
     fclose(file);
     return line;
 }
 
-static int execve_shebang(char *path, char **argv, char **envp)
+static int execve_shebang(char *path, char **argv, char **envp, char *shebang)
 {
-    if (errno != ENOEXEC) {
-        return -1;
-    }
     char **arr = malloc(sizeof(char *) * 3);
-    arr[0] = get_shell(NULL)->binary_name;
+    arr[0] = shebang;
     arr[1] = path;
     arr[2] = NULL;
     if (execve(get_env_var(envp, "SHELL"), arr, envp) == -1) {
@@ -43,9 +39,12 @@ static int execve_shebang(char *path, char **argv, char **envp)
 
 int my_execve(char* path, char **argv, char **envp)
 {
-    if (execve(path, argv, envp) == -1) {
-        if (execve_shebang(path, argv, envp) == -1)
-            return -1;
-    }
+    char *shebang = get_shebang(path);
+    if (shebang == NULL)
+        return execve(path, argv, envp);
+
+    if (execve_shebang(path, argv, envp, shebang) == -1)
+        return -1;
+
     return 0;
 }
