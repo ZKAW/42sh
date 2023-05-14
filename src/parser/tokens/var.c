@@ -67,6 +67,9 @@ char* parse_var(char* cmd_str, list_t** command_array, shell_t* shell)
     char* var_name = parse_file_name(&cmd_str);
     char *var = get_local_var(shell, var_name);
     if (var == NULL) {
+        var = get_env_var(shell->envp, var_name);
+    }
+    if (var == NULL) {
         printf("%s: Undefined variable.\n", var_name);
         set_status(shell, 1);
         return cmd_str;

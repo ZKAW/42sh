@@ -110,5 +110,7 @@ void alias_special_var(shell_t *shell);
 void set_status(shell_t* shell, int ret);
 char* array_to_str(char **cmd);
 char* concatene_value(char **cmd);
+char* del_after(char *str);
+char* del_before(char *str);
 
 #endif
