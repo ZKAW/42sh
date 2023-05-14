@@ -665,7 +665,7 @@ TESTS=
 [969-END]
 
 [970]
-NAME="unsetenv PATH and bin cmd"
+NAME="unsetenv PATH and disp path var"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
