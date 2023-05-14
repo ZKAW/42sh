@@ -19,6 +19,13 @@ static char *apply_variable(shell_t *shell, char* var)
 static void exec_if_condition(cmd_t *cmd, shell_t *shell)
 {
     if_t* statement = cmd->if_statement;
+    if (statement->conditions[1] == NULL ||
+        statement->conditions[2] == NULL) {
+        if (atoi(statement->conditions[0])) {
+            handle_command(parse_command(statement->cmd, shell), shell);
+        }
+        return;
+    }
     char *left_op = apply_variable(shell, statement->conditions[0]);
     char *op = cmd->if_statement->conditions[1];
     char *right_op = apply_variable(shell, statement->conditions[2]);
