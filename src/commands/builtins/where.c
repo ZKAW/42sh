@@ -59,8 +59,9 @@ int check_dir(char **argv, char **arr)
     return ret;
 }
 
-void where_builtin(char **cmd, shell_t *shell)
+void where_builtin(BUILTIN_PARAMS)
 {
+    char **cmd = command->argv;
     int argc = arrlen(cmd);
     char **arr = NULL;
 

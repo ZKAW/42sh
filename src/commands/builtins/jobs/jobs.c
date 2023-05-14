@@ -22,6 +22,7 @@ static int raise_jobs_errors(char **cmd, int cmd_len)
 
 void builtin_jobs(BUILTIN_PARAMS)
 {
+    char** cmd = command->argv;
     int cmd_len = tablen(cmd);
 
     if (raise_jobs_errors(cmd, cmd_len)) {

@@ -7,98 +7,68 @@
 
 #include "../../../include/mysh.h"
 
-static int event_back_backspaces(args_t *struc, int *i)
+static bool check_arg(char *str)
 {
-    if (struc->r_flag > 0) {
-        *i = struc->flag2[struc->j] + 1;
-        --(struc->r_flag);
-        ++(struc->j);
-        return 1;
+    int len = 0;
+
+    if (str[0] == '-' && str[1] == 'n') {
+        len = strlen(str);
+        memmove(str, str + 3, len - 2);
+        str[len - 3] = '\0';
+        return true;
     }
-    if (struc->b_flag > 0 && *i == struc->flag[struc->k]) {
-        *i += 2;
-        --(struc->b_flag);
-        ++(struc->k);
+    return false;
+}
+
+bool parse_string(cmd_t *cmd)
+{
+    for (int i = 1; cmd->argv[i]; i++)
+        if (cmd->arg_type[i] == QUOTTED)
+            return true;
+    return false;
+}
+
+static int check_interpret(char *str, int *i, bool has_pa, int *ret)
+{
+    if (has_pa && str[*i] == '\\' && str[*i + 1] != '\0') {
+        *ret = interpreter(str, *i);
+        if (*ret == -1)
+            return 2;
+        *i += *ret;
         return 1;
     }
     return 0;
 }
 
-static int event_backspaces(char *str, int *i)
+static int core_echo(char *str, cmd_t *command)
 {
-    if (str[*i] == '\\' && (str[*i + 1] == 'f' || str[*i + 1] == 'v')) {
-        my_putstr("\n", 1);
-        for (int j = 0; str[j] != '\\' && (str[j + 1] != 'f' ||
-        str[j + 1] != 'v'); ++j)
-            my_putstr(" ", 1);
-        ++(*i);
-        return 1;
-    } if (str[*i] == '\\' && str[*i + 1] == 'n') {
-        my_putstr("\n", 1);
-        ++(*i);
-        return 1;
-    } if (str[*i] == '\\' && str[*i + 1] == 't') {
-        my_putstr("\t", 1);
-        ++(*i);
-        return 1;
-    } if (str[*i] == '\\' && str[*i + 1] == 'e') {
-        *i += 2;
-        return 1;
-    }
-    return 0;
-}
+    bool is_arg = check_arg(str);
+    bool has_pa = parse_string(command);
+    int ret = 0;
+    int retb = 0;
 
-static int check_backspaces(char *str, args_t *struc)
-{
-    struc->j = 0;
-    for (int i = 0; str[i] && struc->interpret == 1; ++i) {
-        if (event_back_backspaces(struc, &i) == 1)
-            continue;
-        if (event_backspaces(str, &i) == 1)
-            continue;
-        if (str[i] == '\\' && str[i + 1] == 'c')
+    for (int i = 0; str[i]; ++i) {
+        retb = check_interpret(str, &i, has_pa, &ret);
+        if (retb == 2)
             break;
-        if (str[i] == '\\') {
-            my_putstr("\\", 1);
+        if (retb == 1)
             continue;
-        }
-        write(1, &str[i], 1);
+        if (!has_pa && str[i] == '\\' && str[i + 1] != '\\')
+            continue;
+        putchar(str[i]);
     }
+    if (!is_arg)
+        putchar('\n');
     return 0;
 }
 
-static int core_echo(char *str)
+void echo_builtin(BUILTIN_PARAMS)
 {
-    args_t *struc = malloc(sizeof(args_t));
-    struc->b_flag = 0, struc->r_flag = 0;
-    struc->j = 0, struc->k = 0;
-    struc->interpret = 0;
-    struc->flag = malloc(sizeof(int) * search_char(str, 'b'));
-    struc->flag2 = malloc(sizeof(int) * search_char(str, 'r'));
-    struc->args = parse_args(&str, struc);
+    char *str = arr_to_str(command->argv, ' ');
 
-    str = parse_string(str);
-    check_interpretation(&struc->interpret, struc->args);
-    check_back_backspaces(str, struc);
-    check_backspaces(str, struc);
-    handle_basicdisplay(str, struc);
-    return free_data(str, struc);
-}
-
-void echo_builtin(char **cmd, shell_t *shell)
-{
-    char *str = arr_to_str(cmd, ' ');
-
-    if (!strcmp(str, "echo --help")) {
-        print_help();
-        return;
-    }
-    if (!strcmp(str, "echo --version")) {
-        my_putstr("GNU coreutils 9.1\n", 1);
-        return;
-    }
     if (!strncmp(str, "echo", 4))
-        core_echo(str + 5);
+        core_echo(str + 5, command);
+    free(str);
     SHARED_STATUS = 0;
     return;
 }

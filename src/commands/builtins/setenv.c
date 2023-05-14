@@ -51,6 +51,7 @@ void builtin_setenv(BUILTIN_PARAMS)
 {
     int i = 0, size = 0;
     char* new_env, **envp = shell->envp, *env_n;
+    char** cmd = command->argv;
     env_n = get_var_name(cmd, shell);
 
     if (env_n == NULL)

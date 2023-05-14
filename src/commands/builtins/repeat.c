@@ -46,8 +46,9 @@ static char *concat_arr(char **arr, char delim)
     return str;
 }
 
-void repeat_builtin(char **cmd, shell_t *shell)
+void repeat_builtin(BUILTIN_PARAMS)
 {
+    char** cmd = command->argv;
     char *str = NULL;
     list_t *list = NULL;
     if (strcmp(cmd[0], "repeat"))

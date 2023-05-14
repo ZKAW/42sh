@@ -12,11 +12,18 @@ void sigchld_handler(int signo);
 void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2]);
 void dump_cmd(cmd_t* cmd);
 
-void teach_child(char* path, cmd_t *cmd, shell_t* shell)
+void teach_child(cmd_t *cmd, shell_t* shell)
 {
+    char* path;
     if (cmd->subshell != NULL) {
         handle_command(cmd->subshell, shell);
         exit(shell->state);
+    }
+    path = get_full_path(cmd->argv[0], shell);
+    if (!is_builtin(cmd->argv[0]) && not_existing(path, shell)) {
+        set_status(shell, 1);
+        exit(1);
+        return;
     }
     if (is_builtin(cmd->argv[0])) {
         run_builtin(cmd, shell);
@@ -32,25 +39,16 @@ void teach_child(char* path, cmd_t *cmd, shell_t* shell)
 void run_command(cmd_t* cmd, shell_t* shell, int output_fd[2])
 {
     int input_fd[2];
-    char* path; int alias;
-    if (cmd->subshell != NULL) teach_child(NULL, cmd, shell);
+    char* path; int alias = 1;
     while (alias != 0) alias = cmd_is_alias(cmd, shell);
-    path = get_full_path(cmd->argv[0], shell);
-    if (!is_builtin(cmd->argv[0]) && not_existing(path, shell)) {
-        set_status(shell, 1);
-        exit(1);
-        return;
-    }
-    if (cmd->output_type != NONE)
-        set_output(cmd, output_fd);
+    if (cmd->output_type != NONE) set_output(cmd, output_fd);
     if ((cmd->input_type == FILE_PATH) && !is_file_exist(cmd->input)) {
         dprintf(2, "%s: No such file or directory.\n", cmd->input);
         set_status(shell, 1);
         exit(1);
-        return;
     }
     if (cmd->input_type != NONE) set_input(cmd, shell, input_fd);
-    teach_child(path, cmd, shell);
+    teach_child(cmd, shell);
 }
 
 void wait_pipe_execution(pipe_t pipe, shell_t* shell)
@@ -86,7 +84,7 @@ void prepare_pipe(cmd_t* cmd, shell_t* shell, int fd[2])
     if (output_sub == 0) {
         close(fd[1]);
         dup2(fd[0], 0);
-        teach_child(get_full_path(cmd->argv[0], shell), cmd, shell);
+        teach_child(cmd, shell);
         return;
     }
     signal(SIGCHLD, sigchld_handler);

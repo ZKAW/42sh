@@ -30,11 +30,11 @@ void handle_cd_error(char* dir, shell_t* shell)
 
 void builtin_cd(BUILTIN_PARAMS)
 {
+    char** cmd = command->argv;
     char actual_path[500], **var_env = shell->envp, *dir, *var;
     if (tablen(cmd) > 2) {
         throw_error("cd: Too many arguments.\n", shell, 1); return;
-    }
-    dir = (tablen(cmd) == 1 || !strcmp(cmd[1], "~")) ? "$HOME" : cmd[1];
+    } dir = (tablen(cmd) == 1 || !strcmp(cmd[1], "~")) ? "$HOME" : cmd[1];
     if (dir[0] == '$') {
         var = find_envp(dir, shell); var_env = tokenize_string(var, "=");
         dir = var_env[1];

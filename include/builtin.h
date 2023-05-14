@@ -10,7 +10,7 @@
 
     #include "mysh.h"
 
-    #define BUILTIN_PARAMS char** cmd, shell_t* shell
+    #define BUILTIN_PARAMS cmd_t* command, shell_t* shell
 
 void builtin_cd(BUILTIN_PARAMS);
 void builtin_env(BUILTIN_PARAMS);
