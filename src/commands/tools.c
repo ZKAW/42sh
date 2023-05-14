@@ -9,9 +9,8 @@
 
 char* get_full_path(char* cmd, shell_t* shell)
 {
-    char *PATH = get_env_var(shell->envp, "PATH");
-    if (PATH == NULL) return cmd;
-    char **path_dirs = tokenize_string(PATH, ":");
+    char **path_dirs = shell->paths;
+    if (path_dirs == NULL) return cmd;
     char *abs_path = NULL;
 
     for (int i = 0; path_dirs[i] != NULL; i++) {

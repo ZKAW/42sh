@@ -594,3 +594,11 @@ CLEAN=""
 TESTS=
   echo "./tests/scripting/no_shebang.sh"
 [962-END]
+
+[963]
+NAME=If zebi"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "if ( 10 == 10 ) then ; echo "x is equal to 10" ; endif"
+[963-END]

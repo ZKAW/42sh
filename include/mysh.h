@@ -32,6 +32,7 @@
 #include "struct/echo.h"
 #include "struct/globbing.h"
 #include "struct/foreach.h"
+#include "struct/if.h"
 
 #ifndef _MINI_SHELL_H_
     #define _MINI_SHELL_H_
@@ -112,5 +113,6 @@ char* del_after(char *str);
 char* del_before(char *str);
 ssize_t my_getline(char **bufferptr, shell_t* shell);
 void unset_var(shell_t *shell, char *key);
+char *parse_if(char *cmd_str, list_t **command_array, shell_t *shell);
 
 #endif

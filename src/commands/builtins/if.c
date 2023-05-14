@@ -1,13 +1,13 @@
 /*
-** EPITECH PROJECT, 2022
+** EPITECH PROJECT, 2023
 ** 42sh
 ** File description:
-** foreach.c
+** if
 */
 
 #include "mysh.h"
-#include "parsing.h"
 
+/*
 static int handle_foreach_errors(BUILTIN_PARAMS)
 {
     if (!is_alpha(cmd->foreach->var_name[0])) {
@@ -54,10 +54,30 @@ static void prompt_foreach_args(BUILTIN_PARAMS)
 // TODO: yo la mémoire mec arrête d'enc*ler ta stack
 void builtin_foreach(BUILTIN_PARAMS)
 {
+    size_t i = 0;
+    ssize_t size = 0;
+    char* line = "";
     if (handle_foreach_errors(cmd, shell)) return;
 
     arraydup(cmd->argv, cmd->foreach->values);
     check_globbing(cmd, shell);
     arraydup(cmd->foreach->values, cmd->argv);
     prompt_foreach_args(cmd, shell);
+}
+*/
+
+/*
+typedef struct if_s {
+    char *condition;
+    char *cmd;
+    char *else_cmd;
+} if_t;
+*/
+
+// IF
+void builtin_if(BUILTIN_PARAMS)
+{
+    printf("if->condition: %s\n", cmd->if_statement->condition);
+    printf("if->cmd: %s\n", cmd->if_statement->cmd);
+    printf("if->else_cmd: %s\n", cmd->if_statement->else_cmd);
 }

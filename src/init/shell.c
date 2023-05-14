@@ -26,6 +26,16 @@ static void init_aliases(shell_t* shell)
     shell->aliases->next = NULL;
 }
 
+static void init_paths(shell_t *shell)
+{
+    char *PATH = get_env_var(shell->envp, "PATH");
+    if (PATH == NULL) {
+        shell->paths = NULL;
+        return;
+    }
+    shell->paths = tokenize_string(PATH, ":");
+}
+
 shell_t* init_shell(char** envp, char** av)
 {
     shell_t* shell = malloc(sizeof(shell_t));
@@ -45,5 +55,6 @@ shell_t* init_shell(char** envp, char** av)
     shell->job_control = init_job_control();
     init_aliases(shell);
     init_vars(shell);
+    init_paths(shell);
     return shell;
 }

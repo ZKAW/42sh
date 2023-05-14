@@ -15,10 +15,10 @@
     #define FD_STATUS 10
     #define BUILTIN_ERROR -84
 
-    #include "job.h"
-
 typedef struct command_array list_t;
 typedef struct foreach foreach_t;
+typedef struct job_s job_t;
+typedef struct if_s if_t;
 
 typedef enum {
     NONE,
@@ -45,9 +45,10 @@ typedef struct command {
     int append;
     list_t* subshell;
     foreach_t* foreach;
+    if_t* if_statement;
+    job_t* job;
     struct command* next;
     struct command* prev;
-    job_t* job;
 } cmd_t;
 
 typedef struct command_array {
