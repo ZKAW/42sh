@@ -116,7 +116,7 @@ ssize_t my_getline(char **bufferptr, shell_t* shell);
 void unset_var(shell_t *shell, char *key);
 extern int error_handling_set(shell_t *shell, cmd_t *cmd);
 char *parse_if(char *cmd_str, list_t **command_array, shell_t *shell);
-void postcwd(shell_t* shell);
+void postcmd(shell_t* shell);
 void precmd(shell_t* shell);
 
 #endif

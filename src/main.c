@@ -10,7 +10,7 @@
 void handle_command(list_t* list, shell_t* shell)
 {
     cmd_t* head;
-    if (shell->postcmd != NULL && shell->loop_postcmd == 0) postcwd(shell);
+    if (shell->postcmd != NULL && shell->loop_postcmd == 0) postcmd(shell);
     while (list) {
         if ((list->condition == OR && SHARED_STATUS == 0)
         || (list->condition == AND && SHARED_STATUS != 0)) {
